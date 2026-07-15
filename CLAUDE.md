@@ -36,7 +36,7 @@ the earlier About-Me-website plan). Claude's job, in order:
 
 ### Current status
 
-- [ ] Idea captured & challenged (write the result below when done)
+- [x] Idea captured & challenged (write the result below when done)
 - [ ] MVP scope defined
 - [ ] Plan built
 - [ ] Building
