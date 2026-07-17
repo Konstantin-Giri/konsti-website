@@ -44,7 +44,7 @@ nice-to-haves in a "later" list.
 ### Current status
 
 - [x] Idea captured & challenged (write the result below when done)
-- [x] MVP scope defined
+- [xx] MVP scope defined
 - [ ] Plan built
 - [ ] Building
 
