@@ -2,7 +2,7 @@
   @Author: VictoriaGiri
   @Date:   2026-07-15 16:03:02
   @Last Modified by:   VictoriaGiri
-  @Last Modified time: 2026-07-18 23:36:29
+  @Last Modified time: 2026-07-19 00:13:58
 -->
 <!DOCTYPE html>
 <html lang="de">
@@ -19,6 +19,26 @@
     <form>
         <p>Reiseziel: <input type="text" id="ziel"></p>
         <p>Reisedauer: <input type="number" id="tage"></p>
+        <p>Reiseart:
+            <select id="art">
+                <option>Strand</option>
+                <option>Stadt</option>
+                <option>Freizeitpark</option>
+                <option>Spa-Urlaub</option>
+                <option>Wandern</option>
+                <option>Bootsreise</option>
+                <option>Camping</option>
+                <option>Skiurlaub</option>
+                <option>Tauchen</option>
+                <option>Roadtrip</option>
+                <option>Festival</option>
+                <option>Safari</option>
+                <option>Kreuzfahrt</option>
+                <option>Radtour</option>
+                <option>Backpacking</option>
+                <option>Inselhopping</option>
+            </select>
+        </p>
         <button type="button" onclick="erstelleListe()">Packliste erstellen</button>
     </form>
 
@@ -28,13 +48,65 @@
         function erstelleListe() {
             let ziel = document.getElementById("ziel").value;
             let tage = document.getElementById("tage").value;
+            let art = document.getElementById("art").value;
             let sachen = ["Handy", "Ladekabel", "Powerbank", "Ausweis", "Geldbeutel", "Schlüssel", "Zahnbürste", "Unterwäsche", "Socken", "Wasserflasche"];
+
             if (tage > 7) {
-            sachen.push("Waschmittel");
+                sachen.push("Waschmittel");
             }
             if (tage > 9) {
-            sachen.push("Unterwäsche & Socken für ca. " + tage + " Tage", "Reiseapotheke + Medikamente mit Reserve", "Reiseadapter", "Zweites Ladekabel", "Flip-Flops", "Ohrstöpsel", "Dokumentenkopien");
+                sachen.push("Unterwäsche & Socken für ca. " + tage + " Tage", "Reiseapotheke + Medikamente mit Reserve", "Reiseadapter", "Zweites Ladekabel", "Flip-Flops", "Ohrstöpsel", "Dokumentenkopien");
             }
+
+            if (art === "Strand") {
+                sachen.push("Sonnencreme", "Badehose", "Handtuch");
+            }
+            if (art === "Stadt") {
+                sachen.push("Bequeme Schuhe", "Tagesrucksack", "Stadtplan-App offline");
+            }
+            if (art === "Freizeitpark") {
+                sachen.push("Bequeme Schuhe", "Regenponcho", "Powerbank");
+            }
+            if (art === "Spa-Urlaub") {
+                sachen.push("Bademantel", "Badeschlappen", "Buch");
+            }
+            if (art === "Wandern") {
+                sachen.push("Wanderschuhe", "Regenjacke", "Trinkflasche", "Blasenpflaster");
+            }
+            if (art === "Bootsreise") {
+                sachen.push("Reisetabletten gegen Seekrankheit", "Windjacke", "Rutschfeste Schuhe");
+            }
+            if (art === "Camping") {
+                sachen.push("Zelt", "Schlafsack", "Isomatte", "Stirnlampe");
+            }
+            if (art === "Skiurlaub") {
+                sachen.push("Skiunterwäsche", "Handschuhe", "Skibrille", "Mütze");
+            }
+            if (art === "Tauchen") {
+                sachen.push("Tauchcomputer", "Maske + Schnorchel", "Logbuch", "Zertifizierungskarte");
+            }
+            if (art === "Roadtrip") {
+                sachen.push("KFZ-Ladekabel", "Snacks", "Playlist offline", "Warnweste");
+            }
+            if (art === "Festival") {
+                sachen.push("Zelt", "Gummistiefel", "Bauchtasche", "Feuchttücher");
+            }
+            if (art === "Safari") {
+                sachen.push("Fernglas", "Kamera mit Zoom", "Neutrale Kleidung", "Mückenschutz");
+            }
+            if (art === "Kreuzfahrt") {
+                sachen.push("Elegante Abendkleidung", "Reisetabletten", "Badesachen");
+            }
+            if (art === "Radtour") {
+                sachen.push("Helm", "Flickzeug", "Radhose", "Fahrradlicht");
+            }
+            if (art === "Backpacking") {
+                sachen.push("Backpack-Rucksack", "Packwürfel", "Schnelltrocknendes Handtuch", "Vorhängeschloss");
+            }
+            if (art === "Inselhopping") {
+                sachen.push("Dry Bag", "Badesachen", "Sandalen", "Sonnenhut");
+            }
+
             let listeHTML = "";
             for (let sache of sachen) {
                 listeHTML = listeHTML + "<li>" + sache + "</li>";
