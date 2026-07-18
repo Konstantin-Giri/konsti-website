@@ -44,13 +44,31 @@ nice-to-haves in a "later" list.
 ### Current status
 
 - [x] Idea captured & challenged (write the result below when done)
-- [xx] MVP scope defined
-- [ ] Plan built
-- [ ] Building
+- [x] MVP scope defined
+- [x] Plan built (day plan below)
+- [ ] Building — started 2026-07-17 (input form)
 
-### The idea (fill in after step 1)
+### The idea (captured 2026-07-17)
 
-*Not captured yet.*
+**Pack-App** (name TBD by Konsti): enter a trip (destination, number of
+days, trip type) → app generates a smart packing list → check items off
+with progress display ("12 von 18 gepackt"). Core value: never lose
+track / never forget the important things.
+
+**MVP (due Tue 2026-07-21):** one page — input form (destination, days,
+trip type: Strand/Stadt/Wandern/Klassenfahrt/Freizeitpark), rule-based
+list generation, check-off with progress counter, cheap links to
+visa/vaccination info for the destination.
+
+**Later list:** live weather API (Monday bonus if core done), suggestions
+by age/preferences, school-bag mode, day-trip mode.
+
+**Day plan:** Fri = input form (HTML forms) · Sat = list generation (JS
+first contact) · Sun = check-off + progress · Mon = links, styling, weather
+bonus · Tue = test, fix, ship.
+
+**Target users for v1:** Konsti himself, family, friends (testable users);
+generalize later.
 
 ## How Claude must behave in this repo — ALWAYS
 
