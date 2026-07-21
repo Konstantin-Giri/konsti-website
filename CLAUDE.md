@@ -63,9 +63,10 @@ visa/vaccination info for the destination.
 **Later list:** live weather API (Monday bonus if core done), suggestions
 by age/preferences, school-bag mode, day-trip mode.
 
-**Day plan:** Fri = input form (HTML forms) · Sat = list generation (JS
-first contact) · Sun = check-off + progress · Mon = links, styling, weather
-bonus · Tue = test, fix, ship.
+**Day plan:** Fri = input form (HTML forms) ✅ · Sat = list generation (JS
+first contact) ✅ + check-off & progress counter ✅ (Sunday goal pulled
+forward) · Sun = CSS/styling · Mon = visa/vaccine links, weather bonus,
+polish · Tue = test, fix, ship.
 
 **Target users for v1:** Konsti himself, family, friends (testable users);
 generalize later.
