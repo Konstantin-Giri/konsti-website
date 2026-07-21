@@ -1,9 +1,10 @@
 {
   "permissions": {
-    "defaultMode": "default",
-    "disableAutoMode": "disable",
     "allow": [
-      "Bash(python3 -c ' *)"
-    ]
+      "Bash(python3 -c ' *)",
+      "Bash(git -C /Users/victoriagiri/dev/konsti remote -v)"
+    ],
+    "defaultMode": "default",
+    "disableAutoMode": "disable"
   }
 }

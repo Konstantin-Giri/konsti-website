@@ -2,13 +2,14 @@
   @Author: VictoriaGiri
   @Date:   2026-07-15 16:03:02
   @Last Modified by:   VictoriaGiri
-  @Last Modified time: 2026-07-21 23:40:37
+  @Last Modified time: 2026-07-22 00:37:21
 -->
 <!DOCTYPE html>
 <html lang="de">
 
 <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Packliste</title>
     <style>
     * {
@@ -50,6 +51,16 @@
         text-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
     }
 
+    @media (max-width: 500px) {
+        header h1 {
+            font-size: 1.8em;
+        }
+
+        header {
+            min-height: 30vh;
+        }
+    }
+
     header p {
         margin: 12px 0 0 0;
         color: rgba(255, 255, 255, 0.9);
@@ -66,7 +77,7 @@
     }
 
     .container {
-        max-width: 700px;
+        max-width: 950px;
         margin: -40px auto 0 auto;
         padding: 0 20px;
         position: relative;
@@ -79,6 +90,8 @@
         border-top: 6px solid #e07a5f;
         box-shadow: 0 10px 30px rgba(61, 64, 91, 0.15);
         transition: transform 0.3s ease, box-shadow 0.3s ease;
+        max-width: 600px;
+        margin: 0 auto;
     }
 
     form:hover {
@@ -96,6 +109,7 @@
     .stat-chip {
         background: #f4f1de;
         border: 1px solid #e9e5c8;
+        border-left: 4px solid #81b29a;
         border-radius: 12px;
         padding: 10px 12px;
         font-size: 0.9em;
@@ -138,10 +152,25 @@
         max-width: 100%;
     }
 
+    select {
+        appearance: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8'><path d='M0 0 L6 8 L12 0 Z' fill='%233d405b'/></svg>");
+        background-repeat: no-repeat;
+        background-position: right 12px center;
+        padding-right: 32px;
+    }
+
     input[type="checkbox"] {
         accent-color: #e07a5f;
-        width: 16px;
-        height: 16px;
+        width: 18px;
+        height: 18px;
+        transition: transform 0.15s ease;
+    }
+
+    input[type="checkbox"]:checked {
+        transform: scale(1.2);
     }
 
     input:focus,
@@ -164,10 +193,58 @@
         transition: background-color 0.2s, transform 0.2s, box-shadow 0.2s;
     }
 
+    form button {
+        width: 100%;
+        padding: 16px 24px;
+        font-size: 1.1em;
+        margin-top: 8px;
+    }
+
     button:hover {
         background-color: #c65f45;
         box-shadow: 0 8px 22px rgba(224, 122, 95, 0.5);
         transform: translateY(-1px);
+    }
+
+    .export-buttons {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 16px;
+    }
+
+    button.sekundaer {
+        background: white;
+        color: #3d405b;
+        border: 1px solid #d8d4b8;
+        box-shadow: none;
+        font-size: 0.9em;
+        padding: 8px 16px;
+    }
+
+    button.sekundaer:hover {
+        background: #f4f1de;
+        box-shadow: 0 4px 12px rgba(61, 64, 91, 0.1);
+        transform: translateY(-1px);
+    }
+
+    @media print {
+        header, form, .export-buttons, #wetter {
+            display: none;
+        }
+
+        body {
+            background: white;
+        }
+
+        #liste, #laenderinfo {
+            box-shadow: none;
+            border: 1px solid #ccc;
+        }
+
+        .container {
+            margin-top: 0;
+        }
     }
 
     #wetter {
@@ -231,6 +308,22 @@
         margin-top: 10px;
         color: #3d5a80;
     }
+
+    .fortschritt-aussen {
+        width: 100%;
+        height: 12px;
+        background: #f0ede0;
+        border-radius: 999px;
+        margin-top: 8px;
+        overflow: hidden;
+    }
+
+    .fortschritt-innen {
+        height: 100%;
+        background: linear-gradient(90deg, #81b29a, #e07a5f);
+        border-radius: 999px;
+        transition: width 0.3s ease;
+    }
     </style>
 </head>
 
@@ -279,6 +372,12 @@
     <div id="laenderinfo"></div>
     <div id="liste"></div>
     <div id="zaehler"></div>
+
+    <div class="export-buttons">
+        <button type="button" class="sekundaer" onclick="druckeListe()">🖨️ Drucken / Als PDF</button>
+        <button type="button" class="sekundaer" onclick="exportiereCSV()">⬇️ Als CSV</button>
+        <button type="button" class="sekundaer" onclick="merkeEingaben()">💾 Eingaben merken</button>
+    </div>
     </div>
 
     <script>
@@ -493,7 +592,7 @@
                 }
                 listeHTML = listeHTML + "<h3>" + kategorie + "</h3><ul>";
                 for (let sache of kategorien[kategorie]) {
-                    listeHTML = listeHTML + '<li><input type="checkbox" onclick="zaehle()"> ' + sache + "</li>";
+                    listeHTML = listeHTML + '<li><input type="checkbox" data-kategorie="' + kategorie + '" onclick="zaehle()"> ' + sache + "</li>";
                 }
                 listeHTML = listeHTML + "</ul>";
             }
@@ -512,45 +611,46 @@
             let wetterZiel = laenderMatch ? laenderMatch.hauptstadt : ziel;
             zeigeWetter(wetterZiel, meineGeneration);
             zeigeLaenderInfo(ziel, meineGeneration);
+            zaehle();
         }
 
         let laenderInfo = {
-            "frankreich": { hauptstadt: "Paris", waehrungName: "Euro", waehrungCode: "EUR", steckdose: "Typ E (wie Deutschland)", groessteStaedte: ["Paris", "Marseille", "Lyon"], zahlung: "Karte weit verbreitet", preisniveau: "mittel bis hoch" },
-            "italien": { hauptstadt: "Rom", waehrungName: "Euro", waehrungCode: "EUR", steckdose: "Typ F/L", groessteStaedte: ["Rom", "Mailand", "Neapel"], zahlung: "Karte und Bargeld gemischt", preisniveau: "mittel" },
-            "spanien": { hauptstadt: "Madrid", waehrungName: "Euro", waehrungCode: "EUR", steckdose: "Typ F", groessteStaedte: ["Madrid", "Barcelona", "Valencia"], zahlung: "Karte und Bargeld gemischt", preisniveau: "mittel" },
-            "deutschland": { hauptstadt: "Berlin", waehrungName: "Euro", waehrungCode: "EUR", steckdose: "Typ F", groessteStaedte: ["Berlin", "Hamburg", "München"], zahlung: "Bargeld noch wichtig, Karte wächst", preisniveau: "mittel bis hoch" },
-            "österreich": { hauptstadt: "Wien", waehrungName: "Euro", waehrungCode: "EUR", steckdose: "Typ F", groessteStaedte: ["Wien", "Graz", "Linz"], zahlung: "Karte und Bargeld gemischt", preisniveau: "mittel bis hoch" },
-            "niederlande": { hauptstadt: "Amsterdam", waehrungName: "Euro", waehrungCode: "EUR", steckdose: "Typ F", groessteStaedte: ["Amsterdam", "Rotterdam", "Den Haag"], zahlung: "Überwiegend Karte", preisniveau: "hoch" },
-            "griechenland": { hauptstadt: "Athen", waehrungName: "Euro", waehrungCode: "EUR", steckdose: "Typ F", groessteStaedte: ["Athen", "Thessaloniki", "Patras"], zahlung: "Karte und Bargeld gemischt (auf Inseln oft Bargeld nötig)", preisniveau: "günstig bis mittel" },
-            "usa": { hauptstadt: "Washington, D.C.", waehrungName: "US-Dollar", waehrungCode: "USD", steckdose: "Typ A/B (Adapter nötig)", groessteStaedte: ["New York", "Los Angeles", "Chicago"], zahlung: "Überwiegend Karte", preisniveau: "hoch" },
-            "grossbritannien": { hauptstadt: "London", waehrungName: "Britisches Pfund", waehrungCode: "GBP", steckdose: "Typ G (Adapter nötig)", groessteStaedte: ["London", "Birmingham", "Manchester"], zahlung: "Überwiegend Karte", preisniveau: "hoch" },
-            "schweiz": { hauptstadt: "Bern", waehrungName: "Schweizer Franken", waehrungCode: "CHF", steckdose: "Typ J (Adapter nötig)", groessteStaedte: ["Zürich", "Genf", "Basel"], zahlung: "Karte und Bargeld gemischt", preisniveau: "sehr hoch" },
-            "türkei": { hauptstadt: "Ankara", waehrungName: "Türkische Lira", waehrungCode: "TRY", steckdose: "Typ F", groessteStaedte: ["Istanbul", "Ankara", "Izmir"], zahlung: "Karte und Bargeld gemischt", preisniveau: "günstig" },
-            "thailand": { hauptstadt: "Bangkok", waehrungName: "Thailändischer Baht", waehrungCode: "THB", steckdose: "Typ A/B/C (Adapter nötig)", groessteStaedte: ["Bangkok", "Chiang Mai", "Pattaya"], zahlung: "Bargeld wichtig (abseits Hotels)", preisniveau: "günstig" },
-            "japan": { hauptstadt: "Tokio", waehrungName: "Japanischer Yen", waehrungCode: "JPY", steckdose: "Typ A/B (Adapter nötig)", groessteStaedte: ["Tokio", "Osaka", "Yokohama"], zahlung: "Bargeld weiterhin sehr wichtig", preisniveau: "mittel bis hoch" },
-            "australien": { hauptstadt: "Canberra", waehrungName: "Australischer Dollar", waehrungCode: "AUD", steckdose: "Typ I (Adapter nötig)", groessteStaedte: ["Sydney", "Melbourne", "Brisbane"], zahlung: "Überwiegend Karte", preisniveau: "hoch" },
-            "brasilien": { hauptstadt: "Brasília", waehrungName: "Brasilianischer Real", waehrungCode: "BRL", steckdose: "Typ N (teils auch C)", groessteStaedte: ["São Paulo", "Rio de Janeiro", "Brasília"], zahlung: "Karte und Bargeld gemischt", preisniveau: "günstig bis mittel" },
-            "kanada": { hauptstadt: "Ottawa", waehrungName: "Kanadischer Dollar", waehrungCode: "CAD", steckdose: "Typ A/B (wie USA)", groessteStaedte: ["Toronto", "Montreal", "Vancouver"], zahlung: "Überwiegend Karte", preisniveau: "hoch" },
-            "china": { hauptstadt: "Peking", waehrungName: "Chinesischer Renminbi Yuan", waehrungCode: "CNY", steckdose: "Typ A/C/I", groessteStaedte: ["Shanghai", "Peking", "Guangzhou"], zahlung: "Überwiegend mobile Bezahlung/Karte, kaum Bargeld", preisniveau: "mittel" },
-            "tschechien": { hauptstadt: "Prag", waehrungName: "Tschechische Krone", waehrungCode: "CZK", steckdose: "Typ E", groessteStaedte: ["Prag", "Brünn", "Ostrava"], zahlung: "Karte und Bargeld gemischt", preisniveau: "günstig bis mittel" },
-            "dänemark": { hauptstadt: "Kopenhagen", waehrungName: "Dänische Krone", waehrungCode: "DKK", steckdose: "Typ C/K", groessteStaedte: ["Kopenhagen", "Aarhus", "Odense"], zahlung: "Überwiegend Karte", preisniveau: "hoch" },
-            "hongkong": { hauptstadt: "Hongkong", waehrungName: "Hongkong-Dollar", waehrungCode: "HKD", steckdose: "Typ G (wie UK)", groessteStaedte: ["Hongkong"], zahlung: "Karte und Bargeld gemischt", preisniveau: "hoch" },
-            "ungarn": { hauptstadt: "Budapest", waehrungName: "Ungarischer Forint", waehrungCode: "HUF", steckdose: "Typ C/F", groessteStaedte: ["Budapest", "Debrecen", "Szeged"], zahlung: "Karte und Bargeld gemischt", preisniveau: "günstig" },
-            "indonesien": { hauptstadt: "Jakarta", waehrungName: "Indonesische Rupiah", waehrungCode: "IDR", steckdose: "Typ C/F", groessteStaedte: ["Jakarta", "Surabaya", "Bandung"], zahlung: "Bargeld wichtig", preisniveau: "günstig" },
-            "israel": { hauptstadt: "Jerusalem", waehrungName: "Israelischer Schekel", waehrungCode: "ILS", steckdose: "Typ C/H (Adapter nötig)", groessteStaedte: ["Jerusalem", "Tel Aviv", "Haifa"], zahlung: "Karte und Bargeld gemischt", preisniveau: "hoch" },
-            "indien": { hauptstadt: "Neu-Delhi", waehrungName: "Indische Rupie", waehrungCode: "INR", steckdose: "Typ C/D/M (Adapter nötig)", groessteStaedte: ["Mumbai", "Delhi", "Bangalore"], zahlung: "Bargeld weiterhin wichtig, Karte wächst", preisniveau: "günstig" },
-            "island": { hauptstadt: "Reykjavík", waehrungName: "Isländische Krone", waehrungCode: "ISK", steckdose: "Typ C/F", groessteStaedte: ["Reykjavík", "Kópavogur", "Akureyri"], zahlung: "Überwiegend Karte (Bargeld kaum nötig)", preisniveau: "sehr hoch" },
-            "südkorea": { hauptstadt: "Seoul", waehrungName: "Südkoreanischer Won", waehrungCode: "KRW", steckdose: "Typ C/F", groessteStaedte: ["Seoul", "Busan", "Incheon"], zahlung: "Überwiegend Karte", preisniveau: "mittel" },
-            "mexiko": { hauptstadt: "Mexiko-Stadt", waehrungName: "Mexikanischer Peso", waehrungCode: "MXN", steckdose: "Typ A/B (wie USA)", groessteStaedte: ["Mexiko-Stadt", "Guadalajara", "Monterrey"], zahlung: "Karte und Bargeld gemischt", preisniveau: "günstig bis mittel" },
-            "malaysia": { hauptstadt: "Kuala Lumpur", waehrungName: "Malaysischer Ringgit", waehrungCode: "MYR", steckdose: "Typ G (Adapter nötig)", groessteStaedte: ["Kuala Lumpur", "George Town", "Johor Bahru"], zahlung: "Karte und Bargeld gemischt", preisniveau: "günstig" },
-            "norwegen": { hauptstadt: "Oslo", wa2222ehrungName: "Norwegische Krone", waehrungCode: "NOK", steckdose: "Typ C/F", groessteStaedte: ["Oslo", "Bergen", "Trondheim"], zahlung: "Überwiegend Karte (Bargeld kaum nötig)", preisniveau: "sehr hoch" },
-            "neuseeland": { hauptstadt: "Wellington", waehrungName: "Neuseeland-Dollar", waehrungCode: "NZD", steckdose: "Typ I (Adapter nötig)", groessteStaedte: ["Auckland", "Wellington", "Christchurch"], zahlung: "Überwiegend Karte", preisniveau: "hoch" },
-            "philippinen": { hauptstadt: "Manila", waehrungName: "Philippinischer Peso", waehrungCode: "PHP", steckdose: "Typ A/B/C (Adapter nötig)", groessteStaedte: ["Manila", "Quezon City", "Davao City"], zahlung: "Bargeld wichtig", preisniveau: "günstig" },
-            "polen": { hauptstadt: "Warschau", waehrungName: "Polnischer Złoty", waehrungCode: "PLN", steckdose: "Typ C/E", groessteStaedte: ["Warschau", "Krakau", "Łódź"], zahlung: "Karte und Bargeld gemischt", preisniveau: "günstig bis mittel" },
-            "rumänien": { hauptstadt: "Bukarest", waehrungName: "Rumänischer Leu", waehrungCode: "RON", steckdose: "Typ C/F", groessteStaedte: ["Bukarest", "Cluj-Napoca", "Timișoara"], zahlung: "Karte und Bargeld gemischt", preisniveau: "günstig" },
-            "schweden": { hauptstadt: "Stockholm", waehrungName: "Schwedische Krone", waehrungCode: "SEK", steckdose: "Typ C/F", groessteStaedte: ["Stockholm", "Göteborg", "Malmö"], zahlung: "Überwiegend Karte (Bargeld kaum nötig)", preisniveau: "hoch" },
-            "singapur": { hauptstadt: "Singapur", waehrungName: "Singapur-Dollar", waehrungCode: "SGD", steckdose: "Typ G (Adapter nötig)", groessteStaedte: ["Singapur (Stadtstaat)"], zahlung: "Überwiegend Karte", preisniveau: "hoch" },
-            "südafrika": { hauptstadt: "Pretoria", waehrungName: "Südafrikanischer Rand", waehrungCode: "ZAR", steckdose: "Typ M (teils auch N, Adapter nötig)", groessteStaedte: ["Johannesburg", "Kapstadt", "Durban"], zahlung: "Karte und Bargeld gemischt", preisniveau: "günstig bis mittel" }
+            "frankreich": { hauptstadt: "Paris", waehrungName: "Euro", waehrungCode: "EUR", steckdose: "Typ E (wie Deutschland)", groessteStaedte: ["Paris", "Marseille", "Lyon"], zahlung: "Karte weit verbreitet", preisniveau: "mittel bis hoch", einreise: "Personalausweis reicht, kein Visum (EU/Schengen)", besteReisezeit: "Mai-Juni & September", sprache: "Französisch", hallo: "Bonjour", danke: "Merci", notruf: "112", zeitzone: "±0h zu Deutschland", trinkgeld: "nicht Pflicht, 5-10% gern gesehen", wasser: "Leitungswasser trinkbar", sim: "EU-Roaming reicht meist" },
+            "italien": { hauptstadt: "Rom", waehrungName: "Euro", waehrungCode: "EUR", steckdose: "Typ F/L", groessteStaedte: ["Rom", "Mailand", "Neapel"], zahlung: "Karte und Bargeld gemischt", preisniveau: "mittel", einreise: "Personalausweis reicht, kein Visum (EU/Schengen)", besteReisezeit: "April-Juni & September-Oktober", sprache: "Italienisch", hallo: "Ciao", danke: "Grazie", notruf: "112", zeitzone: "±0h zu Deutschland", trinkgeld: "nicht Pflicht, aufrunden üblich", wasser: "Leitungswasser meist trinkbar", sim: "EU-Roaming reicht meist" },
+            "spanien": { hauptstadt: "Madrid", waehrungName: "Euro", waehrungCode: "EUR", steckdose: "Typ F", groessteStaedte: ["Madrid", "Barcelona", "Valencia"], zahlung: "Karte und Bargeld gemischt", preisniveau: "mittel", einreise: "Personalausweis reicht, kein Visum (EU/Schengen)", besteReisezeit: "April-Juni & September-Oktober", sprache: "Spanisch", hallo: "Hola", danke: "Gracias", notruf: "112", zeitzone: "±0h zu Deutschland", trinkgeld: "nicht Pflicht, aufrunden üblich", wasser: "Leitungswasser trinkbar", sim: "EU-Roaming reicht meist" },
+            "deutschland": { hauptstadt: "Berlin", waehrungName: "Euro", waehrungCode: "EUR", steckdose: "Typ F", groessteStaedte: ["Berlin", "Hamburg", "München"], zahlung: "Bargeld noch wichtig, Karte wächst", preisniveau: "mittel bis hoch", einreise: "Personalausweis reicht", besteReisezeit: "Mai-September", sprache: "Deutsch", hallo: "Hallo", danke: "Danke", notruf: "112", zeitzone: "±0h", trinkgeld: "nicht Pflicht, 5-10% üblich", wasser: "Leitungswasser trinkbar", sim: "kein Roaming nötig" },
+            "österreich": { hauptstadt: "Wien", waehrungName: "Euro", waehrungCode: "EUR", steckdose: "Typ F", groessteStaedte: ["Wien", "Graz", "Linz"], zahlung: "Karte und Bargeld gemischt", preisniveau: "mittel bis hoch", einreise: "Personalausweis reicht, kein Visum (EU/Schengen)", besteReisezeit: "Juni-September (Sommer), Dez-März (Ski)", sprache: "Deutsch", hallo: "Servus", danke: "Danke", notruf: "112", zeitzone: "±0h zu Deutschland", trinkgeld: "nicht Pflicht, aufrunden üblich", wasser: "Leitungswasser trinkbar", sim: "EU-Roaming reicht meist" },
+            "niederlande": { hauptstadt: "Amsterdam", waehrungName: "Euro", waehrungCode: "EUR", steckdose: "Typ F", groessteStaedte: ["Amsterdam", "Rotterdam", "Den Haag"], zahlung: "Überwiegend Karte", preisniveau: "hoch", einreise: "Personalausweis reicht, kein Visum (EU/Schengen)", besteReisezeit: "April-Oktober", sprache: "Niederländisch", hallo: "Hallo", danke: "Dank je", notruf: "112", zeitzone: "±0h zu Deutschland", trinkgeld: "nicht Pflicht, aufrunden üblich", wasser: "Leitungswasser trinkbar", sim: "EU-Roaming reicht meist" },
+            "griechenland": { hauptstadt: "Athen", waehrungName: "Euro", waehrungCode: "EUR", steckdose: "Typ F", groessteStaedte: ["Athen", "Thessaloniki", "Patras"], zahlung: "Karte und Bargeld gemischt (auf Inseln oft Bargeld nötig)", preisniveau: "günstig bis mittel", einreise: "Personalausweis reicht, kein Visum (EU/Schengen)", besteReisezeit: "Mai-Juni & September (Sommer sehr heiß)", sprache: "Griechisch", hallo: "Yassou", danke: "Efharisto", notruf: "112", zeitzone: "+1h zu Deutschland", trinkgeld: "nicht Pflicht, 5-10% gern gesehen", wasser: "auf Inseln oft nicht trinkbar, Flasche sicherer", sim: "EU-Roaming reicht meist" },
+            "usa": { hauptstadt: "Washington, D.C.", waehrungName: "US-Dollar", waehrungCode: "USD", steckdose: "Typ A/B (Adapter nötig)", groessteStaedte: ["New York", "Los Angeles", "Chicago"], zahlung: "Überwiegend Karte", preisniveau: "hoch", einreise: "Reisepass + ESTA nötig (visumfrei bis 90 Tage)", besteReisezeit: "April-Juni & September-Oktober (regional unterschiedlich)", sprache: "Englisch", hallo: "Hello", danke: "Thank you", notruf: "911", zeitzone: "ca. -6h zu Deutschland (Ostküste)", trinkgeld: "wichtig! 15-20% erwartet", wasser: "meist trinkbar", sim: "lokale SIM/eSIM empfohlen" },
+            "grossbritannien": { hauptstadt: "London", waehrungName: "Britisches Pfund", waehrungCode: "GBP", steckdose: "Typ G (Adapter nötig)", groessteStaedte: ["London", "Birmingham", "Manchester"], zahlung: "Überwiegend Karte", preisniveau: "hoch", einreise: "Reisepass + ETA nötig (visumfrei bis 6 Monate)", besteReisezeit: "Mai-September", sprache: "Englisch", hallo: "Hello", danke: "Thank you", notruf: "999 (auch 112)", zeitzone: "-1h zu Deutschland", trinkgeld: "oft automatisch ~10-12,5%", wasser: "trinkbar", sim: "kein EU-Roaming mehr, ggf. lokale SIM" },
+            "schweiz": { hauptstadt: "Bern", waehrungName: "Schweizer Franken", waehrungCode: "CHF", steckdose: "Typ J (Adapter nötig)", groessteStaedte: ["Zürich", "Genf", "Basel"], zahlung: "Karte und Bargeld gemischt", preisniveau: "sehr hoch", einreise: "Personalausweis reicht (Schengen)", besteReisezeit: "Juni-September (Wandern), Dez-März (Ski)", sprache: "Deutsch/Französisch/Italienisch", hallo: "Grüezi", danke: "Merci", notruf: "112", zeitzone: "±0h zu Deutschland", trinkgeld: "nicht Pflicht, aufrunden üblich", wasser: "Leitungswasser sehr gut trinkbar", sim: "kein EU-Roaming (Nicht-EU!), lokale SIM sinnvoll" },
+            "türkei": { hauptstadt: "Ankara", waehrungName: "Türkische Lira", waehrungCode: "TRY", steckdose: "Typ F", groessteStaedte: ["Istanbul", "Ankara", "Izmir"], zahlung: "Karte und Bargeld gemischt", preisniveau: "günstig", einreise: "Reisepass empfohlen, visumfrei bis 90 Tage", besteReisezeit: "April-Juni & September-Oktober", sprache: "Türkisch", hallo: "Merhaba", danke: "Teşekkürler", notruf: "112", zeitzone: "+1h zu Deutschland", trinkgeld: "~10% üblich", wasser: "nicht trinkbar, Flaschenwasser", sim: "lokale SIM für längere Aufenthalte sinnvoll" },
+            "thailand": { hauptstadt: "Bangkok", waehrungName: "Thailändischer Baht", waehrungCode: "THB", steckdose: "Typ A/B/C (Adapter nötig)", groessteStaedte: ["Bangkok", "Chiang Mai", "Pattaya"], zahlung: "Bargeld wichtig (abseits Hotels)", preisniveau: "günstig", einreise: "Reisepass (mind. 6 Monate gültig), visumfrei bis 30-60 Tage", besteReisezeit: "November-Februar (Trockenzeit, kühler)", sprache: "Thai", hallo: "Sawasdee", danke: "Khob khun", notruf: "191 Polizei · 199 Feuerwehr · 1669 Rettung", zeitzone: "+5h zu Deutschland", trinkgeld: "nicht Pflicht, kleine Beträge gern gesehen", wasser: "nicht trinkbar, Flaschenwasser", sim: "günstige Touristen-SIM sehr verbreitet" },
+            "japan": { hauptstadt: "Tokio", waehrungName: "Japanischer Yen", waehrungCode: "JPY", steckdose: "Typ A/B (Adapter nötig)", groessteStaedte: ["Tokio", "Osaka", "Yokohama"], zahlung: "Bargeld weiterhin sehr wichtig", preisniveau: "mittel bis hoch", einreise: "Reisepass reicht, visumfrei bis 90 Tage", besteReisezeit: "März-Mai (Kirschblüte) & Okt-Nov (Herbstlaub)", sprache: "Japanisch", hallo: "Konnichiwa", danke: "Arigatou", notruf: "110 Polizei · 119 Feuerwehr/Rettung", zeitzone: "+7h zu Deutschland", trinkgeld: "unüblich, wird nicht erwartet", wasser: "Leitungswasser trinkbar", sim: "Pocket-WiFi oder eSIM empfohlen" },
+            "australien": { hauptstadt: "Canberra", waehrungName: "Australischer Dollar", waehrungCode: "AUD", steckdose: "Typ I (Adapter nötig)", groessteStaedte: ["Sydney", "Melbourne", "Brisbane"], zahlung: "Überwiegend Karte", preisniveau: "hoch", einreise: "Reisepass + eVisitor (online, kostenlos) nötig", besteReisezeit: "Sep-Nov & März-Mai (umgekehrte Jahreszeiten!)", sprache: "Englisch", hallo: "Hello", danke: "Thanks", notruf: "000", zeitzone: "ca. +8h zu Deutschland", trinkgeld: "unüblich, aber gern gesehen", wasser: "trinkbar", sim: "lokale SIM empfohlen" },
+            "brasilien": { hauptstadt: "Brasília", waehrungName: "Brasilianischer Real", waehrungCode: "BRL", steckdose: "Typ N (teils auch C)", groessteStaedte: ["São Paulo", "Rio de Janeiro", "Brasília"], zahlung: "Karte und Bargeld gemischt", preisniveau: "günstig bis mittel", einreise: "Reisepass reicht, visumfrei bis 90 Tage", besteReisezeit: "Mai-September (Trockenzeit)", sprache: "Portugiesisch", hallo: "Olá", danke: "Obrigado", notruf: "190 Polizei · 192 Rettung · 193 Feuerwehr", zeitzone: "ca. -5h zu Deutschland", trinkgeld: "~10%, oft schon in Rechnung", wasser: "nicht trinkbar, Flaschenwasser", sim: "lokale SIM empfohlen" },
+            "kanada": { hauptstadt: "Ottawa", waehrungName: "Kanadischer Dollar", waehrungCode: "CAD", steckdose: "Typ A/B (wie USA)", groessteStaedte: ["Toronto", "Montreal", "Vancouver"], zahlung: "Überwiegend Karte", preisniveau: "hoch", einreise: "Reisepass + eTA nötig", besteReisezeit: "Juni-September", sprache: "Englisch/Französisch", hallo: "Hello", danke: "Thank you", notruf: "911", zeitzone: "ca. -6h zu Deutschland (Osten)", trinkgeld: "wichtig! 15-18% erwartet", wasser: "trinkbar", sim: "lokale SIM/eSIM empfohlen (teures Roaming)" },
+            "china": { hauptstadt: "Peking", waehrungName: "Chinesischer Renminbi Yuan", waehrungCode: "CNY", steckdose: "Typ A/C/I", groessteStaedte: ["Shanghai", "Peking", "Guangzhou"], zahlung: "Überwiegend mobile Bezahlung/Karte, kaum Bargeld", preisniveau: "mittel", einreise: "Reisepass + meist Visum (kurze visafreie Aufenthalte möglich, vorher prüfen)", besteReisezeit: "März-Mai & September-November", sprache: "Mandarin", hallo: "Nǐ hǎo", danke: "Xièxiè", notruf: "110 Polizei · 119 Feuerwehr · 120 Rettung", zeitzone: "+6h zu Deutschland", trinkgeld: "unüblich", wasser: "nicht trinkbar, Flaschenwasser", sim: "eSIM/Rental empfohlen (Registrierung nötig)" },
+            "tschechien": { hauptstadt: "Prag", waehrungName: "Tschechische Krone", waehrungCode: "CZK", steckdose: "Typ E", groessteStaedte: ["Prag", "Brünn", "Ostrava"], zahlung: "Karte und Bargeld gemischt", preisniveau: "günstig bis mittel", einreise: "Personalausweis reicht, kein Visum (EU/Schengen)", besteReisezeit: "Mai-September", sprache: "Tschechisch", hallo: "Ahoj", danke: "Děkuji", notruf: "112", zeitzone: "±0h zu Deutschland", trinkgeld: "~10% üblich", wasser: "Leitungswasser trinkbar", sim: "EU-Roaming reicht meist" },
+            "dänemark": { hauptstadt: "Kopenhagen", waehrungName: "Dänische Krone", waehrungCode: "DKK", steckdose: "Typ C/K", groessteStaedte: ["Kopenhagen", "Aarhus", "Odense"], zahlung: "Überwiegend Karte", preisniveau: "hoch", einreise: "Personalausweis reicht, kein Visum (EU/Schengen)", besteReisezeit: "Mai-September", sprache: "Dänisch", hallo: "Hej", danke: "Tak", notruf: "112", zeitzone: "±0h zu Deutschland", trinkgeld: "unüblich, oft inklusive", wasser: "Leitungswasser trinkbar", sim: "EU-Roaming reicht meist" },
+            "hongkong": { hauptstadt: "Hongkong", waehrungName: "Hongkong-Dollar", waehrungCode: "HKD", steckdose: "Typ G (wie UK)", groessteStaedte: ["Hongkong"], zahlung: "Karte und Bargeld gemischt", preisniveau: "hoch", einreise: "Reisepass reicht, visumfrei bis 90 Tage", besteReisezeit: "Oktober-Dezember (mild, trocken)", sprache: "Kantonesisch/Englisch", hallo: "Nei hou", danke: "M̀h'gōi", notruf: "999", zeitzone: "+6h zu Deutschland", trinkgeld: "~10%, oft schon inklusive", wasser: "gilt als sicher, viele bevorzugen Flasche", sim: "günstige Touristen-SIM verbreitet" },
+            "ungarn": { hauptstadt: "Budapest", waehrungName: "Ungarischer Forint", waehrungCode: "HUF", steckdose: "Typ C/F", groessteStaedte: ["Budapest", "Debrecen", "Szeged"], zahlung: "Karte und Bargeld gemischt", preisniveau: "günstig", einreise: "Personalausweis reicht, kein Visum (EU/Schengen)", besteReisezeit: "Mai-September", sprache: "Ungarisch", hallo: "Szia", danke: "Köszönöm", notruf: "112", zeitzone: "±0h zu Deutschland", trinkgeld: "~10% üblich", wasser: "Leitungswasser trinkbar", sim: "EU-Roaming reicht meist" },
+            "indonesien": { hauptstadt: "Jakarta", waehrungName: "Indonesische Rupiah", waehrungCode: "IDR", steckdose: "Typ C/F", groessteStaedte: ["Jakarta", "Surabaya", "Bandung"], zahlung: "Bargeld wichtig", preisniveau: "günstig", einreise: "Reisepass + Visa on Arrival/e-VOA nötig", besteReisezeit: "Mai-September (Trockenzeit)", sprache: "Indonesisch", hallo: "Halo", danke: "Terima kasih", notruf: "110 Polizei · 113 Feuerwehr · 118/119 Rettung", zeitzone: "+5h zu Deutschland", trinkgeld: "nicht Pflicht, gern gesehen", wasser: "nicht trinkbar, Flaschenwasser", sim: "günstige lokale SIM empfohlen" },
+            "israel": { hauptstadt: "Jerusalem", waehrungName: "Israelischer Schekel", waehrungCode: "ILS", steckdose: "Typ C/H (Adapter nötig)", groessteStaedte: ["Jerusalem", "Tel Aviv", "Haifa"], zahlung: "Karte und Bargeld gemischt", preisniveau: "hoch", einreise: "Reisepass reicht, visumfrei bis 90 Tage", besteReisezeit: "März-Mai & September-November", sprache: "Hebräisch", hallo: "Shalom", danke: "Toda", notruf: "100 Polizei · 101 Rettung · 102 Feuerwehr", zeitzone: "+1h zu Deutschland", trinkgeld: "~10-15% erwartet", wasser: "trinkbar", sim: "lokale SIM/eSIM empfohlen" },
+            "indien": { hauptstadt: "Neu-Delhi", waehrungName: "Indische Rupie", waehrungCode: "INR", steckdose: "Typ C/D/M (Adapter nötig)", groessteStaedte: ["Mumbai", "Delhi", "Bangalore"], zahlung: "Bargeld weiterhin wichtig, Karte wächst", preisniveau: "günstig", einreise: "Reisepass + e-Visa nötig", besteReisezeit: "Oktober-März (kühler, trocken)", sprache: "Hindi (+ viele Regionalsprachen)", hallo: "Namaste", danke: "Dhanyavaad", notruf: "112", zeitzone: "ca. +3h30 zu Deutschland", trinkgeld: "nicht Pflicht, ~10% üblich", wasser: "nicht trinkbar, Flaschenwasser", sim: "lokale SIM (Ausweis/Visum nötig)" },
+            "island": { hauptstadt: "Reykjavík", waehrungName: "Isländische Krone", waehrungCode: "ISK", steckdose: "Typ C/F", groessteStaedte: ["Reykjavík", "Kópavogur", "Akureyri"], zahlung: "Überwiegend Karte (Bargeld kaum nötig)", preisniveau: "sehr hoch", einreise: "Personalausweis reicht (Schengen)", besteReisezeit: "Juni-August (Mitternachtssonne)", sprache: "Isländisch", hallo: "Halló", danke: "Takk", notruf: "112", zeitzone: "ca. -2h zu Deutschland", trinkgeld: "unüblich, Service inklusive", wasser: "sehr gut trinkbar", sim: "EU-Roaming meist nicht enthalten, prüfen" },
+            "südkorea": { hauptstadt: "Seoul", waehrungName: "Südkoreanischer Won", waehrungCode: "KRW", steckdose: "Typ C/F", groessteStaedte: ["Seoul", "Busan", "Incheon"], zahlung: "Überwiegend Karte", preisniveau: "mittel", einreise: "Reisepass + K-ETA nötig, visumfrei bis 90 Tage", besteReisezeit: "März-Mai & September-November", sprache: "Koreanisch", hallo: "Annyeonghaseyo", danke: "Gamsahamnida", notruf: "112 Polizei · 119 Feuerwehr/Rettung", zeitzone: "+7h zu Deutschland", trinkgeld: "unüblich", wasser: "gilt als sicher, wird oft gefiltert getrunken", sim: "eSIM/Pocket-WiFi verbreitet" },
+            "mexiko": { hauptstadt: "Mexiko-Stadt", waehrungName: "Mexikanischer Peso", waehrungCode: "MXN", steckdose: "Typ A/B (wie USA)", groessteStaedte: ["Mexiko-Stadt", "Guadalajara", "Monterrey"], zahlung: "Karte und Bargeld gemischt", preisniveau: "günstig bis mittel", einreise: "Reisepass reicht, visumfrei bis 180 Tage", besteReisezeit: "November-April (Trockenzeit)", sprache: "Spanisch", hallo: "Hola", danke: "Gracias", notruf: "911", zeitzone: "ca. -8h zu Deutschland", trinkgeld: "~10-15% erwartet", wasser: "nicht trinkbar, Flaschenwasser", sim: "lokale SIM empfohlen" },
+            "malaysia": { hauptstadt: "Kuala Lumpur", waehrungName: "Malaysischer Ringgit", waehrungCode: "MYR", steckdose: "Typ G (Adapter nötig)", groessteStaedte: ["Kuala Lumpur", "George Town", "Johor Bahru"], zahlung: "Karte und Bargeld gemischt", preisniveau: "günstig", einreise: "Reisepass reicht, visumfrei bis 90 Tage", besteReisezeit: "Dez-Feb (regional unterschiedlich, weniger Regen)", sprache: "Malaiisch", hallo: "Halo", danke: "Terima kasih", notruf: "999", zeitzone: "+6h zu Deutschland", trinkgeld: "unüblich, oft Service inklusive", wasser: "besser Flaschenwasser", sim: "günstige lokale SIM verbreitet" },
+            "norwegen": { hauptstadt: "Oslo", waehrungName: "Norwegische Krone", waehrungCode: "NOK", steckdose: "Typ C/F", groessteStaedte: ["Oslo", "Bergen", "Trondheim"], zahlung: "Überwiegend Karte (Bargeld kaum nötig)", preisniveau: "sehr hoch", einreise: "Personalausweis reicht (Schengen/EWR)", besteReisezeit: "Juni-August (Mitternachtssonne), Winter für Nordlicht", sprache: "Norwegisch", hallo: "Hei", danke: "Takk", notruf: "112", zeitzone: "±0h zu Deutschland", trinkgeld: "unüblich, aufrunden reicht", wasser: "sehr gut trinkbar", sim: "meist in EU-Roaming enthalten" },
+            "neuseeland": { hauptstadt: "Wellington", waehrungName: "Neuseeland-Dollar", waehrungCode: "NZD", steckdose: "Typ I (Adapter nötig)", groessteStaedte: ["Auckland", "Wellington", "Christchurch"], zahlung: "Überwiegend Karte", preisniveau: "hoch", einreise: "Reisepass + NZeTA nötig", besteReisezeit: "Dez-Feb (Sommer, umgekehrte Jahreszeiten!)", sprache: "Englisch", hallo: "Hello", danke: "Thanks", notruf: "111", zeitzone: "ca. +10h zu Deutschland", trinkgeld: "unüblich", wasser: "trinkbar", sim: "lokale SIM empfohlen" },
+            "philippinen": { hauptstadt: "Manila", waehrungName: "Philippinischer Peso", waehrungCode: "PHP", steckdose: "Typ A/B/C (Adapter nötig)", groessteStaedte: ["Manila", "Quezon City", "Davao City"], zahlung: "Bargeld wichtig", preisniveau: "günstig", einreise: "Reisepass reicht, visumfrei bis 30 Tage", besteReisezeit: "Dezember-Mai (Trockenzeit)", sprache: "Filipino/Englisch", hallo: "Kumusta", danke: "Salamat", notruf: "911", zeitzone: "+6h zu Deutschland", trinkgeld: "~10%, oft schon inklusive", wasser: "nicht trinkbar, Flaschenwasser", sim: "günstige lokale SIM empfohlen" },
+            "polen": { hauptstadt: "Warschau", waehrungName: "Polnischer Złoty", waehrungCode: "PLN", steckdose: "Typ C/E", groessteStaedte: ["Warschau", "Krakau", "Łódź"], zahlung: "Karte und Bargeld gemischt", preisniveau: "günstig bis mittel", einreise: "Personalausweis reicht, kein Visum (EU/Schengen)", besteReisezeit: "Mai-September", sprache: "Polnisch", hallo: "Cześć", danke: "Dziękuję", notruf: "112", zeitzone: "±0h zu Deutschland", trinkgeld: "~10% üblich", wasser: "Leitungswasser meist trinkbar", sim: "EU-Roaming reicht meist" },
+            "rumänien": { hauptstadt: "Bukarest", waehrungName: "Rumänischer Leu", waehrungCode: "RON", steckdose: "Typ C/F", groessteStaedte: ["Bukarest", "Cluj-Napoca", "Timișoara"], zahlung: "Karte und Bargeld gemischt", preisniveau: "günstig", einreise: "Personalausweis reicht, kein Visum (EU/Schengen)", besteReisezeit: "Mai-September", sprache: "Rumänisch", hallo: "Bună", danke: "Mulțumesc", notruf: "112", zeitzone: "+1h zu Deutschland", trinkgeld: "~10% üblich", wasser: "besser Flaschenwasser", sim: "EU-Roaming reicht meist" },
+            "schweden": { hauptstadt: "Stockholm", waehrungName: "Schwedische Krone", waehrungCode: "SEK", steckdose: "Typ C/F", groessteStaedte: ["Stockholm", "Göteborg", "Malmö"], zahlung: "Überwiegend Karte (Bargeld kaum nötig)", preisniveau: "hoch", einreise: "Personalausweis reicht, kein Visum (EU/Schengen)", besteReisezeit: "Juni-August", sprache: "Schwedisch", hallo: "Hej", danke: "Tack", notruf: "112", zeitzone: "±0h zu Deutschland", trinkgeld: "unüblich, aufrunden reicht", wasser: "sehr gut trinkbar", sim: "EU-Roaming reicht meist" },
+            "singapur": { hauptstadt: "Singapur", waehrungName: "Singapur-Dollar", waehrungCode: "SGD", steckdose: "Typ G (Adapter nötig)", groessteStaedte: ["Singapur (Stadtstaat)"], zahlung: "Überwiegend Karte", preisniveau: "hoch", einreise: "Reisepass reicht, visumfrei bis 90 Tage", besteReisezeit: "ganzjährig warm, Feb-April etwas trockener", sprache: "Englisch/Mandarin/Malaiisch/Tamil", hallo: "Hello", danke: "Thank you", notruf: "999 Polizei · 995 Feuerwehr/Rettung", zeitzone: "+6h zu Deutschland", trinkgeld: "unüblich, oft nicht erwünscht", wasser: "trinkbar", sim: "günstige Touristen-SIM verbreitet" },
+            "südafrika": { hauptstadt: "Pretoria", waehrungName: "Südafrikanischer Rand", waehrungCode: "ZAR", steckdose: "Typ M (teils auch N, Adapter nötig)", groessteStaedte: ["Johannesburg", "Kapstadt", "Durban"], zahlung: "Karte und Bargeld gemischt", preisniveau: "günstig bis mittel", einreise: "Reisepass reicht, visumfrei bis 90 Tage", besteReisezeit: "September-November & März-Mai", sprache: "Englisch (+10 weitere)", hallo: "Hello", danke: "Thank you", notruf: "10111 Polizei · 10177 Rettung (o. 112 mobil)", zeitzone: "±0h zu Deutschland", trinkgeld: "~10-15% erwartet", wasser: "in Städten meist trinkbar, auf dem Land vorsichtig sein", sim: "lokale SIM empfohlen" }
         };
 
         laenderInfo["uk"] = laenderInfo["grossbritannien"];
@@ -574,12 +674,18 @@
             }
             staedteHTML = staedteHTML.slice(0, -2);
 
-            let basisHTML = '<div class="stat-grid">'
+            let basisHTML = '<p style="grid-column: 1 / -1; margin: 0 0 4px 0; font-size: 0.8em; opacity: 0.75;">ℹ️ Länderinfos sind allgemeine Richtwerte, keine geprüften Fakten – bei Einreise/Impfungen bitte offizielle Quellen prüfen (Link unten).</p><div class="stat-grid">'
                 + '<div class="stat-chip"><strong>🌐 Hauptstadt</strong>' + info.hauptstadt + '</div>'
                 + '<div class="stat-chip"><strong>💶 Währung</strong>' + info.waehrungName + ' (' + info.waehrungCode + ')</div>'
                 + '<div class="stat-chip"><strong>🔌 Steckdose</strong>' + info.steckdose + '</div>'
                 + '<div class="stat-chip"><strong>💳 Bezahlen</strong>' + info.zahlung + '</div>'
                 + '<div class="stat-chip"><strong>💰 Preisniveau (Hotel/Essen)</strong>' + info.preisniveau + '</div>'
+                + '<div class="stat-chip"><strong>🛂 Einreise</strong>' + info.einreise + '</div>'
+                + '<div class="stat-chip"><strong>☀️ Beste Reisezeit</strong>' + info.besteReisezeit + '</div>'
+                + '<div class="stat-chip"><strong>🗣️ Sprache</strong>' + info.sprache + '</div>'
+                + '<div class="stat-chip"><strong>🚨 Notruf</strong>' + info.notruf + '</div>'
+                + '<div class="stat-chip"><strong>🕒 Zeitzone</strong>' + info.zeitzone + '</div>'
+                + '<div class="stat-chip"><strong>📶 SIM-Karte</strong>' + info.sim + '</div>'
                 + '<div class="stat-chip"><strong>🏙️ Größte Städte</strong>' + staedteHTML + '</div>';
 
             if (info.waehrungCode === "EUR") {
@@ -646,26 +752,86 @@
                 if (klimaSachen.length > 0) {
                     let klimaHTML = "<h3>🌡️ Passend zu " + Math.round(temp) + "°C in " + ziel + "</h3><ul>";
                     for (let sache of klimaSachen) {
-                        klimaHTML = klimaHTML + '<li><input type="checkbox" onclick="zaehle()"> ' + sache + "</li>";
+                        klimaHTML = klimaHTML + '<li><input type="checkbox" data-kategorie="Kleidung" onclick="zaehle()"> ' + sache + "</li>";
                     }
                     klimaHTML = klimaHTML + "</ul>";
                     document.getElementById("liste").insertAdjacentHTML("beforeend", klimaHTML);
+                    zaehle();
                 }
             } catch (fehler) {
                 wetterDiv.innerHTML = "Wetter konnte nicht geladen werden.";
             }
         }
 
-        function zaehle() {
-    let boxen = document.querySelectorAll("#liste input");
+        let kategorieGewichte = {
+    "Dokumente & Wertsachen": 50,
+    "Technik": 250,
+    "Hygiene & Gesundheit": 100,
+    "Kleidung": 200,
+    "Ausrüstung & Sonstiges": 400
+};
+
+function zaehle() {
+    let boxen = document.querySelectorAll("#liste input[type='checkbox']");
     let gepackt = 0;
+    let gewichtGramm = 0;
     for (let box of boxen) {
         if (box.checked) {
             gepackt = gepackt + 1;
+            gewichtGramm = gewichtGramm + (kategorieGewichte[box.dataset.kategorie] || 150);
         }
     }
-    document.getElementById("zaehler").innerHTML = gepackt + " von " + boxen.length + " gepackt";
+    let prozent = boxen.length > 0 ? Math.round((gepackt / boxen.length) * 100) : 0;
+    let gewichtKg = Math.round(gewichtGramm / 100) / 10;
+    document.getElementById("zaehler").innerHTML = gepackt + " von " + boxen.length + " gepackt (" + prozent + "%)"
+        + '<div class="fortschritt-aussen"><div class="fortschritt-innen" style="width: ' + prozent + '%;"></div></div>'
+        + '<p style="font-size: 0.85em; opacity: 0.8; margin: 8px 0 0 0;">🎒 Geschätztes Gepäckgewicht: ca. ' + gewichtKg + ' kg (grober Richtwert pro Kategorie, kein echtes Gewicht)</p>';
 }
+
+function druckeListe() {
+    window.print();
+}
+
+function exportiereCSV() {
+    let boxen = document.querySelectorAll("#liste input[type='checkbox']");
+    let zeilen = ["Kategorie,Gegenstand,Abgehakt"];
+    for (let box of boxen) {
+        let text = box.parentElement.textContent.trim();
+        let kategorie = box.dataset.kategorie || "Sonstiges";
+        let abgehakt = box.checked ? "ja" : "nein";
+        zeilen.push('"' + kategorie + '","' + text + '","' + abgehakt + '"');
+    }
+    let csvInhalt = zeilen.join("\n");
+    let blob = new Blob([csvInhalt], { type: "text/csv;charset=utf-8;" });
+    let url = URL.createObjectURL(blob);
+    let link = document.createElement("a");
+    link.href = url;
+    link.download = "packliste.csv";
+    link.click();
+    URL.revokeObjectURL(url);
+}
+
+function merkeEingaben() {
+    localStorage.setItem("packlisteZiel", document.getElementById("ziel").value);
+    localStorage.setItem("packlisteTage", document.getElementById("tage").value);
+    localStorage.setItem("packlisteArt", document.getElementById("art").value);
+    alert("Eingaben gemerkt! Beim nächsten Besuch werden sie automatisch ausgefüllt.");
+}
+
+window.addEventListener("DOMContentLoaded", function () {
+    let gespeicherterZiel = localStorage.getItem("packlisteZiel");
+    let gespeicherteTage = localStorage.getItem("packlisteTage");
+    let gespeicherterArt = localStorage.getItem("packlisteArt");
+    if (gespeicherterZiel) {
+        document.getElementById("ziel").value = gespeicherterZiel;
+    }
+    if (gespeicherteTage) {
+        document.getElementById("tage").value = gespeicherteTage;
+    }
+    if (gespeicherterArt) {
+        document.getElementById("art").value = gespeicherterArt;
+    }
+});
 
     </script>
 </body>
