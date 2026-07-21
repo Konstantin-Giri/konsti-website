@@ -2,7 +2,7 @@
   @Author: VictoriaGiri
   @Date:   2026-07-15 16:03:02
   @Last Modified by:   VictoriaGiri
-  @Last Modified time: 2026-07-21 17:57:09
+  @Last Modified time: 2026-07-21 19:13:23
 -->
 <!DOCTYPE html>
 <html lang="de">
@@ -57,6 +57,7 @@
             let art = document.getElementById("art").value;
             let sachen = ["Handy", "Ladekabel", "Powerbank", "Ausweis", "Geldbeutel", "Schlüssel", "Zahnbürste", "Unterwäsche", "Socken", "Wasserflasche"];
             let link = "https://www.google.com/search?q=Einreisebestimmungen+Impfungen+" + ziel;
+            let linkWetter = "https://www.google.com/search?q=Wetter+" + ziel;
 
             if (tage > 7) {
                 sachen.push("Waschmittel");
@@ -121,6 +122,9 @@
             }
 
             document.getElementById("liste").innerHTML = "Deine Packliste für " + ziel + ", " + tage + " Tage:" + "<ul>" + listeHTML + "</ul>" + '<a href="' + link + '" target="_blank">' + "Einreise- und Impfinfos" + '</a>';
+            
+            document.getElementById("liste").innerHTML += "<br>" + '<a href="' + linkWetter + '" target="_blank">' + "Wetter vor Ort" + '</a>';
+
 
         }
         function zaehle() {
