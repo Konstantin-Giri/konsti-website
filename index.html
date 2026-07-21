@@ -30,6 +30,53 @@
         padding-bottom: 60px;
     }
 
+    #startModal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(61, 64, 91, 0.9);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 100;
+        padding: 20px;
+    }
+
+    #startModal .modalBox {
+        background: white;
+        border-radius: 16px;
+        padding: 30px;
+        max-width: 420px;
+        width: 100%;
+        text-align: center;
+    }
+
+    #startModal h2 {
+        margin-top: 0;
+    }
+
+    #startModal .sprachWahl {
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+        margin: 16px 0;
+    }
+
+    #startModal .sprachWahl button {
+        flex: 1;
+    }
+
+    #startModal .sprachWahl button.aktiv {
+        background: #81b29a;
+    }
+
+    #startModal input {
+        width: 100%;
+        margin: 10px 0;
+    }
+
     header {
         background: linear-gradient(135deg, #3d5a80, #81b29a);
         width: 100%;
@@ -51,6 +98,12 @@
         text-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
     }
 
+    header p {
+        margin: 12px 0 0 0;
+        color: rgba(255, 255, 255, 0.9);
+        font-size: 1.2em;
+    }
+
     @media (max-width: 500px) {
         header h1 {
             font-size: 1.8em;
@@ -61,12 +114,6 @@
         }
     }
 
-    header p {
-        margin: 12px 0 0 0;
-        color: rgba(255, 255, 255, 0.9);
-        font-size: 1.2em;
-    }
-
     header .wave {
         position: absolute;
         bottom: -1px;
@@ -74,6 +121,19 @@
         width: 100%;
         height: 60px;
         display: block;
+    }
+
+    .toggleSprache {
+        position: absolute;
+        top: 16px;
+        right: 16px;
+        background: rgba(255, 255, 255, 0.2);
+        border: 1px solid rgba(255, 255, 255, 0.5);
+        color: white;
+        border-radius: 999px;
+        padding: 6px 14px;
+        font-size: 0.85em;
+        cursor: pointer;
     }
 
     .container {
@@ -213,6 +273,16 @@
         margin-top: 16px;
     }
 
+    .eigene-sache {
+        display: flex;
+        gap: 8px;
+        margin-top: 14px;
+    }
+
+    .eigene-sache input {
+        flex: 1;
+    }
+
     button.sekundaer {
         background: white;
         color: #3d405b;
@@ -229,7 +299,7 @@
     }
 
     @media print {
-        header, form, .export-buttons, #wetter {
+        header, form, .export-buttons, #wetter, .toggleSprache {
             display: none;
         }
 
@@ -245,24 +315,95 @@
         .container {
             margin-top: 0;
         }
+
+        .ergebnis-grid {
+            display: block;
+        }
+    }
+
+    .ergebnis-grid {
+        display: grid;
+        grid-template-columns: 1.3fr 1fr;
+        gap: 20px;
+        align-items: start;
+        margin-top: 20px;
+    }
+
+    @media (max-width: 800px) {
+        .ergebnis-grid {
+            grid-template-columns: 1fr;
+        }
     }
 
     #wetter {
-        margin-top: 16px;
+        margin-top: 0;
         font-weight: bold;
         color: #3d5a80;
     }
 
     #laenderinfo {
-        margin-top: 8px;
+        margin-top: 16px;
         color: #3d5a80;
+    }
+
+    #extraLinks {
+        margin-top: 16px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    #extraLinks a {
+        background: white;
+        border-radius: 12px;
+        padding: 12px 16px;
+        box-shadow: 0 4px 12px rgba(61, 64, 91, 0.1);
+        color: #e07a5f;
+        font-weight: bold;
+        text-decoration: none;
+    }
+
+    #extraLinks a:hover {
+        box-shadow: 0 6px 18px rgba(61, 64, 91, 0.18);
+    }
+
+    .impf-liste {
+        background: white;
+        border-radius: 12px;
+        padding: 16px;
+        box-shadow: 0 4px 12px rgba(61, 64, 91, 0.1);
+        margin-top: 10px;
+    }
+
+    .impf-liste table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.85em;
+    }
+
+    .impf-liste th {
+        text-align: left;
+        color: #e07a5f;
+        font-size: 0.85em;
+        padding-bottom: 6px;
+    }
+
+    .impf-liste td {
+        padding: 6px 4px;
+        border-top: 1px solid #f0ede0;
+    }
+
+    .impf-hinweis {
+        font-size: 0.8em;
+        opacity: 0.75;
+        margin-top: 8px;
     }
 
     #liste {
         background: #ffffff;
         border-radius: 20px;
         padding: 20px 24px;
-        margin-top: 20px;
+        margin-top: 0;
         border-top: 6px solid #81b29a;
         box-shadow: 0 10px 30px rgba(61, 64, 91, 0.15);
         transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -273,14 +414,36 @@
         box-shadow: 0 16px 40px rgba(61, 64, 91, 0.2);
     }
 
-    #liste h3 {
-        color: #81b29a;
-        margin-bottom: 4px;
-        margin-top: 18px;
+    #liste details {
+        margin-top: 14px;
+        border-bottom: 1px solid #f0ede0;
+        padding-bottom: 8px;
     }
 
-    #liste h3:first-of-type {
+    #liste details:first-of-type {
         margin-top: 6px;
+    }
+
+    #liste summary {
+        color: #81b29a;
+        font-weight: bold;
+        cursor: pointer;
+        padding: 4px 0;
+        list-style: none;
+    }
+
+    #liste summary::-webkit-details-marker {
+        display: none;
+    }
+
+    #liste summary::before {
+        content: "▸ ";
+        display: inline-block;
+        transition: transform 0.15s ease;
+    }
+
+    #liste details[open] summary::before {
+        transform: rotate(90deg);
     }
 
     #liste ul {
@@ -293,14 +456,6 @@
         padding: 8px 0;
         border-bottom: 1px solid #f0ede0;
         color: #3d405b;
-    }
-
-    #liste a {
-        display: inline-block;
-        margin-top: 10px;
-        margin-right: 14px;
-        color: #e07a5f;
-        font-weight: bold;
     }
 
     #zaehler {
@@ -328,9 +483,24 @@
 </head>
 
 <body>
+    <div id="startModal">
+        <div class="modalBox">
+            <h2 id="modalTitel">Sprache / Language</h2>
+            <div class="sprachWahl">
+                <button type="button" id="btnDe" onclick="waehleSprache('de')">Deutsch</button>
+                <button type="button" id="btnEn" onclick="waehleSprache('en')">English</button>
+            </div>
+            <p id="modalNationalitaetLabel">Deine Nationalität:</p>
+            <input type="text" id="modalNationalitaet" list="nationalitaetenListe" placeholder="z.B. Deutsch, tippen zum Suchen...">
+            <datalist id="nationalitaetenListe"></datalist>
+            <button type="button" id="modalWeiter" onclick="starteApp()">Weiter</button>
+        </div>
+    </div>
+
     <header>
-        <h1>🎒 DeineOnlinePackListe</h1>
-        <p>Diese Website ist ein Vorläufer der echten Website.</p>
+        <button type="button" class="toggleSprache" onclick="umschalten()" id="toggleSpracheBtn">EN</button>
+        <h1 id="titelText">🎒 DeineOnlinePackListe</h1>
+        <p id="untertitelText">Diese Website ist ein Vorläufer der echten Website.</p>
         <svg class="wave" viewBox="0 0 1440 100" preserveAspectRatio="none">
             <path d="M0,50 C360,100 1080,0 1440,50 L1440,100 L0,100 Z" fill="#f4f1de"></path>
         </svg>
@@ -338,50 +508,470 @@
 
     <div class="container">
     <form>
-        <p>🌍 Reiseziel: <input type="text" id="ziel"></p>
-        <p>📅 Reisedauer (Tage): <input type="number" id="tage"></p>
-        <p>🧭 Reiseart:
+        <p><span id="labelZiel">🌍 Reiseziel:</span> <input type="text" id="ziel"></p>
+        <p><span id="labelTage">📅 Reisedauer (Tage):</span> <input type="number" id="tage"></p>
+        <p><span id="labelArt">🧭 Reiseart:</span>
             <select id="art">
-                <option>Strand</option>
-                <option>Stadt</option>
-                <option>Freizeitpark</option>
-                <option>Spa-Urlaub</option>
-                <option>Wandern</option>
-                <option>Bootsreise</option>
-                <option>Camping</option>
-                <option>Skiurlaub</option>
-                <option>Tauchen</option>
-                <option>Roadtrip</option>
-                <option>Festival</option>
-                <option>Safari</option>
-                <option>Kreuzfahrt</option>
-                <option>Radtour</option>
-                <option>Backpacking</option>
-                <option>Inselhopping</option>
-                <option>Klassenfahrt</option>
-                <option>Geschäftsreise</option>
-                <option>Junggesellenabschied</option>
-                <option>Angelurlaub</option>
-                <option>Golfurlaub</option>
+                <option value="Strand">Strand</option>
+                <option value="Stadt">Stadt</option>
+                <option value="Freizeitpark">Freizeitpark</option>
+                <option value="Spa-Urlaub">Spa-Urlaub</option>
+                <option value="Wandern">Wandern</option>
+                <option value="Bootsreise">Bootsreise</option>
+                <option value="Camping">Camping</option>
+                <option value="Skiurlaub">Skiurlaub</option>
+                <option value="Tauchen">Tauchen</option>
+                <option value="Roadtrip">Roadtrip</option>
+                <option value="Festival">Festival</option>
+                <option value="Safari">Safari</option>
+                <option value="Kreuzfahrt">Kreuzfahrt</option>
+                <option value="Radtour">Radtour</option>
+                <option value="Backpacking">Backpacking</option>
+                <option value="Inselhopping">Inselhopping</option>
+                <option value="Klassenfahrt">Klassenfahrt</option>
+                <option value="Geschäftsreise">Geschäftsreise</option>
+                <option value="Junggesellenabschied">Junggesellenabschied</option>
+                <option value="Angelurlaub">Angelurlaub</option>
+                <option value="Golfurlaub">Golfurlaub</option>
             </select>
         </p>
-        <button type="button" onclick="erstelleListe()">🧳 Packliste erstellen</button>
+        <button type="button" id="btnErstellen" onclick="erstelleListe()">🧳 Packliste erstellen</button>
     </form>
 
-    <div id="wetter"></div>
-    <div id="laenderinfo"></div>
-    <div id="liste"></div>
-    <div id="zaehler"></div>
-
-    <div class="export-buttons">
-        <button type="button" class="sekundaer" onclick="druckeListe()">🖨️ Drucken / Als PDF</button>
-        <button type="button" class="sekundaer" onclick="exportiereCSV()">⬇️ Als CSV</button>
-        <button type="button" class="sekundaer" onclick="merkeEingaben()">💾 Eingaben merken</button>
+    <div class="ergebnis-grid">
+        <div class="spalte-links">
+            <div id="liste"></div>
+            <div class="eigene-sache">
+                <input type="text" id="eigeneSacheInput" placeholder="Eigene Sache hinzufügen...">
+                <button type="button" class="sekundaer" id="btnEigeneSache" onclick="fuegeEigeneSacheHinzu()">➕ Hinzufügen</button>
+            </div>
+            <div id="zaehler"></div>
+            <div class="export-buttons">
+                <button type="button" class="sekundaer" id="btnDrucken" onclick="druckeListe()">🖨️ Drucken / Als PDF</button>
+                <button type="button" class="sekundaer" id="btnCsv" onclick="exportiereCSV()">⬇️ Als CSV</button>
+                <button type="button" class="sekundaer" id="btnMerken" onclick="merkeEingaben()">💾 Eingaben merken</button>
+            </div>
+        </div>
+        <div class="spalte-rechts">
+            <div id="wetter"></div>
+            <div id="laenderinfo"></div>
+            <div id="extraLinks"></div>
+        </div>
     </div>
     </div>
 
     <script>
         let generation = 0;
+        let sprache = "de";
+        let nationalitaet = "";
+
+        let texte = {
+            de: {
+                titel: "🎒 DeineOnlinePackListe",
+                untertitel: "Diese Website ist ein Vorläufer der echten Website.",
+                labelZiel: "🌍 Reiseziel:",
+                labelTage: "📅 Reisedauer (Tage):",
+                labelArt: "🧭 Reiseart:",
+                btnErstellen: "🧳 Packliste erstellen",
+                btnDrucken: "🖨️ Drucken / Als PDF",
+                btnCsv: "⬇️ Als CSV",
+                btnMerken: "💾 Eingaben merken",
+                toggle: "EN",
+                modalTitel: "Sprache / Language",
+                modalNationalitaetLabel: "Deine Nationalität:",
+                modalWeiter: "Weiter",
+                fehlerZiel: "Bitte beim Reiseziel nur Buchstaben eingeben.",
+                fehlerTage: "Bitte eine gültige Reisedauer (mindestens 1 Tag) eingeben.",
+                gepackt: "gepackt",
+                von: "von",
+                gewichtLabel: "🎒 Geschätztes Gepäckgewicht: ca.",
+                gewichtHinweis: "kg (grober Richtwert pro Kategorie, kein echtes Gewicht)",
+                merkenAlert: "Eingaben gemerkt! Beim nächsten Besuch werden sie automatisch ausgefüllt.",
+                eigeneSacheInput: "Eigene Sache hinzufügen...",
+                btnEigeneSache: "➕ Hinzufügen",
+                eigeneSachen: "🧩 Eigene Sachen",
+                visumLink: "🛂 Einreisebestimmungen",
+                impfLink: "💉 Impfempfehlungen (Suche)",
+                wetterSuche: "🔎 Wetter-Suche",
+                sehenswuerdigkeiten: "🏛️ Sehenswürdigkeiten & Öffnungszeiten",
+                sehenswuerdigkeitenIn: "🏛️ Sehenswürdigkeiten in",
+                wirdGeladen: "wird geladen...",
+                deineListe: "Deine Packliste für",
+                tageWort: "Tage",
+                keinWetterGefunden: "Kein Wetter gefunden für",
+                wetterAktuell: "🌤️ Aktuelles Wetter in",
+                wetterFehler: "Wetter konnte nicht geladen werden.",
+                passendZu: "🌡️ Passend zu",
+                gleicheWaehrung: "Gleiche Währung wie in Deutschland",
+                wechselkursLabel: "💱 Wechselkurs",
+                wechselkursNichtVerfuegbar: "aktuell nicht verfügbar",
+                hinweisLaender: "ℹ️ Länderinfos sind allgemeine Richtwerte, keine geprüften Fakten – bei Einreise/Impfungen bitte offizielle Quellen prüfen.",
+                impfungenTitel: "💉 Allgemeine Impf-Infos",
+                impfungenKeine: "Keine speziellen Reiseimpfungen empfohlen – Standardimpfungen (z. B. Tetanus, Diphtherie) sollten aktuell sein.",
+                impfHinweis: "Allgemeine Bildungsinfo, keine persönliche Medizinberatung – bitte Arzt/Tropeninstitut fragen.",
+                spalteHauptstadt: "🌐 Hauptstadt",
+                spalteWaehrung: "💶 Währung",
+                spalteSteckdose: "🔌 Steckdose",
+                spalteBezahlen: "💳 Bezahlen",
+                spaltePreisniveau: "💰 Preisniveau (Hotel/Essen)",
+                spalteEinreise: "🛂 Einreise (allgemein)",
+                spalteBesteReisezeit: "☀️ Beste Reisezeit",
+                spalteSprache: "🗣️ Sprache",
+                spalteNotruf: "🚨 Notruf",
+                spalteZeitzone: "🕒 Zeitzone",
+                spalteSim: "📶 SIM-Karte",
+                spalteStaedte: "🏙️ Größte Städte",
+                impfName: "Impfung",
+                impfSchuetzt: "Schützt vor",
+                impfDauer: "Schutzdauer"
+            },
+            en: {
+                titel: "🎒 YourOnlinePackingList",
+                untertitel: "This website is a preview of the real website.",
+                labelZiel: "🌍 Destination:",
+                labelTage: "📅 Duration (days):",
+                labelArt: "🧭 Trip type:",
+                btnErstellen: "🧳 Create packing list",
+                btnDrucken: "🖨️ Print / Save as PDF",
+                btnCsv: "⬇️ Export as CSV",
+                btnMerken: "💾 Remember inputs",
+                toggle: "DE",
+                modalTitel: "Sprache / Language",
+                modalNationalitaetLabel: "Your nationality:",
+                modalWeiter: "Continue",
+                fehlerZiel: "Please only use letters for the destination.",
+                fehlerTage: "Please enter a valid duration (at least 1 day).",
+                gepackt: "packed",
+                von: "of",
+                gewichtLabel: "🎒 Estimated luggage weight: approx.",
+                gewichtHinweis: "kg (rough estimate per category, not a real weight)",
+                merkenAlert: "Inputs saved! They'll be filled in automatically next time.",
+                eigeneSacheInput: "Add your own item...",
+                btnEigeneSache: "➕ Add",
+                eigeneSachen: "🧩 Your own items",
+                visumLink: "🛂 Entry requirements",
+                impfLink: "💉 Vaccination recommendations (search)",
+                wetterSuche: "🔎 Weather search",
+                sehenswuerdigkeiten: "🏛️ Sights & opening hours",
+                sehenswuerdigkeitenIn: "🏛️ Sights in",
+                wirdGeladen: "loading...",
+                deineListe: "Your packing list for",
+                tageWort: "days",
+                keinWetterGefunden: "No weather found for",
+                wetterAktuell: "🌤️ Current weather in",
+                wetterFehler: "Weather could not be loaded.",
+                passendZu: "🌡️ Suited to",
+                gleicheWaehrung: "Same currency as in Germany",
+                wechselkursLabel: "💱 Exchange rate",
+                wechselkursNichtVerfuegbar: "currently unavailable",
+                hinweisLaender: "ℹ️ Country info is general guidance, not verified facts – for entry/vaccination requirements please check official sources.",
+                impfungenTitel: "💉 General vaccination info",
+                impfungenKeine: "No special travel vaccinations recommended – routine vaccinations (e.g. tetanus, diphtheria) should be up to date.",
+                impfHinweis: "General educational info, not personal medical advice – please ask a doctor/travel clinic.",
+                spalteHauptstadt: "🌐 Capital",
+                spalteWaehrung: "💶 Currency",
+                spalteSteckdose: "🔌 Power outlet",
+                spalteBezahlen: "💳 Payment",
+                spaltePreisniveau: "💰 Price level (hotel/food)",
+                spalteEinreise: "🛂 Entry (general)",
+                spalteBesteReisezeit: "☀️ Best time to visit",
+                spalteSprache: "🗣️ Language",
+                spalteNotruf: "🚨 Emergency numbers",
+                spalteZeitzone: "🕒 Time zone",
+                spalteSim: "📶 SIM card",
+                spalteStaedte: "🏙️ Biggest cities",
+                impfName: "Vaccine",
+                impfSchuetzt: "Protects against",
+                impfDauer: "Duration"
+            }
+        };
+
+        let uebersetzungen = {
+            "Dokumente & Wertsachen": "Documents & Valuables", "Technik": "Electronics", "Hygiene & Gesundheit": "Hygiene & Health", "Kleidung": "Clothing", "Ausrüstung & Sonstiges": "Gear & Other",
+            "Ausweis": "ID card", "Geldbeutel": "Wallet", "Schlüssel": "Keys", "Bargeld": "Cash", "Versicherungskarte": "Insurance card",
+            "Handy": "Phone", "Ladekabel": "Charging cable", "Powerbank": "Power bank", "Kopfhörer": "Headphones",
+            "Zahnbürste": "Toothbrush", "Zahnpasta": "Toothpaste", "Deo": "Deodorant", "Kamm/Bürste": "Comb/Brush",
+            "Unterwäsche": "Underwear", "Socken": "Socks", "Schlafkleidung": "Sleepwear", "Wasserflasche": "Water bottle",
+            "Waschmittel": "Laundry detergent", "Flip-Flops": "Flip-flops", "Reiseapotheke + Medikamente mit Reserve": "Travel first-aid kit + extra medication",
+            "Reiseadapter": "Travel adapter", "Zweites Ladekabel": "Second charging cable", "Ohrstöpsel": "Earplugs", "Dokumentenkopien": "Copies of documents",
+            "Badehose/Bikini": "Swim trunks/bikini", "Strandkleid/Kaftan": "Beach dress/kaftan", "Sonnenhut": "Sun hat", "Leichte, luftige Kleidung": "Light, breathable clothing",
+            "Sonnencreme (hoher LSF)": "Sunscreen (high SPF)", "After-Sun-Lotion": "After-sun lotion", "Lippenpflege mit LSF": "Lip balm with SPF",
+            "Strandtuch": "Beach towel", "Strandtasche": "Beach bag", "Wasserfeste Handyhülle": "Waterproof phone case", "Schwimmbrille": "Swim goggles",
+            "Bequeme Schuhe": "Comfortable shoes", "Leichte Jacke": "Light jacket", "Wechselkleidung für abends": "Change of clothes for evenings",
+            "Stadtplan-App offline": "Offline city map app", "Kamera": "Camera", "Tagesrucksack": "Day backpack", "Kleine Umhängetasche": "Small crossbody bag",
+            "Regenponcho": "Rain poncho", "Cap/Sonnenhut": "Cap/sun hat", "Kleiner Rucksack": "Small backpack", "Snacks für zwischendurch": "Snacks for on the go",
+            "Bademantel": "Bathrobe", "Badeschlappen": "Bath slippers", "Bequeme Loungewear": "Comfortable loungewear", "Eigenes Pflegeprodukt-Set": "Personal skincare set",
+            "Haargummis": "Hair ties", "Buch/E-Reader": "Book/e-reader", "Kopfhörer für Entspannungsmusik": "Headphones for relaxing music",
+            "Wanderschuhe": "Hiking boots", "Regenjacke": "Rain jacket", "Funktionskleidung im Zwiebellook": "Layered functional clothing", "Wandersocken": "Hiking socks",
+            "Blasenpflaster": "Blister plasters", "Insektenschutz": "Insect repellent", "Trinkblase/Trinkflasche": "Hydration bladder/water bottle",
+            "Wanderkarte oder GPS-Gerät": "Hiking map or GPS device", "Erste-Hilfe-Set": "First-aid kit", "Wanderstöcke": "Trekking poles",
+            "Windjacke": "Wind jacket", "Rutschfeste Schuhe": "Non-slip shoes", "Reisetabletten gegen Seekrankheit": "Motion sickness tablets",
+            "Fernglas": "Binoculars", "Wasserdichte Tasche": "Waterproof bag", "Sonnenbrille mit Kordel": "Sunglasses with strap",
+            "Wetterfeste Kleidung": "Weatherproof clothing", "Warme Mütze für die Nacht": "Warm hat for nighttime", "Biologisch abbaubares Duschgel": "Biodegradable shower gel",
+            "Mückenschutz": "Mosquito repellent", "Zelt": "Tent", "Schlafsack": "Sleeping bag", "Isomatte": "Sleeping pad", "Stirnlampe": "Headlamp",
+            "Campingkocher": "Camping stove", "Feuerzeug/Streichhölzer": "Lighter/matches", "Taschenmesser": "Pocket knife",
+            "Skiunterwäsche": "Ski underwear", "Handschuhe": "Gloves", "Skibrille": "Ski goggles", "Mütze": "Beanie", "Warme Socken": "Warm socks",
+            "Sonnencreme (Höhensonne)": "Sunscreen (high-altitude sun)", "Lippenbalsam mit LSF": "Lip balm with SPF", "Skipass-Hülle": "Ski pass holder",
+            "Anti-Beschlag-Spray für Maske": "Anti-fog spray for mask", "Zertifizierungskarte": "Certification card", "Tauchcomputer": "Dive computer",
+            "Maske + Schnorchel": "Mask + snorkel", "Logbuch": "Logbook", "Neoprenanzug": "Wetsuit",
+            "KFZ-Ladekabel": "Car charging cable", "Offline-Playlist/Podcasts": "Offline playlist/podcasts", "Handyhalterung": "Phone mount",
+            "Führerschein": "Driver's license", "Fahrzeugpapiere": "Vehicle documents", "Snacks": "Snacks", "Warnweste": "Safety vest", "Straßenkarte": "Road map",
+            "Wechselkleidung": "Change of clothes", "Zusätzliche Powerbank": "Extra power bank", "Gummistiefel": "Rubber boots",
+            "Bauchtasche": "Fanny pack", "Feuchttücher": "Wet wipes", "Campingstuhl": "Camping chair",
+            "Neutrale/khakifarbene Kleidung": "Neutral/khaki-colored clothing", "Langärmlige Shirts": "Long-sleeved shirts", "Kamera mit Zoom": "Camera with zoom",
+            "Elegante Abendkleidung": "Elegant evening wear", "Bequeme Tagesoutfits": "Comfortable daywear", "Badesachen": "Swimwear",
+            "Reisetabletten": "Motion sickness tablets", "Kleiner Rucksack für Landausflüge": "Small backpack for shore excursions",
+            "Radhose": "Cycling shorts", "Atmungsaktives Trikot": "Breathable jersey", "Helm": "Helmet", "Flickzeug": "Puncture repair kit",
+            "Fahrradlicht": "Bike light", "Fahrradschloss": "Bike lock", "Werkzeugset": "Tool set",
+            "Universaladapter": "Universal adapter", "Kopie von Ausweis/Visum, getrennt verstaut": "Copy of ID/visa, stored separately",
+            "Backpack-Rucksack": "Backpacking backpack", "Packwürfel": "Packing cubes", "Schnelltrocknendes Handtuch": "Quick-dry towel",
+            "Vorhängeschloss": "Padlock", "Reisewäscheleine": "Travel clothesline",
+            "Leichte Kleidung": "Light clothing", "Sandalen": "Sandals", "Dry Bag": "Dry bag", "Schnorchel-Set": "Snorkel set",
+            "Bequeme Alltagskleidung": "Comfortable everyday clothing", "Zusätzliche Wechselkleidung": "Extra change of clothes",
+            "Einverständniserklärung der Eltern": "Parental consent form", "Krankenkassenkarte": "Health insurance card", "Taschengeld": "Pocket money",
+            "Vesperdose/Lunchbox": "Lunchbox", "Kartenspiel oder Buch gegen Langeweile": "Card game or book for boredom", "Namensschild am Gepäck": "Name tag on luggage",
+            "Business-Kleidung": "Business attire", "Business-Schuhe": "Business shoes", "Krawatte/Blazer": "Tie/blazer",
+            "Laptop + Ladekabel": "Laptop + charger", "Präsentationsunterlagen/USB-Stick": "Presentation materials/USB stick", "Visitenkarten": "Business cards",
+            "Firmenkreditkarte": "Company credit card", "Mappe für Reisekostenbelege": "Folder for expense receipts", "Laptoptasche": "Laptop bag",
+            "Auffälliges Outfit/Kostüm": "Eye-catching outfit/costume", "Bequeme Partyschuhe": "Comfortable party shoes",
+            "Musik-Playlist": "Music playlist", "Kamera für Fotos": "Camera for photos", "Kopfschmerztabletten": "Headache tablets",
+            "Elektrolyt-Pulver": "Electrolyte powder", "Spiele/Aufgabenzettel": "Games/dare cards", "Deko/Accessoires": "Decorations/accessories",
+            "Angelschein/Fischereischein": "Fishing license", "Angelrute": "Fishing rod", "Köder/Kunstköder": "Bait/lures", "Kescher": "Landing net",
+            "Golfkleidung mit Dresscode": "Golf attire (dress code)", "Golfschuhe": "Golf shoes", "Kappe": "Cap",
+            "Golfschläger-Set": "Golf club set", "Golfbälle": "Golf balls", "Tees": "Tees", "Golfhandschuh": "Golf glove",
+            "Warme Winterjacke": "Warm winter jacket", "Schal": "Scarf", "Thermounterwäsche": "Thermal underwear",
+            "Warme Jacke": "Warm jacket", "Pullover": "Sweater", "Extra Sonnencreme": "Extra sunscreen",
+            "Kühlendes Gesichtsspray": "Cooling face spray", "Zusätzliche Trinkflasche": "Extra water bottle",
+            "Strand": "Beach", "Stadt": "City", "Freizeitpark": "Theme park", "Spa-Urlaub": "Spa vacation", "Wandern": "Hiking",
+            "Bootsreise": "Boat trip", "Camping": "Camping", "Skiurlaub": "Ski vacation", "Tauchen": "Diving", "Roadtrip": "Road trip",
+            "Festival": "Festival", "Safari": "Safari", "Kreuzfahrt": "Cruise", "Radtour": "Cycling tour", "Backpacking": "Backpacking",
+            "Inselhopping": "Island hopping", "Klassenfahrt": "School trip", "Geschäftsreise": "Business trip",
+            "Junggesellenabschied": "Bachelor(ette) party", "Angelurlaub": "Fishing trip", "Golfurlaub": "Golf vacation",
+            "günstig": "cheap", "günstig bis mittel": "cheap to moderate", "mittel": "moderate", "mittel bis hoch": "moderate to expensive",
+            "hoch": "expensive", "sehr hoch": "very expensive",
+            "Personalausweis reicht, kein Visum (EU/Schengen)": "National ID card is enough, no visa (EU/Schengen)",
+            "Personalausweis reicht": "National ID card is enough",
+            "Personalausweis reicht (Schengen)": "National ID card is enough (Schengen)",
+            "Personalausweis reicht (Schengen/EWR)": "National ID card is enough (Schengen/EEA)",
+            "Reisepass + ESTA nötig (visumfrei bis 90 Tage)": "Passport + ESTA required (visa-free up to 90 days)",
+            "Reisepass + ETA nötig (visumfrei bis 6 Monate)": "Passport + ETA required (visa-free up to 6 months)",
+            "Reisepass empfohlen, visumfrei bis 90 Tage": "Passport recommended, visa-free up to 90 days",
+            "Reisepass (mind. 6 Monate gültig), visumfrei bis 30-60 Tage": "Passport (valid at least 6 months), visa-free up to 30-60 days",
+            "Reisepass reicht, visumfrei bis 90 Tage": "Passport is enough, visa-free up to 90 days",
+            "Reisepass + eVisitor (online, kostenlos) nötig": "Passport + eVisitor (online, free) required",
+            "Reisepass reicht, visumfrei bis 180 Tage": "Passport is enough, visa-free up to 180 days",
+            "Reisepass + eTA nötig": "Passport + eTA required",
+            "Reisepass + meist Visum (kurze visafreie Aufenthalte möglich, vorher prüfen)": "Passport + usually a visa (short visa-free stays possible, check beforehand)",
+            "Reisepass + Visa on Arrival/e-VOA nötig": "Passport + Visa on Arrival/e-VOA required",
+            "Reisepass + e-Visa nötig": "Passport + e-Visa required",
+            "Reisepass + K-ETA nötig, visumfrei bis 90 Tage": "Passport + K-ETA required, visa-free up to 90 days",
+            "Reisepass + NZeTA nötig": "Passport + NZeTA required",
+            "Reisepass reicht, visumfrei bis 30 Tage": "Passport is enough, visa-free up to 30 days",
+            "±0h zu Deutschland": "±0h vs. Germany", "±0h": "±0h", "±0h zu Deutschland (Osten)": "±0h vs. Germany",
+            "+1h zu Deutschland": "+1h vs. Germany", "-1h zu Deutschland": "-1h vs. Germany",
+            "ca. -6h zu Deutschland (Ostküste)": "approx. -6h vs. Germany (East Coast)", "ca. -6h zu Deutschland (Osten)": "approx. -6h vs. Germany (East)",
+            "ca. -5h zu Deutschland": "approx. -5h vs. Germany", "ca. -8h zu Deutschland": "approx. -8h vs. Germany",
+            "ca. -2h zu Deutschland": "approx. -2h vs. Germany", "ca. +8h zu Deutschland": "approx. +8h vs. Germany",
+            "ca. +10h zu Deutschland": "approx. +10h vs. Germany", "ca. +3h30 zu Deutschland": "approx. +3h30 vs. Germany",
+            "+5h zu Deutschland": "+5h vs. Germany", "+6h zu Deutschland": "+6h vs. Germany", "+7h zu Deutschland": "+7h vs. Germany",
+            "EU-Roaming reicht meist": "EU roaming usually enough", "kein Roaming nötig": "no roaming needed",
+            "kein EU-Roaming mehr, ggf. lokale SIM": "no more EU roaming, local SIM if needed",
+            "kein EU-Roaming (Nicht-EU!), lokale SIM sinnvoll": "no EU roaming (non-EU!), local SIM useful",
+            "lokale SIM/eSIM empfohlen": "local SIM/eSIM recommended", "lokale SIM/eSIM empfohlen (teures Roaming)": "local SIM/eSIM recommended (expensive roaming)",
+            "lokale SIM für längere Aufenthalte sinnvoll": "local SIM useful for longer stays",
+            "günstige Touristen-SIM sehr verbreitet": "cheap tourist SIM very common", "günstige Touristen-SIM verbreitet": "cheap tourist SIM common",
+            "Pocket-WiFi oder eSIM empfohlen": "pocket WiFi or eSIM recommended", "lokale SIM empfohlen": "local SIM recommended",
+            "eSIM/Rental empfohlen (Registrierung nötig)": "eSIM/rental recommended (registration required)",
+            "eSIM/Pocket-WiFi verbreitet": "eSIM/pocket WiFi common", "günstige lokale SIM empfohlen": "cheap local SIM recommended",
+            "günstige lokale SIM verbreitet": "cheap local SIM common", "meist in EU-Roaming enthalten": "usually included in EU roaming",
+            "EU-Roaming meist nicht enthalten, prüfen": "usually not included in EU roaming, check first",
+            "lokale SIM (Ausweis/Visum nötig)": "local SIM (ID/visa required)",
+            "Karte weit verbreitet": "Card widely accepted", "Karte und Bargeld gemischt": "Mix of card and cash",
+            "Bargeld noch wichtig, Karte wächst": "Cash still important, card use growing", "Überwiegend Karte": "Mostly card",
+            "Karte und Bargeld gemischt (auf Inseln oft Bargeld nötig)": "Mix of card and cash (islands often need cash)",
+            "Bargeld wichtig (abseits Hotels)": "Cash important (outside hotels)", "Bargeld weiterhin sehr wichtig": "Cash still very important",
+            "Überwiegend mobile Bezahlung/Karte, kaum Bargeld": "Mostly mobile payment/card, barely any cash",
+            "Bargeld wichtig": "Cash important", "Bargeld weiterhin wichtig, Karte wächst": "Cash still important, card use growing",
+            "Überwiegend Karte (Bargeld kaum nötig)": "Mostly card (cash barely needed)",
+            "Mai-Juni & September": "May-June & September", "April-Juni & September-Oktober": "April-June & September-October",
+            "Mai-September": "May-September", "Juni-September (Sommer), Dez-März (Ski)": "June-September (summer), Dec-March (skiing)",
+            "April-Oktober": "April-October", "Mai-Juni & September (Sommer sehr heiß)": "May-June & September (summer very hot)",
+            "April-Juni & September-Oktober (regional unterschiedlich)": "April-June & September-October (varies by region)",
+            "Juni-September (Wandern), Dez-März (Ski)": "June-September (hiking), Dec-March (skiing)",
+            "November-Februar (Trockenzeit, kühler)": "November-February (dry season, cooler)",
+            "März-Mai (Kirschblüte) & Okt-Nov (Herbstlaub)": "March-May (cherry blossom) & Oct-Nov (autumn leaves)",
+            "Sep-Nov & März-Mai (umgekehrte Jahreszeiten!)": "Sep-Nov & March-May (reversed seasons!)",
+            "Mai-September (Trockenzeit)": "May-September (dry season)", "März-Mai & September-November": "March-May & September-November",
+            "Oktober-Dezember (mild, trocken)": "October-December (mild, dry)",
+            "Mai-September (Trockenzeit)": "May-September (dry season)",
+            "Juni-August (Mitternachtssonne)": "June-August (midnight sun)",
+            "November-April (Trockenzeit)": "November-April (dry season)",
+            "Dez-Feb (regional unterschiedlich, weniger Regen)": "Dec-Feb (varies by region, less rain)",
+            "Juni-August (Mitternachtssonne), Winter für Nordlicht": "June-August (midnight sun), winter for northern lights",
+            "Dez-Feb (Sommer, umgekehrte Jahreszeiten!)": "Dec-Feb (summer, reversed seasons!)",
+            "Dezember-Mai (Trockenzeit)": "December-May (dry season)",
+            "ganzjährig warm, Feb-April etwas trockener": "warm year-round, Feb-April slightly drier",
+            "September-November & März-Mai": "September-November & March-May",
+            "Oktober-März (kühler, trocken)": "October-March (cooler, dry)",
+            "Deutsch": "German", "Englisch": "English", "Französisch": "French", "Italienisch": "Italian", "Spanisch": "Spanish",
+            "Niederländisch": "Dutch", "Griechisch": "Greek", "Deutsch/Französisch/Italienisch": "German/French/Italian",
+            "Türkisch": "Turkish", "Thai": "Thai", "Japanisch": "Japanese", "Portugiesisch": "Portuguese",
+            "Englisch/Französisch": "English/French", "Mandarin": "Mandarin", "Tschechisch": "Czech", "Dänisch": "Danish",
+            "Kantonesisch/Englisch": "Cantonese/English", "Ungarisch": "Hungarian", "Indonesisch": "Indonesian", "Hebräisch": "Hebrew",
+            "Hindi (+ viele Regionalsprachen)": "Hindi (+ many regional languages)", "Isländisch": "Icelandic", "Koreanisch": "Korean",
+            "Malaiisch": "Malay", "Norwegisch": "Norwegian", "Filipino/Englisch": "Filipino/English", "Polnisch": "Polish",
+            "Rumänisch": "Romanian", "Schwedisch": "Swedish", "Englisch/Mandarin/Malaiisch/Tamil": "English/Mandarin/Malay/Tamil",
+            "Englisch (+10 weitere)": "English (+10 more)",
+            "Rom": "Rome", "Mailand": "Milan", "Neapel": "Naples", "Wien": "Vienna", "Athen": "Athens", "Prag": "Prague",
+            "Genf": "Geneva", "Warschau": "Warsaw", "Kopenhagen": "Copenhagen", "München": "Munich", "Den Haag": "The Hague",
+            "in Städten meist trinkbar, auf dem Land vorsichtig sein": "usually drinkable in cities, be careful in rural areas",
+            "Deutsch": "German", "Österreichisch": "Austrian", "Schweizerisch": "Swiss", "Belgisch": "Belgian", "Britisch": "British",
+            "Irisch": "Irish", "Slowakisch": "Slovak", "Bulgarisch": "Bulgarian", "Finnisch": "Finnish", "Russisch": "Russian",
+            "Ukrainisch": "Ukrainian", "US-Amerikanisch": "American", "Kanadisch": "Canadian", "Mexikanisch": "Mexican",
+            "Brasilianisch": "Brazilian", "Argentinisch": "Argentinian", "Kubanisch": "Cuban", "Chinesisch": "Chinese",
+            "Südkoreanisch": "South Korean", "Indisch": "Indian", "Malaysisch": "Malaysian", "Thailändisch": "Thai",
+            "Vietnamesisch": "Vietnamese", "Philippinisch": "Filipino", "Australisch": "Australian", "Neuseeländisch": "New Zealand",
+            "Südafrikanisch": "South African", "Ägyptisch": "Egyptian", "Marokkanisch": "Moroccan", "Nigerianisch": "Nigerian",
+            "Kenianisch": "Kenyan", "Israelisch": "Israeli", "Saudi-Arabisch": "Saudi Arabian", "Iranisch": "Iranian"
+        };
+
+        let nationalitaetenListe = ["Deutsch", "Österreichisch", "Schweizerisch", "Französisch", "Italienisch", "Spanisch",
+            "Portugiesisch", "Niederländisch", "Belgisch", "Britisch", "Irisch", "Polnisch", "Tschechisch", "Slowakisch",
+            "Ungarisch", "Rumänisch", "Bulgarisch", "Griechisch", "Schwedisch", "Norwegisch", "Dänisch", "Finnisch",
+            "Isländisch", "Russisch", "Ukrainisch", "Türkisch", "US-Amerikanisch", "Kanadisch", "Mexikanisch",
+            "Brasilianisch", "Argentinisch", "Kubanisch", "Chinesisch", "Japanisch", "Südkoreanisch", "Indisch",
+            "Indonesisch", "Malaysisch", "Thailändisch", "Vietnamesisch", "Philippinisch", "Australisch", "Neuseeländisch",
+            "Südafrikanisch", "Ägyptisch", "Marokkanisch", "Nigerianisch", "Kenianisch", "Israelisch", "Saudi-Arabisch", "Iranisch"];
+
+        function fuelleNationalitaetenListe() {
+            let datalist = document.getElementById("nationalitaetenListe");
+            datalist.innerHTML = "";
+            for (let n of nationalitaetenListe) {
+                let option = document.createElement("option");
+                option.value = tr(n);
+                datalist.appendChild(option);
+            }
+        }
+
+        function tr(text) {
+            if (sprache === "en" && text && uebersetzungen[text]) {
+                return uebersetzungen[text];
+            }
+            return text;
+        }
+
+        function suchLink(deBegriff, enBegriff) {
+            let begriff = sprache === "en" ? enBegriff : deBegriff;
+            return "https://www.google.com/search?q=" + encodeURIComponent(begriff);
+        }
+
+        function t(schluessel) {
+            return texte[sprache][schluessel];
+        }
+
+        function waehleSprache(neueSprache) {
+            sprache = neueSprache;
+            document.getElementById("btnDe").className = sprache === "de" ? "aktiv" : "";
+            document.getElementById("btnEn").className = sprache === "en" ? "aktiv" : "";
+            document.getElementById("modalTitel").textContent = t("modalTitel");
+            document.getElementById("modalNationalitaetLabel").textContent = t("modalNationalitaetLabel");
+            document.getElementById("modalWeiter").textContent = t("modalWeiter");
+            fuelleNationalitaetenListe();
+        }
+
+        function starteApp() {
+            nationalitaet = document.getElementById("modalNationalitaet").value;
+            aktualisiereUiText();
+            document.getElementById("startModal").style.display = "none";
+        }
+
+        function umschalten() {
+            sprache = sprache === "de" ? "en" : "de";
+            aktualisiereUiText();
+        }
+
+        function aktualisiereUiText() {
+            document.getElementById("titelText").textContent = t("titel");
+            document.getElementById("untertitelText").textContent = t("untertitel");
+            document.getElementById("labelZiel").textContent = t("labelZiel");
+            document.getElementById("labelTage").textContent = t("labelTage");
+            document.getElementById("labelArt").textContent = t("labelArt");
+            document.getElementById("btnErstellen").textContent = t("btnErstellen");
+            document.getElementById("btnDrucken").textContent = t("btnDrucken");
+            document.getElementById("btnCsv").textContent = t("btnCsv");
+            document.getElementById("btnMerken").textContent = t("btnMerken");
+            document.getElementById("toggleSpracheBtn").textContent = t("toggle");
+            document.getElementById("eigeneSacheInput").placeholder = t("eigeneSacheInput");
+            document.getElementById("btnEigeneSache").textContent = t("btnEigeneSache");
+
+            let optionen = document.querySelectorAll("#art option");
+            for (let option of optionen) {
+                option.textContent = tr(option.value);
+            }
+        }
+
+        let impfDaten = {
+            "thailand": [
+                { name: "Hepatitis A", schuetzt: "Leberentzündung durch verunreinigtes Essen/Wasser", dauer: "ca. 1 Jahr, mit Auffrischung länger" },
+                { name: "Typhus", schuetzt: "Bakterielle Infektion durch verunreinigtes Essen/Wasser", dauer: "ca. 3 Jahre" }
+            ],
+            "indien": [
+                { name: "Hepatitis A", schuetzt: "Leberentzündung durch verunreinigtes Essen/Wasser", dauer: "ca. 1 Jahr, mit Auffrischung länger" },
+                { name: "Typhus", schuetzt: "Bakterielle Infektion durch verunreinigtes Essen/Wasser", dauer: "ca. 3 Jahre" },
+                { name: "Tollwut", schuetzt: "Virusinfektion durch Tierbisse", dauer: "Grundschutz mehrere Jahre" }
+            ],
+            "indonesien": [
+                { name: "Hepatitis A", schuetzt: "Leberentzündung durch verunreinigtes Essen/Wasser", dauer: "ca. 1 Jahr, mit Auffrischung länger" },
+                { name: "Typhus", schuetzt: "Bakterielle Infektion durch verunreinigtes Essen/Wasser", dauer: "ca. 3 Jahre" }
+            ],
+            "brasilien": [
+                { name: "Hepatitis A", schuetzt: "Leberentzündung durch verunreinigtes Essen/Wasser", dauer: "ca. 1 Jahr, mit Auffrischung länger" },
+                { name: "Gelbfieber", schuetzt: "Mückenübertragene Viruserkrankung (in manchen Regionen Pflicht)", dauer: "in der Regel lebenslang" }
+            ],
+            "südafrika": [
+                { name: "Hepatitis A", schuetzt: "Leberentzündung durch verunreinigtes Essen/Wasser", dauer: "ca. 1 Jahr, mit Auffrischung länger" },
+                { name: "Typhus", schuetzt: "Bakterielle Infektion durch verunreinigtes Essen/Wasser", dauer: "ca. 3 Jahre" }
+            ],
+            "philippinen": [
+                { name: "Hepatitis A", schuetzt: "Leberentzündung durch verunreinigtes Essen/Wasser", dauer: "ca. 1 Jahr, mit Auffrischung länger" },
+                { name: "Typhus", schuetzt: "Bakterielle Infektion durch verunreinigtes Essen/Wasser", dauer: "ca. 3 Jahre" }
+            ],
+            "malaysia": [
+                { name: "Hepatitis A", schuetzt: "Leberentzündung durch verunreinigtes Essen/Wasser", dauer: "ca. 1 Jahr, mit Auffrischung länger" },
+                { name: "Typhus", schuetzt: "Bakterielle Infektion durch verunreinigtes Essen/Wasser", dauer: "ca. 3 Jahre" }
+            ],
+            "china": [
+                { name: "Hepatitis A", schuetzt: "Leberentzündung durch verunreinigtes Essen/Wasser", dauer: "ca. 1 Jahr, mit Auffrischung länger" },
+                { name: "Typhus", schuetzt: "Bakterielle Infektion durch verunreinigtes Essen/Wasser", dauer: "ca. 3 Jahre" }
+            ],
+            "mexiko": [
+                { name: "Hepatitis A", schuetzt: "Leberentzündung durch verunreinigtes Essen/Wasser", dauer: "ca. 1 Jahr, mit Auffrischung länger" }
+            ],
+            "türkei": [
+                { name: "Hepatitis A", schuetzt: "Leberentzündung durch verunreinigtes Essen/Wasser", dauer: "ca. 1 Jahr, mit Auffrischung länger" }
+            ],
+            "israel": [
+                { name: "Hepatitis A", schuetzt: "Leberentzündung durch verunreinigtes Essen/Wasser", dauer: "ca. 1 Jahr, mit Auffrischung länger" }
+            ]
+        };
+
+        let impfUebersetzungen = {
+            "Hepatitis A": "Hepatitis A", "Typhus": "Typhoid", "Tollwut": "Rabies", "Gelbfieber": "Yellow fever",
+            "Leberentzündung durch verunreinigtes Essen/Wasser": "Liver inflammation from contaminated food/water",
+            "Bakterielle Infektion durch verunreinigtes Essen/Wasser": "Bacterial infection from contaminated food/water",
+            "Virusinfektion durch Tierbisse": "Viral infection from animal bites",
+            "Mückenübertragene Viruserkrankung (in manchen Regionen Pflicht)": "Mosquito-borne viral disease (mandatory in some regions)",
+            "ca. 1 Jahr, mit Auffrischung länger": "approx. 1 year, longer with booster",
+            "ca. 3 Jahre": "approx. 3 years", "Grundschutz mehrere Jahre": "basic protection several years",
+            "in der Regel lebenslang": "usually lifelong"
+        };
+
+        function trImpf(text) {
+            if (sprache === "en" && impfUebersetzungen[text]) {
+                return impfUebersetzungen[text];
+            }
+            return text;
+        }
 
         function erstelleListe() {
             generation = generation + 1;
@@ -392,18 +982,22 @@
             let art = document.getElementById("art").value;
 
             if (!/^[A-Za-zÀ-ÿ\s'.-]+$/.test(ziel)) {
-                alert("Bitte beim Reiseziel nur Buchstaben eingeben.");
+                alert(t("fehlerZiel"));
                 return;
             }
 
             if (!tage || Number(tage) <= 0) {
-                alert("Bitte eine gültige Reisedauer (mindestens 1 Tag) eingeben.");
+                alert(t("fehlerTage"));
                 return;
             }
 
-            let link = "https://www.google.com/search?q=Einreisebestimmungen+Impfungen+" + ziel;
-            let linkWetter = "https://www.google.com/search?q=Wetter+" + ziel;
-            let linkSpots = "https://www.google.com/search?q=Sehenswürdigkeiten+Öffnungszeiten+" + ziel;
+            let linkVisum = suchLink(
+                "Einreisebestimmungen " + (nationalitaet || "deutsche") + " Staatsbürger " + ziel,
+                "Entry requirements " + (nationalitaet || "German") + " citizens " + ziel
+            );
+            let linkImpf = suchLink("Impfempfehlungen Reise " + ziel, "Vaccination recommendations travel " + ziel);
+            let linkWetter = suchLink("Wetter " + ziel, "Weather " + ziel);
+            let linkSpots = suchLink("Sehenswürdigkeiten Öffnungszeiten " + ziel, "Sights opening hours " + ziel);
 
             let bekannteSpots = {
                 "paris": ["Eiffelturm", "Arc de Triomphe", "Louvre", "Notre-Dame", "Montmartre"],
@@ -446,12 +1040,12 @@
             let spotsHTML = "";
             let spotsFuerZiel = bekannteSpots[ziel.toLowerCase()];
             if (spotsFuerZiel) {
-                spotsHTML = "<h3>🏛️ Sehenswürdigkeiten in " + ziel + "</h3><ul>";
+                spotsHTML = "<details open><summary>" + t("sehenswuerdigkeitenIn") + " " + ziel + "</summary><ul>";
                 for (let spot of spotsFuerZiel) {
-                    let spotLink = "https://www.google.com/search?q=" + spot + "+Öffnungszeiten";
+                    let spotLink = suchLink(spot + " Öffnungszeiten", spot + " opening hours");
                     spotsHTML = spotsHTML + '<li><a href="' + spotLink + '" target="_blank">' + spot + "</a></li>";
                 }
-                spotsHTML = spotsHTML + "</ul>";
+                spotsHTML = spotsHTML + "</ul></details>";
             }
 
             let kategorien = {
@@ -469,7 +1063,7 @@
                 kategorien["Kleidung"] = kategorien["Kleidung"].filter(function (sache) {
                     return sache !== "Unterwäsche" && sache !== "Socken";
                 });
-                kategorien["Kleidung"].push("Unterwäsche & Socken für ca. " + tage + " Tage", "Flip-Flops");
+                kategorien["Kleidung"].push(sprache === "en" ? "Underwear & socks for approx. " + tage + " days" : "Unterwäsche & Socken für ca. " + tage + " Tage", "Flip-Flops");
                 kategorien["Hygiene & Gesundheit"].push("Reiseapotheke + Medikamente mit Reserve");
                 kategorien["Technik"].push("Reiseadapter", "Zweites Ladekabel");
                 kategorien["Ausrüstung & Sonstiges"].push("Ohrstöpsel");
@@ -590,22 +1184,40 @@
                 if (kategorien[kategorie].length === 0) {
                     continue;
                 }
-                listeHTML = listeHTML + "<h3>" + kategorie + "</h3><ul>";
+                listeHTML = listeHTML + '<details open><summary>' + tr(kategorie) + '</summary><ul>';
                 for (let sache of kategorien[kategorie]) {
-                    listeHTML = listeHTML + '<li><input type="checkbox" data-kategorie="' + kategorie + '" onclick="zaehle()"> ' + sache + "</li>";
+                    listeHTML = listeHTML + '<li><input type="checkbox" data-kategorie="' + kategorie + '" onclick="zaehle()"> ' + tr(sache) + "</li>";
                 }
-                listeHTML = listeHTML + "</ul>";
+                listeHTML = listeHTML + "</ul></details>";
             }
 
-            document.getElementById("liste").innerHTML = "Deine Packliste für " + ziel + ", " + tage + " Tage:" + listeHTML + '<a href="' + link + '" target="_blank">📋 Einreise- und Impfinfos</a>';
-
-            document.getElementById("liste").innerHTML += '<a href="' + linkWetter + '" target="_blank">🔎 Wetter-Suche</a>';
+            document.getElementById("liste").innerHTML = t("deineListe") + " " + ziel + ", " + tage + " " + t("tageWort") + ":" + listeHTML;
 
             if (spotsFuerZiel) {
                 document.getElementById("liste").innerHTML += spotsHTML;
-            } else {
-                document.getElementById("liste").innerHTML += '<a href="' + linkSpots + '" target="_blank">🏛️ Sehenswürdigkeiten & Öffnungszeiten</a>';
             }
+
+            let extraLinksHTML = '<a href="' + linkVisum + '" target="_blank">' + t("visumLink") + '</a>'
+                + '<a href="' + linkImpf + '" target="_blank">' + t("impfLink") + '</a>'
+                + '<a href="' + linkWetter + '" target="_blank">' + t("wetterSuche") + '</a>';
+            if (!spotsFuerZiel) {
+                extraLinksHTML = extraLinksHTML + '<a href="' + linkSpots + '" target="_blank">' + t("sehenswuerdigkeiten") + '</a>';
+            }
+
+            let impfListeFuerZiel = impfDaten[ziel.toLowerCase()];
+            let impfHTML = '<div class="impf-liste"><strong>' + t("impfungenTitel") + '</strong>';
+            if (impfListeFuerZiel) {
+                impfHTML = impfHTML + '<table><tr><th>' + t("impfName") + '</th><th>' + t("impfSchuetzt") + '</th><th>' + t("impfDauer") + '</th></tr>';
+                for (let eintrag of impfListeFuerZiel) {
+                    impfHTML = impfHTML + '<tr><td>' + trImpf(eintrag.name) + '</td><td>' + trImpf(eintrag.schuetzt) + '</td><td>' + trImpf(eintrag.dauer) + '</td></tr>';
+                }
+                impfHTML = impfHTML + '</table>';
+            } else {
+                impfHTML = impfHTML + '<p>' + t("impfungenKeine") + '</p>';
+            }
+            impfHTML = impfHTML + '<p class="impf-hinweis">' + t("impfHinweis") + '</p></div>';
+
+            document.getElementById("extraLinks").innerHTML = '<div style="font-size:0.8em; opacity:0.75; margin-bottom:4px;">' + t("hinweisLaender") + '</div>' + extraLinksHTML + impfHTML;
 
             let laenderMatch = laenderInfo[ziel.toLowerCase()];
             let wetterZiel = laenderMatch ? laenderMatch.hauptstadt : ziel;
@@ -615,42 +1227,42 @@
         }
 
         let laenderInfo = {
-            "frankreich": { hauptstadt: "Paris", waehrungName: "Euro", waehrungCode: "EUR", steckdose: "Typ E (wie Deutschland)", groessteStaedte: ["Paris", "Marseille", "Lyon"], zahlung: "Karte weit verbreitet", preisniveau: "mittel bis hoch", einreise: "Personalausweis reicht, kein Visum (EU/Schengen)", besteReisezeit: "Mai-Juni & September", sprache: "Französisch", hallo: "Bonjour", danke: "Merci", notruf: "112", zeitzone: "±0h zu Deutschland", trinkgeld: "nicht Pflicht, 5-10% gern gesehen", wasser: "Leitungswasser trinkbar", sim: "EU-Roaming reicht meist" },
-            "italien": { hauptstadt: "Rom", waehrungName: "Euro", waehrungCode: "EUR", steckdose: "Typ F/L", groessteStaedte: ["Rom", "Mailand", "Neapel"], zahlung: "Karte und Bargeld gemischt", preisniveau: "mittel", einreise: "Personalausweis reicht, kein Visum (EU/Schengen)", besteReisezeit: "April-Juni & September-Oktober", sprache: "Italienisch", hallo: "Ciao", danke: "Grazie", notruf: "112", zeitzone: "±0h zu Deutschland", trinkgeld: "nicht Pflicht, aufrunden üblich", wasser: "Leitungswasser meist trinkbar", sim: "EU-Roaming reicht meist" },
-            "spanien": { hauptstadt: "Madrid", waehrungName: "Euro", waehrungCode: "EUR", steckdose: "Typ F", groessteStaedte: ["Madrid", "Barcelona", "Valencia"], zahlung: "Karte und Bargeld gemischt", preisniveau: "mittel", einreise: "Personalausweis reicht, kein Visum (EU/Schengen)", besteReisezeit: "April-Juni & September-Oktober", sprache: "Spanisch", hallo: "Hola", danke: "Gracias", notruf: "112", zeitzone: "±0h zu Deutschland", trinkgeld: "nicht Pflicht, aufrunden üblich", wasser: "Leitungswasser trinkbar", sim: "EU-Roaming reicht meist" },
-            "deutschland": { hauptstadt: "Berlin", waehrungName: "Euro", waehrungCode: "EUR", steckdose: "Typ F", groessteStaedte: ["Berlin", "Hamburg", "München"], zahlung: "Bargeld noch wichtig, Karte wächst", preisniveau: "mittel bis hoch", einreise: "Personalausweis reicht", besteReisezeit: "Mai-September", sprache: "Deutsch", hallo: "Hallo", danke: "Danke", notruf: "112", zeitzone: "±0h", trinkgeld: "nicht Pflicht, 5-10% üblich", wasser: "Leitungswasser trinkbar", sim: "kein Roaming nötig" },
-            "österreich": { hauptstadt: "Wien", waehrungName: "Euro", waehrungCode: "EUR", steckdose: "Typ F", groessteStaedte: ["Wien", "Graz", "Linz"], zahlung: "Karte und Bargeld gemischt", preisniveau: "mittel bis hoch", einreise: "Personalausweis reicht, kein Visum (EU/Schengen)", besteReisezeit: "Juni-September (Sommer), Dez-März (Ski)", sprache: "Deutsch", hallo: "Servus", danke: "Danke", notruf: "112", zeitzone: "±0h zu Deutschland", trinkgeld: "nicht Pflicht, aufrunden üblich", wasser: "Leitungswasser trinkbar", sim: "EU-Roaming reicht meist" },
-            "niederlande": { hauptstadt: "Amsterdam", waehrungName: "Euro", waehrungCode: "EUR", steckdose: "Typ F", groessteStaedte: ["Amsterdam", "Rotterdam", "Den Haag"], zahlung: "Überwiegend Karte", preisniveau: "hoch", einreise: "Personalausweis reicht, kein Visum (EU/Schengen)", besteReisezeit: "April-Oktober", sprache: "Niederländisch", hallo: "Hallo", danke: "Dank je", notruf: "112", zeitzone: "±0h zu Deutschland", trinkgeld: "nicht Pflicht, aufrunden üblich", wasser: "Leitungswasser trinkbar", sim: "EU-Roaming reicht meist" },
-            "griechenland": { hauptstadt: "Athen", waehrungName: "Euro", waehrungCode: "EUR", steckdose: "Typ F", groessteStaedte: ["Athen", "Thessaloniki", "Patras"], zahlung: "Karte und Bargeld gemischt (auf Inseln oft Bargeld nötig)", preisniveau: "günstig bis mittel", einreise: "Personalausweis reicht, kein Visum (EU/Schengen)", besteReisezeit: "Mai-Juni & September (Sommer sehr heiß)", sprache: "Griechisch", hallo: "Yassou", danke: "Efharisto", notruf: "112", zeitzone: "+1h zu Deutschland", trinkgeld: "nicht Pflicht, 5-10% gern gesehen", wasser: "auf Inseln oft nicht trinkbar, Flasche sicherer", sim: "EU-Roaming reicht meist" },
-            "usa": { hauptstadt: "Washington, D.C.", waehrungName: "US-Dollar", waehrungCode: "USD", steckdose: "Typ A/B (Adapter nötig)", groessteStaedte: ["New York", "Los Angeles", "Chicago"], zahlung: "Überwiegend Karte", preisniveau: "hoch", einreise: "Reisepass + ESTA nötig (visumfrei bis 90 Tage)", besteReisezeit: "April-Juni & September-Oktober (regional unterschiedlich)", sprache: "Englisch", hallo: "Hello", danke: "Thank you", notruf: "911", zeitzone: "ca. -6h zu Deutschland (Ostküste)", trinkgeld: "wichtig! 15-20% erwartet", wasser: "meist trinkbar", sim: "lokale SIM/eSIM empfohlen" },
-            "grossbritannien": { hauptstadt: "London", waehrungName: "Britisches Pfund", waehrungCode: "GBP", steckdose: "Typ G (Adapter nötig)", groessteStaedte: ["London", "Birmingham", "Manchester"], zahlung: "Überwiegend Karte", preisniveau: "hoch", einreise: "Reisepass + ETA nötig (visumfrei bis 6 Monate)", besteReisezeit: "Mai-September", sprache: "Englisch", hallo: "Hello", danke: "Thank you", notruf: "999 (auch 112)", zeitzone: "-1h zu Deutschland", trinkgeld: "oft automatisch ~10-12,5%", wasser: "trinkbar", sim: "kein EU-Roaming mehr, ggf. lokale SIM" },
-            "schweiz": { hauptstadt: "Bern", waehrungName: "Schweizer Franken", waehrungCode: "CHF", steckdose: "Typ J (Adapter nötig)", groessteStaedte: ["Zürich", "Genf", "Basel"], zahlung: "Karte und Bargeld gemischt", preisniveau: "sehr hoch", einreise: "Personalausweis reicht (Schengen)", besteReisezeit: "Juni-September (Wandern), Dez-März (Ski)", sprache: "Deutsch/Französisch/Italienisch", hallo: "Grüezi", danke: "Merci", notruf: "112", zeitzone: "±0h zu Deutschland", trinkgeld: "nicht Pflicht, aufrunden üblich", wasser: "Leitungswasser sehr gut trinkbar", sim: "kein EU-Roaming (Nicht-EU!), lokale SIM sinnvoll" },
-            "türkei": { hauptstadt: "Ankara", waehrungName: "Türkische Lira", waehrungCode: "TRY", steckdose: "Typ F", groessteStaedte: ["Istanbul", "Ankara", "Izmir"], zahlung: "Karte und Bargeld gemischt", preisniveau: "günstig", einreise: "Reisepass empfohlen, visumfrei bis 90 Tage", besteReisezeit: "April-Juni & September-Oktober", sprache: "Türkisch", hallo: "Merhaba", danke: "Teşekkürler", notruf: "112", zeitzone: "+1h zu Deutschland", trinkgeld: "~10% üblich", wasser: "nicht trinkbar, Flaschenwasser", sim: "lokale SIM für längere Aufenthalte sinnvoll" },
-            "thailand": { hauptstadt: "Bangkok", waehrungName: "Thailändischer Baht", waehrungCode: "THB", steckdose: "Typ A/B/C (Adapter nötig)", groessteStaedte: ["Bangkok", "Chiang Mai", "Pattaya"], zahlung: "Bargeld wichtig (abseits Hotels)", preisniveau: "günstig", einreise: "Reisepass (mind. 6 Monate gültig), visumfrei bis 30-60 Tage", besteReisezeit: "November-Februar (Trockenzeit, kühler)", sprache: "Thai", hallo: "Sawasdee", danke: "Khob khun", notruf: "191 Polizei · 199 Feuerwehr · 1669 Rettung", zeitzone: "+5h zu Deutschland", trinkgeld: "nicht Pflicht, kleine Beträge gern gesehen", wasser: "nicht trinkbar, Flaschenwasser", sim: "günstige Touristen-SIM sehr verbreitet" },
-            "japan": { hauptstadt: "Tokio", waehrungName: "Japanischer Yen", waehrungCode: "JPY", steckdose: "Typ A/B (Adapter nötig)", groessteStaedte: ["Tokio", "Osaka", "Yokohama"], zahlung: "Bargeld weiterhin sehr wichtig", preisniveau: "mittel bis hoch", einreise: "Reisepass reicht, visumfrei bis 90 Tage", besteReisezeit: "März-Mai (Kirschblüte) & Okt-Nov (Herbstlaub)", sprache: "Japanisch", hallo: "Konnichiwa", danke: "Arigatou", notruf: "110 Polizei · 119 Feuerwehr/Rettung", zeitzone: "+7h zu Deutschland", trinkgeld: "unüblich, wird nicht erwartet", wasser: "Leitungswasser trinkbar", sim: "Pocket-WiFi oder eSIM empfohlen" },
-            "australien": { hauptstadt: "Canberra", waehrungName: "Australischer Dollar", waehrungCode: "AUD", steckdose: "Typ I (Adapter nötig)", groessteStaedte: ["Sydney", "Melbourne", "Brisbane"], zahlung: "Überwiegend Karte", preisniveau: "hoch", einreise: "Reisepass + eVisitor (online, kostenlos) nötig", besteReisezeit: "Sep-Nov & März-Mai (umgekehrte Jahreszeiten!)", sprache: "Englisch", hallo: "Hello", danke: "Thanks", notruf: "000", zeitzone: "ca. +8h zu Deutschland", trinkgeld: "unüblich, aber gern gesehen", wasser: "trinkbar", sim: "lokale SIM empfohlen" },
-            "brasilien": { hauptstadt: "Brasília", waehrungName: "Brasilianischer Real", waehrungCode: "BRL", steckdose: "Typ N (teils auch C)", groessteStaedte: ["São Paulo", "Rio de Janeiro", "Brasília"], zahlung: "Karte und Bargeld gemischt", preisniveau: "günstig bis mittel", einreise: "Reisepass reicht, visumfrei bis 90 Tage", besteReisezeit: "Mai-September (Trockenzeit)", sprache: "Portugiesisch", hallo: "Olá", danke: "Obrigado", notruf: "190 Polizei · 192 Rettung · 193 Feuerwehr", zeitzone: "ca. -5h zu Deutschland", trinkgeld: "~10%, oft schon in Rechnung", wasser: "nicht trinkbar, Flaschenwasser", sim: "lokale SIM empfohlen" },
-            "kanada": { hauptstadt: "Ottawa", waehrungName: "Kanadischer Dollar", waehrungCode: "CAD", steckdose: "Typ A/B (wie USA)", groessteStaedte: ["Toronto", "Montreal", "Vancouver"], zahlung: "Überwiegend Karte", preisniveau: "hoch", einreise: "Reisepass + eTA nötig", besteReisezeit: "Juni-September", sprache: "Englisch/Französisch", hallo: "Hello", danke: "Thank you", notruf: "911", zeitzone: "ca. -6h zu Deutschland (Osten)", trinkgeld: "wichtig! 15-18% erwartet", wasser: "trinkbar", sim: "lokale SIM/eSIM empfohlen (teures Roaming)" },
-            "china": { hauptstadt: "Peking", waehrungName: "Chinesischer Renminbi Yuan", waehrungCode: "CNY", steckdose: "Typ A/C/I", groessteStaedte: ["Shanghai", "Peking", "Guangzhou"], zahlung: "Überwiegend mobile Bezahlung/Karte, kaum Bargeld", preisniveau: "mittel", einreise: "Reisepass + meist Visum (kurze visafreie Aufenthalte möglich, vorher prüfen)", besteReisezeit: "März-Mai & September-November", sprache: "Mandarin", hallo: "Nǐ hǎo", danke: "Xièxiè", notruf: "110 Polizei · 119 Feuerwehr · 120 Rettung", zeitzone: "+6h zu Deutschland", trinkgeld: "unüblich", wasser: "nicht trinkbar, Flaschenwasser", sim: "eSIM/Rental empfohlen (Registrierung nötig)" },
-            "tschechien": { hauptstadt: "Prag", waehrungName: "Tschechische Krone", waehrungCode: "CZK", steckdose: "Typ E", groessteStaedte: ["Prag", "Brünn", "Ostrava"], zahlung: "Karte und Bargeld gemischt", preisniveau: "günstig bis mittel", einreise: "Personalausweis reicht, kein Visum (EU/Schengen)", besteReisezeit: "Mai-September", sprache: "Tschechisch", hallo: "Ahoj", danke: "Děkuji", notruf: "112", zeitzone: "±0h zu Deutschland", trinkgeld: "~10% üblich", wasser: "Leitungswasser trinkbar", sim: "EU-Roaming reicht meist" },
-            "dänemark": { hauptstadt: "Kopenhagen", waehrungName: "Dänische Krone", waehrungCode: "DKK", steckdose: "Typ C/K", groessteStaedte: ["Kopenhagen", "Aarhus", "Odense"], zahlung: "Überwiegend Karte", preisniveau: "hoch", einreise: "Personalausweis reicht, kein Visum (EU/Schengen)", besteReisezeit: "Mai-September", sprache: "Dänisch", hallo: "Hej", danke: "Tak", notruf: "112", zeitzone: "±0h zu Deutschland", trinkgeld: "unüblich, oft inklusive", wasser: "Leitungswasser trinkbar", sim: "EU-Roaming reicht meist" },
-            "hongkong": { hauptstadt: "Hongkong", waehrungName: "Hongkong-Dollar", waehrungCode: "HKD", steckdose: "Typ G (wie UK)", groessteStaedte: ["Hongkong"], zahlung: "Karte und Bargeld gemischt", preisniveau: "hoch", einreise: "Reisepass reicht, visumfrei bis 90 Tage", besteReisezeit: "Oktober-Dezember (mild, trocken)", sprache: "Kantonesisch/Englisch", hallo: "Nei hou", danke: "M̀h'gōi", notruf: "999", zeitzone: "+6h zu Deutschland", trinkgeld: "~10%, oft schon inklusive", wasser: "gilt als sicher, viele bevorzugen Flasche", sim: "günstige Touristen-SIM verbreitet" },
-            "ungarn": { hauptstadt: "Budapest", waehrungName: "Ungarischer Forint", waehrungCode: "HUF", steckdose: "Typ C/F", groessteStaedte: ["Budapest", "Debrecen", "Szeged"], zahlung: "Karte und Bargeld gemischt", preisniveau: "günstig", einreise: "Personalausweis reicht, kein Visum (EU/Schengen)", besteReisezeit: "Mai-September", sprache: "Ungarisch", hallo: "Szia", danke: "Köszönöm", notruf: "112", zeitzone: "±0h zu Deutschland", trinkgeld: "~10% üblich", wasser: "Leitungswasser trinkbar", sim: "EU-Roaming reicht meist" },
-            "indonesien": { hauptstadt: "Jakarta", waehrungName: "Indonesische Rupiah", waehrungCode: "IDR", steckdose: "Typ C/F", groessteStaedte: ["Jakarta", "Surabaya", "Bandung"], zahlung: "Bargeld wichtig", preisniveau: "günstig", einreise: "Reisepass + Visa on Arrival/e-VOA nötig", besteReisezeit: "Mai-September (Trockenzeit)", sprache: "Indonesisch", hallo: "Halo", danke: "Terima kasih", notruf: "110 Polizei · 113 Feuerwehr · 118/119 Rettung", zeitzone: "+5h zu Deutschland", trinkgeld: "nicht Pflicht, gern gesehen", wasser: "nicht trinkbar, Flaschenwasser", sim: "günstige lokale SIM empfohlen" },
-            "israel": { hauptstadt: "Jerusalem", waehrungName: "Israelischer Schekel", waehrungCode: "ILS", steckdose: "Typ C/H (Adapter nötig)", groessteStaedte: ["Jerusalem", "Tel Aviv", "Haifa"], zahlung: "Karte und Bargeld gemischt", preisniveau: "hoch", einreise: "Reisepass reicht, visumfrei bis 90 Tage", besteReisezeit: "März-Mai & September-November", sprache: "Hebräisch", hallo: "Shalom", danke: "Toda", notruf: "100 Polizei · 101 Rettung · 102 Feuerwehr", zeitzone: "+1h zu Deutschland", trinkgeld: "~10-15% erwartet", wasser: "trinkbar", sim: "lokale SIM/eSIM empfohlen" },
-            "indien": { hauptstadt: "Neu-Delhi", waehrungName: "Indische Rupie", waehrungCode: "INR", steckdose: "Typ C/D/M (Adapter nötig)", groessteStaedte: ["Mumbai", "Delhi", "Bangalore"], zahlung: "Bargeld weiterhin wichtig, Karte wächst", preisniveau: "günstig", einreise: "Reisepass + e-Visa nötig", besteReisezeit: "Oktober-März (kühler, trocken)", sprache: "Hindi (+ viele Regionalsprachen)", hallo: "Namaste", danke: "Dhanyavaad", notruf: "112", zeitzone: "ca. +3h30 zu Deutschland", trinkgeld: "nicht Pflicht, ~10% üblich", wasser: "nicht trinkbar, Flaschenwasser", sim: "lokale SIM (Ausweis/Visum nötig)" },
-            "island": { hauptstadt: "Reykjavík", waehrungName: "Isländische Krone", waehrungCode: "ISK", steckdose: "Typ C/F", groessteStaedte: ["Reykjavík", "Kópavogur", "Akureyri"], zahlung: "Überwiegend Karte (Bargeld kaum nötig)", preisniveau: "sehr hoch", einreise: "Personalausweis reicht (Schengen)", besteReisezeit: "Juni-August (Mitternachtssonne)", sprache: "Isländisch", hallo: "Halló", danke: "Takk", notruf: "112", zeitzone: "ca. -2h zu Deutschland", trinkgeld: "unüblich, Service inklusive", wasser: "sehr gut trinkbar", sim: "EU-Roaming meist nicht enthalten, prüfen" },
-            "südkorea": { hauptstadt: "Seoul", waehrungName: "Südkoreanischer Won", waehrungCode: "KRW", steckdose: "Typ C/F", groessteStaedte: ["Seoul", "Busan", "Incheon"], zahlung: "Überwiegend Karte", preisniveau: "mittel", einreise: "Reisepass + K-ETA nötig, visumfrei bis 90 Tage", besteReisezeit: "März-Mai & September-November", sprache: "Koreanisch", hallo: "Annyeonghaseyo", danke: "Gamsahamnida", notruf: "112 Polizei · 119 Feuerwehr/Rettung", zeitzone: "+7h zu Deutschland", trinkgeld: "unüblich", wasser: "gilt als sicher, wird oft gefiltert getrunken", sim: "eSIM/Pocket-WiFi verbreitet" },
-            "mexiko": { hauptstadt: "Mexiko-Stadt", waehrungName: "Mexikanischer Peso", waehrungCode: "MXN", steckdose: "Typ A/B (wie USA)", groessteStaedte: ["Mexiko-Stadt", "Guadalajara", "Monterrey"], zahlung: "Karte und Bargeld gemischt", preisniveau: "günstig bis mittel", einreise: "Reisepass reicht, visumfrei bis 180 Tage", besteReisezeit: "November-April (Trockenzeit)", sprache: "Spanisch", hallo: "Hola", danke: "Gracias", notruf: "911", zeitzone: "ca. -8h zu Deutschland", trinkgeld: "~10-15% erwartet", wasser: "nicht trinkbar, Flaschenwasser", sim: "lokale SIM empfohlen" },
-            "malaysia": { hauptstadt: "Kuala Lumpur", waehrungName: "Malaysischer Ringgit", waehrungCode: "MYR", steckdose: "Typ G (Adapter nötig)", groessteStaedte: ["Kuala Lumpur", "George Town", "Johor Bahru"], zahlung: "Karte und Bargeld gemischt", preisniveau: "günstig", einreise: "Reisepass reicht, visumfrei bis 90 Tage", besteReisezeit: "Dez-Feb (regional unterschiedlich, weniger Regen)", sprache: "Malaiisch", hallo: "Halo", danke: "Terima kasih", notruf: "999", zeitzone: "+6h zu Deutschland", trinkgeld: "unüblich, oft Service inklusive", wasser: "besser Flaschenwasser", sim: "günstige lokale SIM verbreitet" },
-            "norwegen": { hauptstadt: "Oslo", waehrungName: "Norwegische Krone", waehrungCode: "NOK", steckdose: "Typ C/F", groessteStaedte: ["Oslo", "Bergen", "Trondheim"], zahlung: "Überwiegend Karte (Bargeld kaum nötig)", preisniveau: "sehr hoch", einreise: "Personalausweis reicht (Schengen/EWR)", besteReisezeit: "Juni-August (Mitternachtssonne), Winter für Nordlicht", sprache: "Norwegisch", hallo: "Hei", danke: "Takk", notruf: "112", zeitzone: "±0h zu Deutschland", trinkgeld: "unüblich, aufrunden reicht", wasser: "sehr gut trinkbar", sim: "meist in EU-Roaming enthalten" },
-            "neuseeland": { hauptstadt: "Wellington", waehrungName: "Neuseeland-Dollar", waehrungCode: "NZD", steckdose: "Typ I (Adapter nötig)", groessteStaedte: ["Auckland", "Wellington", "Christchurch"], zahlung: "Überwiegend Karte", preisniveau: "hoch", einreise: "Reisepass + NZeTA nötig", besteReisezeit: "Dez-Feb (Sommer, umgekehrte Jahreszeiten!)", sprache: "Englisch", hallo: "Hello", danke: "Thanks", notruf: "111", zeitzone: "ca. +10h zu Deutschland", trinkgeld: "unüblich", wasser: "trinkbar", sim: "lokale SIM empfohlen" },
-            "philippinen": { hauptstadt: "Manila", waehrungName: "Philippinischer Peso", waehrungCode: "PHP", steckdose: "Typ A/B/C (Adapter nötig)", groessteStaedte: ["Manila", "Quezon City", "Davao City"], zahlung: "Bargeld wichtig", preisniveau: "günstig", einreise: "Reisepass reicht, visumfrei bis 30 Tage", besteReisezeit: "Dezember-Mai (Trockenzeit)", sprache: "Filipino/Englisch", hallo: "Kumusta", danke: "Salamat", notruf: "911", zeitzone: "+6h zu Deutschland", trinkgeld: "~10%, oft schon inklusive", wasser: "nicht trinkbar, Flaschenwasser", sim: "günstige lokale SIM empfohlen" },
-            "polen": { hauptstadt: "Warschau", waehrungName: "Polnischer Złoty", waehrungCode: "PLN", steckdose: "Typ C/E", groessteStaedte: ["Warschau", "Krakau", "Łódź"], zahlung: "Karte und Bargeld gemischt", preisniveau: "günstig bis mittel", einreise: "Personalausweis reicht, kein Visum (EU/Schengen)", besteReisezeit: "Mai-September", sprache: "Polnisch", hallo: "Cześć", danke: "Dziękuję", notruf: "112", zeitzone: "±0h zu Deutschland", trinkgeld: "~10% üblich", wasser: "Leitungswasser meist trinkbar", sim: "EU-Roaming reicht meist" },
-            "rumänien": { hauptstadt: "Bukarest", waehrungName: "Rumänischer Leu", waehrungCode: "RON", steckdose: "Typ C/F", groessteStaedte: ["Bukarest", "Cluj-Napoca", "Timișoara"], zahlung: "Karte und Bargeld gemischt", preisniveau: "günstig", einreise: "Personalausweis reicht, kein Visum (EU/Schengen)", besteReisezeit: "Mai-September", sprache: "Rumänisch", hallo: "Bună", danke: "Mulțumesc", notruf: "112", zeitzone: "+1h zu Deutschland", trinkgeld: "~10% üblich", wasser: "besser Flaschenwasser", sim: "EU-Roaming reicht meist" },
-            "schweden": { hauptstadt: "Stockholm", waehrungName: "Schwedische Krone", waehrungCode: "SEK", steckdose: "Typ C/F", groessteStaedte: ["Stockholm", "Göteborg", "Malmö"], zahlung: "Überwiegend Karte (Bargeld kaum nötig)", preisniveau: "hoch", einreise: "Personalausweis reicht, kein Visum (EU/Schengen)", besteReisezeit: "Juni-August", sprache: "Schwedisch", hallo: "Hej", danke: "Tack", notruf: "112", zeitzone: "±0h zu Deutschland", trinkgeld: "unüblich, aufrunden reicht", wasser: "sehr gut trinkbar", sim: "EU-Roaming reicht meist" },
-            "singapur": { hauptstadt: "Singapur", waehrungName: "Singapur-Dollar", waehrungCode: "SGD", steckdose: "Typ G (Adapter nötig)", groessteStaedte: ["Singapur (Stadtstaat)"], zahlung: "Überwiegend Karte", preisniveau: "hoch", einreise: "Reisepass reicht, visumfrei bis 90 Tage", besteReisezeit: "ganzjährig warm, Feb-April etwas trockener", sprache: "Englisch/Mandarin/Malaiisch/Tamil", hallo: "Hello", danke: "Thank you", notruf: "999 Polizei · 995 Feuerwehr/Rettung", zeitzone: "+6h zu Deutschland", trinkgeld: "unüblich, oft nicht erwünscht", wasser: "trinkbar", sim: "günstige Touristen-SIM verbreitet" },
-            "südafrika": { hauptstadt: "Pretoria", waehrungName: "Südafrikanischer Rand", waehrungCode: "ZAR", steckdose: "Typ M (teils auch N, Adapter nötig)", groessteStaedte: ["Johannesburg", "Kapstadt", "Durban"], zahlung: "Karte und Bargeld gemischt", preisniveau: "günstig bis mittel", einreise: "Reisepass reicht, visumfrei bis 90 Tage", besteReisezeit: "September-November & März-Mai", sprache: "Englisch (+10 weitere)", hallo: "Hello", danke: "Thank you", notruf: "10111 Polizei · 10177 Rettung (o. 112 mobil)", zeitzone: "±0h zu Deutschland", trinkgeld: "~10-15% erwartet", wasser: "in Städten meist trinkbar, auf dem Land vorsichtig sein", sim: "lokale SIM empfohlen" }
+            "frankreich": { hauptstadt: "Paris", waehrungName: "Euro", waehrungCode: "EUR", steckdose: "Typ E (wie Deutschland)", groessteStaedte: ["Paris", "Marseille", "Lyon"], zahlung: "Karte weit verbreitet", preisniveau: "mittel bis hoch", einreise: "Personalausweis reicht, kein Visum (EU/Schengen)", besteReisezeit: "Mai-Juni & September", sprache: "Französisch", notruf: "112", zeitzone: "±0h zu Deutschland", sim: "EU-Roaming reicht meist" },
+            "italien": { hauptstadt: "Rom", waehrungName: "Euro", waehrungCode: "EUR", steckdose: "Typ F/L", groessteStaedte: ["Rom", "Mailand", "Neapel"], zahlung: "Karte und Bargeld gemischt", preisniveau: "mittel", einreise: "Personalausweis reicht, kein Visum (EU/Schengen)", besteReisezeit: "April-Juni & September-Oktober", sprache: "Italienisch", notruf: "112", zeitzone: "±0h zu Deutschland", sim: "EU-Roaming reicht meist" },
+            "spanien": { hauptstadt: "Madrid", waehrungName: "Euro", waehrungCode: "EUR", steckdose: "Typ F", groessteStaedte: ["Madrid", "Barcelona", "Valencia"], zahlung: "Karte und Bargeld gemischt", preisniveau: "mittel", einreise: "Personalausweis reicht, kein Visum (EU/Schengen)", besteReisezeit: "April-Juni & September-Oktober", sprache: "Spanisch", notruf: "112", zeitzone: "±0h zu Deutschland", sim: "EU-Roaming reicht meist" },
+            "deutschland": { hauptstadt: "Berlin", waehrungName: "Euro", waehrungCode: "EUR", steckdose: "Typ F", groessteStaedte: ["Berlin", "Hamburg", "München"], zahlung: "Bargeld noch wichtig, Karte wächst", preisniveau: "mittel bis hoch", einreise: "Personalausweis reicht", besteReisezeit: "Mai-September", sprache: "Deutsch", notruf: "112", zeitzone: "±0h", sim: "kein Roaming nötig" },
+            "österreich": { hauptstadt: "Wien", waehrungName: "Euro", waehrungCode: "EUR", steckdose: "Typ F", groessteStaedte: ["Wien", "Graz", "Linz"], zahlung: "Karte und Bargeld gemischt", preisniveau: "mittel bis hoch", einreise: "Personalausweis reicht, kein Visum (EU/Schengen)", besteReisezeit: "Juni-September (Sommer), Dez-März (Ski)", sprache: "Deutsch", notruf: "112", zeitzone: "±0h zu Deutschland", sim: "EU-Roaming reicht meist" },
+            "niederlande": { hauptstadt: "Amsterdam", waehrungName: "Euro", waehrungCode: "EUR", steckdose: "Typ F", groessteStaedte: ["Amsterdam", "Rotterdam", "Den Haag"], zahlung: "Überwiegend Karte", preisniveau: "hoch", einreise: "Personalausweis reicht, kein Visum (EU/Schengen)", besteReisezeit: "April-Oktober", sprache: "Niederländisch", notruf: "112", zeitzone: "±0h zu Deutschland", sim: "EU-Roaming reicht meist" },
+            "griechenland": { hauptstadt: "Athen", waehrungName: "Euro", waehrungCode: "EUR", steckdose: "Typ F", groessteStaedte: ["Athen", "Thessaloniki", "Patras"], zahlung: "Karte und Bargeld gemischt (auf Inseln oft Bargeld nötig)", preisniveau: "günstig bis mittel", einreise: "Personalausweis reicht, kein Visum (EU/Schengen)", besteReisezeit: "Mai-Juni & September (Sommer sehr heiß)", sprache: "Griechisch", notruf: "112", zeitzone: "+1h zu Deutschland", sim: "EU-Roaming reicht meist" },
+            "usa": { hauptstadt: "Washington, D.C.", waehrungName: "US-Dollar", waehrungCode: "USD", steckdose: "Typ A/B (Adapter nötig)", groessteStaedte: ["New York", "Los Angeles", "Chicago"], zahlung: "Überwiegend Karte", preisniveau: "hoch", einreise: "Reisepass + ESTA nötig (visumfrei bis 90 Tage)", besteReisezeit: "April-Juni & September-Oktober (regional unterschiedlich)", sprache: "Englisch", notruf: "911", zeitzone: "ca. -6h zu Deutschland (Ostküste)", sim: "lokale SIM/eSIM empfohlen" },
+            "grossbritannien": { hauptstadt: "London", waehrungName: "Britisches Pfund", waehrungCode: "GBP", steckdose: "Typ G (Adapter nötig)", groessteStaedte: ["London", "Birmingham", "Manchester"], zahlung: "Überwiegend Karte", preisniveau: "hoch", einreise: "Reisepass + ETA nötig (visumfrei bis 6 Monate)", besteReisezeit: "Mai-September", sprache: "Englisch", notruf: "999 (auch 112)", zeitzone: "-1h zu Deutschland", sim: "kein EU-Roaming mehr, ggf. lokale SIM" },
+            "schweiz": { hauptstadt: "Bern", waehrungName: "Schweizer Franken", waehrungCode: "CHF", steckdose: "Typ J (Adapter nötig)", groessteStaedte: ["Zürich", "Genf", "Basel"], zahlung: "Karte und Bargeld gemischt", preisniveau: "sehr hoch", einreise: "Personalausweis reicht (Schengen)", besteReisezeit: "Juni-September (Wandern), Dez-März (Ski)", sprache: "Deutsch/Französisch/Italienisch", notruf: "112", zeitzone: "±0h zu Deutschland", sim: "kein EU-Roaming (Nicht-EU!), lokale SIM sinnvoll" },
+            "türkei": { hauptstadt: "Ankara", waehrungName: "Türkische Lira", waehrungCode: "TRY", steckdose: "Typ F", groessteStaedte: ["Istanbul", "Ankara", "Izmir"], zahlung: "Karte und Bargeld gemischt", preisniveau: "günstig", einreise: "Reisepass empfohlen, visumfrei bis 90 Tage", besteReisezeit: "April-Juni & September-Oktober", sprache: "Türkisch", notruf: "112", zeitzone: "+1h zu Deutschland", sim: "lokale SIM für längere Aufenthalte sinnvoll" },
+            "thailand": { hauptstadt: "Bangkok", waehrungName: "Thailändischer Baht", waehrungCode: "THB", steckdose: "Typ A/B/C (Adapter nötig)", groessteStaedte: ["Bangkok", "Chiang Mai", "Pattaya"], zahlung: "Bargeld wichtig (abseits Hotels)", preisniveau: "günstig", einreise: "Reisepass (mind. 6 Monate gültig), visumfrei bis 30-60 Tage", besteReisezeit: "November-Februar (Trockenzeit, kühler)", sprache: "Thai", notruf: "191 Polizei · 199 Feuerwehr · 1669 Rettung", zeitzone: "+5h zu Deutschland", sim: "günstige Touristen-SIM sehr verbreitet" },
+            "japan": { hauptstadt: "Tokio", waehrungName: "Japanischer Yen", waehrungCode: "JPY", steckdose: "Typ A/B (Adapter nötig)", groessteStaedte: ["Tokio", "Osaka", "Yokohama"], zahlung: "Bargeld weiterhin sehr wichtig", preisniveau: "mittel bis hoch", einreise: "Reisepass reicht, visumfrei bis 90 Tage", besteReisezeit: "März-Mai (Kirschblüte) & Okt-Nov (Herbstlaub)", sprache: "Japanisch", notruf: "110 Polizei · 119 Feuerwehr/Rettung", zeitzone: "+7h zu Deutschland", sim: "Pocket-WiFi oder eSIM empfohlen" },
+            "australien": { hauptstadt: "Canberra", waehrungName: "Australischer Dollar", waehrungCode: "AUD", steckdose: "Typ I (Adapter nötig)", groessteStaedte: ["Sydney", "Melbourne", "Brisbane"], zahlung: "Überwiegend Karte", preisniveau: "hoch", einreise: "Reisepass + eVisitor (online, kostenlos) nötig", besteReisezeit: "Sep-Nov & März-Mai (umgekehrte Jahreszeiten!)", sprache: "Englisch", notruf: "000", zeitzone: "ca. +8h zu Deutschland", sim: "lokale SIM empfohlen" },
+            "brasilien": { hauptstadt: "Brasília", waehrungName: "Brasilianischer Real", waehrungCode: "BRL", steckdose: "Typ N (teils auch C)", groessteStaedte: ["São Paulo", "Rio de Janeiro", "Brasília"], zahlung: "Karte und Bargeld gemischt", preisniveau: "günstig bis mittel", einreise: "Reisepass reicht, visumfrei bis 90 Tage", besteReisezeit: "Mai-September (Trockenzeit)", sprache: "Portugiesisch", notruf: "190 Polizei · 192 Rettung · 193 Feuerwehr", zeitzone: "ca. -5h zu Deutschland", sim: "lokale SIM empfohlen" },
+            "kanada": { hauptstadt: "Ottawa", waehrungName: "Kanadischer Dollar", waehrungCode: "CAD", steckdose: "Typ A/B (wie USA)", groessteStaedte: ["Toronto", "Montreal", "Vancouver"], zahlung: "Überwiegend Karte", preisniveau: "hoch", einreise: "Reisepass + eTA nötig", besteReisezeit: "Juni-September", sprache: "Englisch/Französisch", notruf: "911", zeitzone: "ca. -6h zu Deutschland (Osten)", sim: "lokale SIM/eSIM empfohlen (teures Roaming)" },
+            "china": { hauptstadt: "Peking", waehrungName: "Chinesischer Renminbi Yuan", waehrungCode: "CNY", steckdose: "Typ A/C/I", groessteStaedte: ["Shanghai", "Peking", "Guangzhou"], zahlung: "Überwiegend mobile Bezahlung/Karte, kaum Bargeld", preisniveau: "mittel", einreise: "Reisepass + meist Visum (kurze visafreie Aufenthalte möglich, vorher prüfen)", besteReisezeit: "März-Mai & September-November", sprache: "Mandarin", notruf: "110 Polizei · 119 Feuerwehr · 120 Rettung", zeitzone: "+6h zu Deutschland", sim: "eSIM/Rental empfohlen (Registrierung nötig)" },
+            "tschechien": { hauptstadt: "Prag", waehrungName: "Tschechische Krone", waehrungCode: "CZK", steckdose: "Typ E", groessteStaedte: ["Prag", "Brünn", "Ostrava"], zahlung: "Karte und Bargeld gemischt", preisniveau: "günstig bis mittel", einreise: "Personalausweis reicht, kein Visum (EU/Schengen)", besteReisezeit: "Mai-September", sprache: "Tschechisch", notruf: "112", zeitzone: "±0h zu Deutschland", sim: "EU-Roaming reicht meist" },
+            "dänemark": { hauptstadt: "Kopenhagen", waehrungName: "Dänische Krone", waehrungCode: "DKK", steckdose: "Typ C/K", groessteStaedte: ["Kopenhagen", "Aarhus", "Odense"], zahlung: "Überwiegend Karte", preisniveau: "hoch", einreise: "Personalausweis reicht, kein Visum (EU/Schengen)", besteReisezeit: "Mai-September", sprache: "Dänisch", notruf: "112", zeitzone: "±0h zu Deutschland", sim: "EU-Roaming reicht meist" },
+            "hongkong": { hauptstadt: "Hongkong", waehrungName: "Hongkong-Dollar", waehrungCode: "HKD", steckdose: "Typ G (wie UK)", groessteStaedte: ["Hongkong"], zahlung: "Karte und Bargeld gemischt", preisniveau: "hoch", einreise: "Reisepass reicht, visumfrei bis 90 Tage", besteReisezeit: "Oktober-Dezember (mild, trocken)", sprache: "Kantonesisch/Englisch", notruf: "999", zeitzone: "+6h zu Deutschland", sim: "günstige Touristen-SIM verbreitet" },
+            "ungarn": { hauptstadt: "Budapest", waehrungName: "Ungarischer Forint", waehrungCode: "HUF", steckdose: "Typ C/F", groessteStaedte: ["Budapest", "Debrecen", "Szeged"], zahlung: "Karte und Bargeld gemischt", preisniveau: "günstig", einreise: "Personalausweis reicht, kein Visum (EU/Schengen)", besteReisezeit: "Mai-September", sprache: "Ungarisch", notruf: "112", zeitzone: "±0h zu Deutschland", sim: "EU-Roaming reicht meist" },
+            "indonesien": { hauptstadt: "Jakarta", waehrungName: "Indonesische Rupiah", waehrungCode: "IDR", steckdose: "Typ C/F", groessteStaedte: ["Jakarta", "Surabaya", "Bandung"], zahlung: "Bargeld wichtig", preisniveau: "günstig", einreise: "Reisepass + Visa on Arrival/e-VOA nötig", besteReisezeit: "Mai-September (Trockenzeit)", sprache: "Indonesisch", notruf: "110 Polizei · 113 Feuerwehr · 118/119 Rettung", zeitzone: "+5h zu Deutschland", sim: "günstige lokale SIM empfohlen" },
+            "israel": { hauptstadt: "Jerusalem", waehrungName: "Israelischer Schekel", waehrungCode: "ILS", steckdose: "Typ C/H (Adapter nötig)", groessteStaedte: ["Jerusalem", "Tel Aviv", "Haifa"], zahlung: "Karte und Bargeld gemischt", preisniveau: "hoch", einreise: "Reisepass reicht, visumfrei bis 90 Tage", besteReisezeit: "März-Mai & September-November", sprache: "Hebräisch", notruf: "100 Polizei · 101 Rettung · 102 Feuerwehr", zeitzone: "+1h zu Deutschland", sim: "lokale SIM/eSIM empfohlen" },
+            "indien": { hauptstadt: "Neu-Delhi", waehrungName: "Indische Rupie", waehrungCode: "INR", steckdose: "Typ C/D/M (Adapter nötig)", groessteStaedte: ["Mumbai", "Delhi", "Bangalore"], zahlung: "Bargeld weiterhin wichtig, Karte wächst", preisniveau: "günstig", einreise: "Reisepass + e-Visa nötig", besteReisezeit: "Oktober-März (kühler, trocken)", sprache: "Hindi (+ viele Regionalsprachen)", notruf: "112", zeitzone: "ca. +3h30 zu Deutschland", sim: "lokale SIM (Ausweis/Visum nötig)" },
+            "island": { hauptstadt: "Reykjavík", waehrungName: "Isländische Krone", waehrungCode: "ISK", steckdose: "Typ C/F", groessteStaedte: ["Reykjavík", "Kópavogur", "Akureyri"], zahlung: "Überwiegend Karte (Bargeld kaum nötig)", preisniveau: "sehr hoch", einreise: "Personalausweis reicht (Schengen)", besteReisezeit: "Juni-August (Mitternachtssonne)", sprache: "Isländisch", notruf: "112", zeitzone: "ca. -2h zu Deutschland", sim: "EU-Roaming meist nicht enthalten, prüfen" },
+            "südkorea": { hauptstadt: "Seoul", waehrungName: "Südkoreanischer Won", waehrungCode: "KRW", steckdose: "Typ C/F", groessteStaedte: ["Seoul", "Busan", "Incheon"], zahlung: "Überwiegend Karte", preisniveau: "mittel", einreise: "Reisepass + K-ETA nötig, visumfrei bis 90 Tage", besteReisezeit: "März-Mai & September-November", sprache: "Koreanisch", notruf: "112 Polizei · 119 Feuerwehr/Rettung", zeitzone: "+7h zu Deutschland", sim: "eSIM/Pocket-WiFi verbreitet" },
+            "mexiko": { hauptstadt: "Mexiko-Stadt", waehrungName: "Mexikanischer Peso", waehrungCode: "MXN", steckdose: "Typ A/B (wie USA)", groessteStaedte: ["Mexiko-Stadt", "Guadalajara", "Monterrey"], zahlung: "Karte und Bargeld gemischt", preisniveau: "günstig bis mittel", einreise: "Reisepass reicht, visumfrei bis 180 Tage", besteReisezeit: "November-April (Trockenzeit)", sprache: "Spanisch", notruf: "911", zeitzone: "ca. -8h zu Deutschland", sim: "lokale SIM empfohlen" },
+            "malaysia": { hauptstadt: "Kuala Lumpur", waehrungName: "Malaysischer Ringgit", waehrungCode: "MYR", steckdose: "Typ G (Adapter nötig)", groessteStaedte: ["Kuala Lumpur", "George Town", "Johor Bahru"], zahlung: "Karte und Bargeld gemischt", preisniveau: "günstig", einreise: "Reisepass reicht, visumfrei bis 90 Tage", besteReisezeit: "Dez-Feb (regional unterschiedlich, weniger Regen)", sprache: "Malaiisch", notruf: "999", zeitzone: "+6h zu Deutschland", sim: "günstige lokale SIM verbreitet" },
+            "norwegen": { hauptstadt: "Oslo", waehrungName: "Norwegische Krone", waehrungCode: "NOK", steckdose: "Typ C/F", groessteStaedte: ["Oslo", "Bergen", "Trondheim"], zahlung: "Überwiegend Karte (Bargeld kaum nötig)", preisniveau: "sehr hoch", einreise: "Personalausweis reicht (Schengen/EWR)", besteReisezeit: "Juni-August (Mitternachtssonne), Winter für Nordlicht", sprache: "Norwegisch", notruf: "112", zeitzone: "±0h zu Deutschland", sim: "meist in EU-Roaming enthalten" },
+            "neuseeland": { hauptstadt: "Wellington", waehrungName: "Neuseeland-Dollar", waehrungCode: "NZD", steckdose: "Typ I (Adapter nötig)", groessteStaedte: ["Auckland", "Wellington", "Christchurch"], zahlung: "Überwiegend Karte", preisniveau: "hoch", einreise: "Reisepass + NZeTA nötig", besteReisezeit: "Dez-Feb (Sommer, umgekehrte Jahreszeiten!)", sprache: "Englisch", notruf: "111", zeitzone: "ca. +10h zu Deutschland", sim: "lokale SIM empfohlen" },
+            "philippinen": { hauptstadt: "Manila", waehrungName: "Philippinischer Peso", waehrungCode: "PHP", steckdose: "Typ A/B/C (Adapter nötig)", groessteStaedte: ["Manila", "Quezon City", "Davao City"], zahlung: "Bargeld wichtig", preisniveau: "günstig", einreise: "Reisepass reicht, visumfrei bis 30 Tage", besteReisezeit: "Dezember-Mai (Trockenzeit)", sprache: "Filipino/Englisch", notruf: "911", zeitzone: "+6h zu Deutschland", sim: "günstige lokale SIM empfohlen" },
+            "polen": { hauptstadt: "Warschau", waehrungName: "Polnischer Złoty", waehrungCode: "PLN", steckdose: "Typ C/E", groessteStaedte: ["Warschau", "Krakau", "Łódź"], zahlung: "Karte und Bargeld gemischt", preisniveau: "günstig bis mittel", einreise: "Personalausweis reicht, kein Visum (EU/Schengen)", besteReisezeit: "Mai-September", sprache: "Polnisch", notruf: "112", zeitzone: "±0h zu Deutschland", sim: "EU-Roaming reicht meist" },
+            "rumänien": { hauptstadt: "Bukarest", waehrungName: "Rumänischer Leu", waehrungCode: "RON", steckdose: "Typ C/F", groessteStaedte: ["Bukarest", "Cluj-Napoca", "Timișoara"], zahlung: "Karte und Bargeld gemischt", preisniveau: "günstig", einreise: "Personalausweis reicht, kein Visum (EU/Schengen)", besteReisezeit: "Mai-September", sprache: "Rumänisch", notruf: "112", zeitzone: "+1h zu Deutschland", sim: "EU-Roaming reicht meist" },
+            "schweden": { hauptstadt: "Stockholm", waehrungName: "Schwedische Krone", waehrungCode: "SEK", steckdose: "Typ C/F", groessteStaedte: ["Stockholm", "Göteborg", "Malmö"], zahlung: "Überwiegend Karte (Bargeld kaum nötig)", preisniveau: "hoch", einreise: "Personalausweis reicht, kein Visum (EU/Schengen)", besteReisezeit: "Juni-August", sprache: "Schwedisch", notruf: "112", zeitzone: "±0h zu Deutschland", sim: "EU-Roaming reicht meist" },
+            "singapur": { hauptstadt: "Singapur", waehrungName: "Singapur-Dollar", waehrungCode: "SGD", steckdose: "Typ G (Adapter nötig)", groessteStaedte: ["Singapur (Stadtstaat)"], zahlung: "Überwiegend Karte", preisniveau: "hoch", einreise: "Reisepass reicht, visumfrei bis 90 Tage", besteReisezeit: "ganzjährig warm, Feb-April etwas trockener", sprache: "Englisch/Mandarin/Malaiisch/Tamil", notruf: "999 Polizei · 995 Feuerwehr/Rettung", zeitzone: "+6h zu Deutschland", sim: "günstige Touristen-SIM verbreitet" },
+            "südafrika": { hauptstadt: "Pretoria", waehrungName: "Südafrikanischer Rand", waehrungCode: "ZAR", steckdose: "Typ M (teils auch N, Adapter nötig)", groessteStaedte: ["Johannesburg", "Kapstadt", "Durban"], zahlung: "Karte und Bargeld gemischt", preisniveau: "günstig bis mittel", einreise: "Reisepass reicht, visumfrei bis 90 Tage", besteReisezeit: "September-November & März-Mai", sprache: "Englisch (+10 weitere)", notruf: "10111 Polizei · 10177 Rettung (o. 112 mobil)", zeitzone: "±0h zu Deutschland", sim: "lokale SIM empfohlen" }
         };
 
         laenderInfo["uk"] = laenderInfo["grossbritannien"];
@@ -669,31 +1281,31 @@
 
             let staedteHTML = "";
             for (let stadt of info.groessteStaedte) {
-                let stadtLink = "https://www.google.com/search?q=Sehenswürdigkeiten+Öffnungszeiten+" + stadt;
-                staedteHTML = staedteHTML + '<a href="' + stadtLink + '" target="_blank">' + stadt + "</a>, ";
+                let stadtLink = suchLink("Sehenswürdigkeiten Öffnungszeiten " + stadt, "Sights opening hours " + stadt);
+                staedteHTML = staedteHTML + '<a href="' + stadtLink + '" target="_blank">' + tr(stadt) + "</a>, ";
             }
             staedteHTML = staedteHTML.slice(0, -2);
 
-            let basisHTML = '<p style="grid-column: 1 / -1; margin: 0 0 4px 0; font-size: 0.8em; opacity: 0.75;">ℹ️ Länderinfos sind allgemeine Richtwerte, keine geprüften Fakten – bei Einreise/Impfungen bitte offizielle Quellen prüfen (Link unten).</p><div class="stat-grid">'
-                + '<div class="stat-chip"><strong>🌐 Hauptstadt</strong>' + info.hauptstadt + '</div>'
-                + '<div class="stat-chip"><strong>💶 Währung</strong>' + info.waehrungName + ' (' + info.waehrungCode + ')</div>'
-                + '<div class="stat-chip"><strong>🔌 Steckdose</strong>' + info.steckdose + '</div>'
-                + '<div class="stat-chip"><strong>💳 Bezahlen</strong>' + info.zahlung + '</div>'
-                + '<div class="stat-chip"><strong>💰 Preisniveau (Hotel/Essen)</strong>' + info.preisniveau + '</div>'
-                + '<div class="stat-chip"><strong>🛂 Einreise</strong>' + info.einreise + '</div>'
-                + '<div class="stat-chip"><strong>☀️ Beste Reisezeit</strong>' + info.besteReisezeit + '</div>'
-                + '<div class="stat-chip"><strong>🗣️ Sprache</strong>' + info.sprache + '</div>'
-                + '<div class="stat-chip"><strong>🚨 Notruf</strong>' + info.notruf + '</div>'
-                + '<div class="stat-chip"><strong>🕒 Zeitzone</strong>' + info.zeitzone + '</div>'
-                + '<div class="stat-chip"><strong>📶 SIM-Karte</strong>' + info.sim + '</div>'
-                + '<div class="stat-chip"><strong>🏙️ Größte Städte</strong>' + staedteHTML + '</div>';
+            let basisHTML = '<div class="stat-grid">'
+                + '<div class="stat-chip"><strong>' + t("spalteHauptstadt") + '</strong>' + tr(info.hauptstadt) + '</div>'
+                + '<div class="stat-chip"><strong>' + t("spalteWaehrung") + '</strong>' + info.waehrungName + ' (' + info.waehrungCode + ')</div>'
+                + '<div class="stat-chip"><strong>' + t("spalteSteckdose") + '</strong>' + info.steckdose + '</div>'
+                + '<div class="stat-chip"><strong>' + t("spalteBezahlen") + '</strong>' + tr(info.zahlung) + '</div>'
+                + '<div class="stat-chip"><strong>' + t("spaltePreisniveau") + '</strong>' + tr(info.preisniveau) + '</div>'
+                + '<div class="stat-chip"><strong>' + t("spalteEinreise") + '</strong>' + tr(info.einreise) + '</div>'
+                + '<div class="stat-chip"><strong>' + t("spalteBesteReisezeit") + '</strong>' + tr(info.besteReisezeit) + '</div>'
+                + '<div class="stat-chip"><strong>' + t("spalteSprache") + '</strong>' + tr(info.sprache) + '</div>'
+                + '<div class="stat-chip"><strong>' + t("spalteNotruf") + '</strong>' + info.notruf + '</div>'
+                + '<div class="stat-chip"><strong>' + t("spalteZeitzone") + '</strong>' + tr(info.zeitzone) + '</div>'
+                + '<div class="stat-chip"><strong>' + t("spalteSim") + '</strong>' + tr(info.sim) + '</div>'
+                + '<div class="stat-chip"><strong>' + t("spalteStaedte") + '</strong>' + staedteHTML + '</div>';
 
             if (info.waehrungCode === "EUR") {
-                laenderDiv.innerHTML = basisHTML + '<div class="stat-chip"><strong>💱 Wechselkurs</strong>Gleiche Währung wie in Deutschland</div></div>';
+                laenderDiv.innerHTML = basisHTML + '<div class="stat-chip"><strong>' + t("wechselkursLabel") + '</strong>' + t("gleicheWaehrung") + '</div></div>';
                 return;
             }
 
-            laenderDiv.innerHTML = basisHTML + '<div class="stat-chip"><strong>💱 Wechselkurs</strong>wird geladen...</div></div>';
+            laenderDiv.innerHTML = basisHTML + '<div class="stat-chip"><strong>' + t("wechselkursLabel") + '</strong>' + t("wirdGeladen") + '</div></div>';
 
             try {
                 let kursResponse = await fetch("https://api.frankfurter.dev/v1/latest?from=EUR&to=" + info.waehrungCode);
@@ -702,18 +1314,18 @@
                 if (meineGeneration !== generation) {
                     return;
                 }
-                laenderDiv.innerHTML = basisHTML + '<div class="stat-chip"><strong>💱 Wechselkurs</strong>1 EUR ≈ ' + kurs + ' ' + info.waehrungCode + '</div></div>';
+                laenderDiv.innerHTML = basisHTML + '<div class="stat-chip"><strong>' + t("wechselkursLabel") + '</strong>1 EUR ≈ ' + kurs + ' ' + info.waehrungCode + '</div></div>';
             } catch (fehler) {
                 if (meineGeneration !== generation) {
                     return;
                 }
-                laenderDiv.innerHTML = basisHTML + '<div class="stat-chip"><strong>💱 Wechselkurs</strong>aktuell nicht verfügbar</div></div>';
+                laenderDiv.innerHTML = basisHTML + '<div class="stat-chip"><strong>' + t("wechselkursLabel") + '</strong>' + t("wechselkursNichtVerfuegbar") + '</div></div>';
             }
         }
 
         async function zeigeWetter(ziel, meineGeneration) {
             let wetterDiv = document.getElementById("wetter");
-            wetterDiv.innerHTML = "Wetter wird geladen...";
+            wetterDiv.innerHTML = t("wirdGeladen");
             try {
                 let geoResponse = await fetch("https://geocoding-api.open-meteo.com/v1/search?name=" + encodeURIComponent(ziel) + "&count=1&language=de&format=json");
                 let geoData = await geoResponse.json();
@@ -723,7 +1335,7 @@
                 }
 
                 if (!geoData.results || geoData.results.length === 0) {
-                    wetterDiv.innerHTML = "Kein Wetter gefunden für " + ziel + ".";
+                    wetterDiv.innerHTML = t("keinWetterGefunden") + " " + ziel + ".";
                     return;
                 }
 
@@ -738,7 +1350,7 @@
                     return;
                 }
 
-                wetterDiv.innerHTML = "🌤️ Aktuelles Wetter in " + ziel + ": " + Math.round(temp * 10) / 10 + "°C";
+                wetterDiv.innerHTML = t("wetterAktuell") + " " + ziel + ": " + Math.round(temp * 10) / 10 + "°C";
 
                 let klimaSachen = [];
                 if (temp < 5) {
@@ -750,16 +1362,16 @@
                 }
 
                 if (klimaSachen.length > 0) {
-                    let klimaHTML = "<h3>🌡️ Passend zu " + Math.round(temp) + "°C in " + ziel + "</h3><ul>";
+                    let klimaHTML = "<details open><summary>" + t("passendZu") + " " + Math.round(temp) + "°C " + ziel + "</summary><ul>";
                     for (let sache of klimaSachen) {
-                        klimaHTML = klimaHTML + '<li><input type="checkbox" data-kategorie="Kleidung" onclick="zaehle()"> ' + sache + "</li>";
+                        klimaHTML = klimaHTML + '<li><input type="checkbox" data-kategorie="Kleidung" onclick="zaehle()"> ' + tr(sache) + "</li>";
                     }
-                    klimaHTML = klimaHTML + "</ul>";
+                    klimaHTML = klimaHTML + "</ul></details>";
                     document.getElementById("liste").insertAdjacentHTML("beforeend", klimaHTML);
                     zaehle();
                 }
             } catch (fehler) {
-                wetterDiv.innerHTML = "Wetter konnte nicht geladen werden.";
+                wetterDiv.innerHTML = t("wetterFehler");
             }
         }
 
@@ -783,9 +1395,26 @@ function zaehle() {
     }
     let prozent = boxen.length > 0 ? Math.round((gepackt / boxen.length) * 100) : 0;
     let gewichtKg = Math.round(gewichtGramm / 100) / 10;
-    document.getElementById("zaehler").innerHTML = gepackt + " von " + boxen.length + " gepackt (" + prozent + "%)"
+    document.getElementById("zaehler").innerHTML = gepackt + " " + t("von") + " " + boxen.length + " " + t("gepackt") + " (" + prozent + "%)"
         + '<div class="fortschritt-aussen"><div class="fortschritt-innen" style="width: ' + prozent + '%;"></div></div>'
-        + '<p style="font-size: 0.85em; opacity: 0.8; margin: 8px 0 0 0;">🎒 Geschätztes Gepäckgewicht: ca. ' + gewichtKg + ' kg (grober Richtwert pro Kategorie, kein echtes Gewicht)</p>';
+        + '<p style="font-size: 0.85em; opacity: 0.8; margin: 8px 0 0 0;">' + t("gewichtLabel") + ' ' + gewichtKg + ' ' + t("gewichtHinweis") + '</p>';
+}
+
+function fuegeEigeneSacheHinzu() {
+    let input = document.getElementById("eigeneSacheInput");
+    let text = input.value.trim();
+    if (!text) {
+        return;
+    }
+    let listeDiv = document.getElementById("liste");
+    let eigeneListe = document.getElementById("eigeneListe");
+    if (!eigeneListe) {
+        listeDiv.insertAdjacentHTML("beforeend", '<details open id="eigeneKategorie"><summary>' + t("eigeneSachen") + '</summary><ul id="eigeneListe"></ul></details>');
+        eigeneListe = document.getElementById("eigeneListe");
+    }
+    eigeneListe.insertAdjacentHTML("beforeend", '<li><input type="checkbox" data-kategorie="Ausrüstung & Sonstiges" onclick="zaehle()"> ' + text + "</li>");
+    input.value = "";
+    zaehle();
 }
 
 function druckeListe() {
@@ -815,7 +1444,7 @@ function merkeEingaben() {
     localStorage.setItem("packlisteZiel", document.getElementById("ziel").value);
     localStorage.setItem("packlisteTage", document.getElementById("tage").value);
     localStorage.setItem("packlisteArt", document.getElementById("art").value);
-    alert("Eingaben gemerkt! Beim nächsten Besuch werden sie automatisch ausgefüllt.");
+    alert(t("merkenAlert"));
 }
 
 window.addEventListener("DOMContentLoaded", function () {
@@ -831,6 +1460,7 @@ window.addEventListener("DOMContentLoaded", function () {
     if (gespeicherterArt) {
         document.getElementById("art").value = gespeicherterArt;
     }
+    waehleSprache("de");
 });
 
     </script>
