@@ -138,9 +138,10 @@
 
     .container {
         max-width: 950px;
-        margin: -40px auto 0 auto;
+        margin: -70px auto 0 auto;
         padding: 0 20px;
         position: relative;
+        z-index: 1;
     }
 
     form {
@@ -409,6 +410,13 @@
         transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
 
+    #listePlatzhalter {
+        text-align: center;
+        opacity: 0.5;
+        padding: 30px 0;
+        margin: 0;
+    }
+
     #liste:hover {
         transform: translateY(-4px);
         box-shadow: 0 16px 40px rgba(61, 64, 91, 0.2);
@@ -500,7 +508,6 @@
     <header>
         <button type="button" class="toggleSprache" onclick="umschalten()" id="toggleSpracheBtn">EN</button>
         <h1 id="titelText">🎒 DeineOnlinePackListe</h1>
-        <p id="untertitelText">Diese Website ist ein Vorläufer der echten Website.</p>
         <svg class="wave" viewBox="0 0 1440 100" preserveAspectRatio="none">
             <path d="M0,50 C360,100 1080,0 1440,50 L1440,100 L0,100 Z" fill="#f4f1de"></path>
         </svg>
@@ -540,11 +547,7 @@
 
     <div class="ergebnis-grid">
         <div class="spalte-links">
-            <div id="liste"></div>
-            <div class="eigene-sache">
-                <input type="text" id="eigeneSacheInput" placeholder="Eigene Sache hinzufügen...">
-                <button type="button" class="sekundaer" id="btnEigeneSache" onclick="fuegeEigeneSacheHinzu()">➕ Hinzufügen</button>
-            </div>
+            <div id="liste"><p id="listePlatzhalter">Hier kommt Ihre Packliste...</p></div>
             <div id="zaehler"></div>
             <div class="export-buttons">
                 <button type="button" class="sekundaer" id="btnDrucken" onclick="druckeListe()">🖨️ Drucken / Als PDF</button>
@@ -568,7 +571,6 @@
         let texte = {
             de: {
                 titel: "🎒 DeineOnlinePackListe",
-                untertitel: "Diese Website ist ein Vorläufer der echten Website.",
                 labelZiel: "🌍 Reiseziel:",
                 labelTage: "📅 Reisedauer (Tage):",
                 labelArt: "🧭 Reiseart:",
@@ -590,6 +592,7 @@
                 eigeneSacheInput: "Eigene Sache hinzufügen...",
                 btnEigeneSache: "➕ Hinzufügen",
                 eigeneSachen: "🧩 Eigene Sachen",
+                listePlatzhalter: "Hier kommt Ihre Packliste...",
                 visumLink: "🛂 Einreisebestimmungen",
                 impfLink: "💉 Impfempfehlungen (Suche)",
                 wetterSuche: "🔎 Wetter-Suche",
@@ -627,7 +630,6 @@
             },
             en: {
                 titel: "🎒 YourOnlinePackingList",
-                untertitel: "This website is a preview of the real website.",
                 labelZiel: "🌍 Destination:",
                 labelTage: "📅 Duration (days):",
                 labelArt: "🧭 Trip type:",
@@ -649,6 +651,7 @@
                 eigeneSacheInput: "Add your own item...",
                 btnEigeneSache: "➕ Add",
                 eigeneSachen: "🧩 Your own items",
+                listePlatzhalter: "Your packing list will appear here...",
                 visumLink: "🛂 Entry requirements",
                 impfLink: "💉 Vaccination recommendations (search)",
                 wetterSuche: "🔎 Weather search",
@@ -892,7 +895,6 @@
 
         function aktualisiereUiText() {
             document.getElementById("titelText").textContent = t("titel");
-            document.getElementById("untertitelText").textContent = t("untertitel");
             document.getElementById("labelZiel").textContent = t("labelZiel");
             document.getElementById("labelTage").textContent = t("labelTage");
             document.getElementById("labelArt").textContent = t("labelArt");
@@ -901,8 +903,11 @@
             document.getElementById("btnCsv").textContent = t("btnCsv");
             document.getElementById("btnMerken").textContent = t("btnMerken");
             document.getElementById("toggleSpracheBtn").textContent = t("toggle");
-            document.getElementById("eigeneSacheInput").placeholder = t("eigeneSacheInput");
-            document.getElementById("btnEigeneSache").textContent = t("btnEigeneSache");
+
+            let platzhalter = document.getElementById("listePlatzhalter");
+            if (platzhalter) {
+                platzhalter.textContent = t("listePlatzhalter");
+            }
 
             let optionen = document.querySelectorAll("#art option");
             for (let option of optionen) {
@@ -1191,6 +1196,10 @@
                 listeHTML = listeHTML + "</ul></details>";
             }
 
+            listeHTML = listeHTML + '<details open><summary>' + t("eigeneSachen") + '</summary><ul id="eigeneListe"></ul>'
+                + '<div class="eigene-sache"><input type="text" id="eigeneSacheInput" placeholder="' + t("eigeneSacheInput") + '"><button type="button" class="sekundaer" onclick="fuegeEigeneSacheHinzu()">' + t("btnEigeneSache") + '</button></div>'
+                + '</details>';
+
             document.getElementById("liste").innerHTML = t("deineListe") + " " + ziel + ", " + tage + " " + t("tageWort") + ":" + listeHTML;
 
             if (spotsFuerZiel) {
@@ -1204,7 +1213,8 @@
                 extraLinksHTML = extraLinksHTML + '<a href="' + linkSpots + '" target="_blank">' + t("sehenswuerdigkeiten") + '</a>';
             }
 
-            let impfListeFuerZiel = impfDaten[ziel.toLowerCase()];
+            let landFuerImpf = findeLandSchluessel(ziel);
+            let impfListeFuerZiel = landFuerImpf ? impfDaten[landFuerImpf] : null;
             let impfHTML = '<div class="impf-liste"><strong>' + t("impfungenTitel") + '</strong>';
             if (impfListeFuerZiel) {
                 impfHTML = impfHTML + '<table><tr><th>' + t("impfName") + '</th><th>' + t("impfSchuetzt") + '</th><th>' + t("impfDauer") + '</th></tr>';
@@ -1219,7 +1229,8 @@
 
             document.getElementById("extraLinks").innerHTML = '<div style="font-size:0.8em; opacity:0.75; margin-bottom:4px;">' + t("hinweisLaender") + '</div>' + extraLinksHTML + impfHTML;
 
-            let laenderMatch = laenderInfo[ziel.toLowerCase()];
+            let landSchluesselFuerWetter = findeLandSchluessel(ziel);
+            let laenderMatch = landSchluesselFuerWetter ? laenderInfo[landSchluesselFuerWetter] : null;
             let wetterZiel = laenderMatch ? laenderMatch.hauptstadt : ziel;
             zeigeWetter(wetterZiel, meineGeneration);
             zeigeLaenderInfo(ziel, meineGeneration);
@@ -1270,9 +1281,25 @@
         laenderInfo["vereinigtes königreich"] = laenderInfo["grossbritannien"];
         laenderInfo["vereinigte staaten"] = laenderInfo["usa"];
 
+        function findeLandSchluessel(ziel) {
+            let zielLower = ziel.toLowerCase();
+            if (laenderInfo[zielLower]) {
+                return zielLower;
+            }
+            for (let landSchluessel in laenderInfo) {
+                for (let stadt of laenderInfo[landSchluessel].groessteStaedte) {
+                    if (stadt.toLowerCase() === zielLower) {
+                        return landSchluessel;
+                    }
+                }
+            }
+            return null;
+        }
+
         async function zeigeLaenderInfo(ziel, meineGeneration) {
             let laenderDiv = document.getElementById("laenderinfo");
-            let info = laenderInfo[ziel.toLowerCase()];
+            let landSchluessel = findeLandSchluessel(ziel);
+            let info = landSchluessel ? laenderInfo[landSchluessel] : null;
 
             if (!info) {
                 laenderDiv.innerHTML = "";
@@ -1367,7 +1394,13 @@
                         klimaHTML = klimaHTML + '<li><input type="checkbox" data-kategorie="Kleidung" onclick="zaehle()"> ' + tr(sache) + "</li>";
                     }
                     klimaHTML = klimaHTML + "</ul></details>";
-                    document.getElementById("liste").insertAdjacentHTML("beforeend", klimaHTML);
+                    let eigeneListeEl = document.getElementById("eigeneListe");
+                    let eigeneDetails = eigeneListeEl ? eigeneListeEl.closest("details") : null;
+                    if (eigeneDetails) {
+                        eigeneDetails.insertAdjacentHTML("beforebegin", klimaHTML);
+                    } else {
+                        document.getElementById("liste").insertAdjacentHTML("beforeend", klimaHTML);
+                    }
                     zaehle();
                 }
             } catch (fehler) {
@@ -1406,12 +1439,7 @@ function fuegeEigeneSacheHinzu() {
     if (!text) {
         return;
     }
-    let listeDiv = document.getElementById("liste");
     let eigeneListe = document.getElementById("eigeneListe");
-    if (!eigeneListe) {
-        listeDiv.insertAdjacentHTML("beforeend", '<details open id="eigeneKategorie"><summary>' + t("eigeneSachen") + '</summary><ul id="eigeneListe"></ul></details>');
-        eigeneListe = document.getElementById("eigeneListe");
-    }
     eigeneListe.insertAdjacentHTML("beforeend", '<li><input type="checkbox" data-kategorie="Ausrüstung & Sonstiges" onclick="zaehle()"> ' + text + "</li>");
     input.value = "";
     zaehle();
