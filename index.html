@@ -2,7 +2,7 @@
   @Author: VictoriaGiri
   @Date:   2026-07-15 16:03:02
   @Last Modified by:   VictoriaGiri
-  @Last Modified time: 2026-07-21 19:13:23
+  @Last Modified time: 2026-07-21 23:40:37
 -->
 <!DOCTYPE html>
 <html lang="de">
@@ -11,20 +11,243 @@
     <meta charset="utf-8">
     <title>Packliste</title>
     <style>
-    h1 {
-        color: rgb(101, 183, 34);
+    * {
+        box-sizing: border-box;
+    }
+
+    html, body {
+        margin: 0;
+        padding: 0;
+        min-height: 100vh;
+        width: 100%;
+    }
+
+    body {
+        font-family: "Segoe UI", system-ui, Arial, sans-serif;
+        background: #f4f1de;
+        color: #3d405b;
+        padding-bottom: 60px;
+    }
+
+    header {
+        background: linear-gradient(135deg, #3d5a80, #81b29a);
+        width: 100%;
+        min-height: 40vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: 40px 20px 70px 20px;
+        position: relative;
+        overflow: hidden;
+    }
+
+    header h1 {
+        margin: 0;
+        font-size: 3em;
+        color: white;
+        text-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    header p {
+        margin: 12px 0 0 0;
+        color: rgba(255, 255, 255, 0.9);
+        font-size: 1.2em;
+    }
+
+    header .wave {
+        position: absolute;
+        bottom: -1px;
+        left: 0;
+        width: 100%;
+        height: 60px;
+        display: block;
+    }
+
+    .container {
+        max-width: 700px;
+        margin: -40px auto 0 auto;
+        padding: 0 20px;
+        position: relative;
+    }
+
+    form {
+        background: #ffffff;
+        border-radius: 20px;
+        padding: 24px;
+        border-top: 6px solid #e07a5f;
+        box-shadow: 0 10px 30px rgba(61, 64, 91, 0.15);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    form:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 16px 40px rgba(61, 64, 91, 0.2);
+    }
+
+    .stat-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 10px;
+        margin-top: 10px;
+    }
+
+    .stat-chip {
+        background: #f4f1de;
+        border: 1px solid #e9e5c8;
+        border-radius: 12px;
+        padding: 10px 12px;
+        font-size: 0.9em;
+        color: #3d405b;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .stat-chip:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(61, 64, 91, 0.15);
+    }
+
+    .stat-chip strong {
+        display: block;
+        color: #e07a5f;
+        font-size: 0.75em;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        margin-bottom: 4px;
+    }
+
+    form p {
+        margin: 14px 0;
+        color: #3d405b;
+    }
+
+    input,
+    select {
+        padding: 8px 10px;
+        border-radius: 8px;
+        border: 1px solid #d8d4b8;
+        background: #fbfaf1;
+        color: #3d405b;
+    }
+
+    input[type="text"],
+    input[type="number"],
+    select {
+        width: 300px;
+        max-width: 100%;
+    }
+
+    input[type="checkbox"] {
+        accent-color: #e07a5f;
+        width: 16px;
+        height: 16px;
+    }
+
+    input:focus,
+    select:focus {
+        outline: none;
+        border-color: #e07a5f;
+        box-shadow: 0 0 0 3px rgba(224, 122, 95, 0.2);
+    }
+
+    button {
+        background: #e07a5f;
+        color: white;
+        border: none;
+        padding: 12px 24px;
+        border-radius: 999px;
+        cursor: pointer;
+        font-size: 1em;
+        font-weight: bold;
+        box-shadow: 0 6px 16px rgba(224, 122, 95, 0.4);
+        transition: background-color 0.2s, transform 0.2s, box-shadow 0.2s;
+    }
+
+    button:hover {
+        background-color: #c65f45;
+        box-shadow: 0 8px 22px rgba(224, 122, 95, 0.5);
+        transform: translateY(-1px);
+    }
+
+    #wetter {
+        margin-top: 16px;
+        font-weight: bold;
+        color: #3d5a80;
+    }
+
+    #laenderinfo {
+        margin-top: 8px;
+        color: #3d5a80;
+    }
+
+    #liste {
+        background: #ffffff;
+        border-radius: 20px;
+        padding: 20px 24px;
+        margin-top: 20px;
+        border-top: 6px solid #81b29a;
+        box-shadow: 0 10px 30px rgba(61, 64, 91, 0.15);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    #liste:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 16px 40px rgba(61, 64, 91, 0.2);
+    }
+
+    #liste h3 {
+        color: #81b29a;
+        margin-bottom: 4px;
+        margin-top: 18px;
+    }
+
+    #liste h3:first-of-type {
+        margin-top: 6px;
+    }
+
+    #liste ul {
+        list-style: none;
+        padding: 0;
+        margin-top: 4px;
+    }
+
+    #liste li {
+        padding: 8px 0;
+        border-bottom: 1px solid #f0ede0;
+        color: #3d405b;
+    }
+
+    #liste a {
+        display: inline-block;
+        margin-top: 10px;
+        margin-right: 14px;
+        color: #e07a5f;
+        font-weight: bold;
+    }
+
+    #zaehler {
+        font-weight: bold;
+        margin-top: 10px;
+        color: #3d5a80;
     }
     </style>
 </head>
 
 <body>
-    <h1>DeineOnlinePackListe</h1>
-    <p>Diese Website ist ein Vorläufer der echten Website.</p>
+    <header>
+        <h1>🎒 DeineOnlinePackListe</h1>
+        <p>Diese Website ist ein Vorläufer der echten Website.</p>
+        <svg class="wave" viewBox="0 0 1440 100" preserveAspectRatio="none">
+            <path d="M0,50 C360,100 1080,0 1440,50 L1440,100 L0,100 Z" fill="#f4f1de"></path>
+        </svg>
+    </header>
 
+    <div class="container">
     <form>
-        <p>Reiseziel: <input type="text" id="ziel"></p>
-        <p>Reisedauer: <input type="number" id="tage"></p>
-        <p>Reiseart:
+        <p>🌍 Reiseziel: <input type="text" id="ziel"></p>
+        <p>📅 Reisedauer (Tage): <input type="number" id="tage"></p>
+        <p>🧭 Reiseart:
             <select id="art">
                 <option>Strand</option>
                 <option>Stadt</option>
@@ -42,91 +265,397 @@
                 <option>Radtour</option>
                 <option>Backpacking</option>
                 <option>Inselhopping</option>
+                <option>Klassenfahrt</option>
+                <option>Geschäftsreise</option>
+                <option>Junggesellenabschied</option>
+                <option>Angelurlaub</option>
+                <option>Golfurlaub</option>
             </select>
         </p>
-        <button type="button" onclick="erstelleListe()">Packliste erstellen</button>
+        <button type="button" onclick="erstelleListe()">🧳 Packliste erstellen</button>
     </form>
 
+    <div id="wetter"></div>
+    <div id="laenderinfo"></div>
     <div id="liste"></div>
     <div id="zaehler"></div>
+    </div>
 
     <script>
+        let generation = 0;
+
         function erstelleListe() {
+            generation = generation + 1;
+            let meineGeneration = generation;
+
             let ziel = document.getElementById("ziel").value;
             let tage = document.getElementById("tage").value;
             let art = document.getElementById("art").value;
-            let sachen = ["Handy", "Ladekabel", "Powerbank", "Ausweis", "Geldbeutel", "Schlüssel", "Zahnbürste", "Unterwäsche", "Socken", "Wasserflasche"];
+
+            if (!/^[A-Za-zÀ-ÿ\s'.-]+$/.test(ziel)) {
+                alert("Bitte beim Reiseziel nur Buchstaben eingeben.");
+                return;
+            }
+
+            if (!tage || Number(tage) <= 0) {
+                alert("Bitte eine gültige Reisedauer (mindestens 1 Tag) eingeben.");
+                return;
+            }
+
             let link = "https://www.google.com/search?q=Einreisebestimmungen+Impfungen+" + ziel;
             let linkWetter = "https://www.google.com/search?q=Wetter+" + ziel;
+            let linkSpots = "https://www.google.com/search?q=Sehenswürdigkeiten+Öffnungszeiten+" + ziel;
+
+            let bekannteSpots = {
+                "paris": ["Eiffelturm", "Arc de Triomphe", "Louvre", "Notre-Dame", "Montmartre"],
+                "rom": ["Kolosseum", "Trevi-Brunnen", "Vatikan", "Pantheon"],
+                "london": ["Big Ben", "Tower Bridge", "Buckingham Palace", "London Eye"],
+                "new york": ["Freiheitsstatue", "Times Square", "Central Park", "Empire State Building"],
+                "berlin": ["Brandenburger Tor", "Reichstag", "East Side Gallery", "Fernsehturm"],
+                "barcelona": ["Sagrada Família", "Park Güell", "La Rambla"],
+                "amsterdam": ["Anne-Frank-Haus", "Rijksmuseum", "Vondelpark"],
+                "athen": ["Akropolis", "Parthenon", "Plaka-Viertel"],
+                "zürich": ["Bahnhofstrasse", "Grossmünster", "Zürichsee"],
+                "istanbul": ["Hagia Sophia", "Blaue Moschee", "Topkapi-Palast"],
+                "bangkok": ["Wat Arun", "Grand Palace", "Wat Pho"],
+                "tokio": ["Tokyo Tower", "Senso-ji-Tempel", "Shibuya Crossing"],
+                "sydney": ["Opernhaus Sydney", "Harbour Bridge", "Bondi Beach"],
+                "rio de janeiro": ["Christusstatue (Corcovado)", "Zuckerhut", "Copacabana"],
+                "toronto": ["CN Tower", "Casa Loma", "St. Lawrence Market"],
+                "peking": ["Verbotene Stadt", "Chinesische Mauer", "Tian'anmen-Platz"],
+                "prag": ["Karlsbrücke", "Prager Burg", "Altstädter Ring"],
+                "kopenhagen": ["Kleine Meerjungfrau", "Nyhavn", "Tivoli"],
+                "hongkong": ["Victoria Peak", "Victoria Harbour", "Big Buddha (Ngong Ping)"],
+                "budapest": ["Parlamentsgebäude", "Fischerbastei", "Kettenbrücke"],
+                "jakarta": ["Monas (Nationalmonument)", "Istiqlal-Moschee", "Altstadt Kota Tua"],
+                "jerusalem": ["Klagemauer", "Grabeskirche", "Felsendom"],
+                "delhi": ["Rotes Fort", "India Gate", "Qutub Minar"],
+                "reykjavík": ["Hallgrímskirkja", "Perlan", "Alter Hafen"],
+                "seoul": ["Gyeongbokgung-Palast", "N Seoul Tower", "Myeongdong"],
+                "mexiko-stadt": ["Zócalo", "Templo Mayor", "Chapultepec-Park"],
+                "kuala lumpur": ["Petronas Towers", "Batu-Höhlen", "Merdeka-Platz"],
+                "oslo": ["Vigelandpark", "Opernhaus Oslo", "Holmenkollen"],
+                "auckland": ["Sky Tower", "Rangitoto Island", "Viaduct Harbour"],
+                "manila": ["Intramuros", "Rizal Park", "Manila Bay"],
+                "warschau": ["Altstadt Warschau", "Königsschloss", "Kulturpalast"],
+                "bukarest": ["Parlamentspalast", "Altstadt Bukarest", "Rumänisches Athenäum"],
+                "stockholm": ["Gamla Stan", "Vasa-Museum", "Königsschloss Stockholm"],
+                "singapur": ["Marina Bay Sands", "Gardens by the Bay", "Merlion"],
+                "kapstadt": ["Tafelberg", "Robben Island", "V&A Waterfront"]
+            };
+
+            let spotsHTML = "";
+            let spotsFuerZiel = bekannteSpots[ziel.toLowerCase()];
+            if (spotsFuerZiel) {
+                spotsHTML = "<h3>🏛️ Sehenswürdigkeiten in " + ziel + "</h3><ul>";
+                for (let spot of spotsFuerZiel) {
+                    let spotLink = "https://www.google.com/search?q=" + spot + "+Öffnungszeiten";
+                    spotsHTML = spotsHTML + '<li><a href="' + spotLink + '" target="_blank">' + spot + "</a></li>";
+                }
+                spotsHTML = spotsHTML + "</ul>";
+            }
+
+            let kategorien = {
+                "Dokumente & Wertsachen": ["Ausweis", "Geldbeutel", "Schlüssel", "Bargeld", "Versicherungskarte"],
+                "Technik": ["Handy", "Ladekabel", "Powerbank", "Kopfhörer"],
+                "Hygiene & Gesundheit": ["Zahnbürste", "Zahnpasta", "Deo", "Kamm/Bürste"],
+                "Kleidung": ["Unterwäsche", "Socken", "Schlafkleidung"],
+                "Ausrüstung & Sonstiges": ["Wasserflasche"]
+            };
 
             if (tage > 7) {
-                sachen.push("Waschmittel");
+                kategorien["Hygiene & Gesundheit"].push("Waschmittel");
             }
             if (tage > 9) {
-                sachen.push("Unterwäsche & Socken für ca. " + tage + " Tage", "Reiseapotheke + Medikamente mit Reserve", "Reiseadapter", "Zweites Ladekabel", "Flip-Flops", "Ohrstöpsel", "Dokumentenkopien");
+                kategorien["Kleidung"] = kategorien["Kleidung"].filter(function (sache) {
+                    return sache !== "Unterwäsche" && sache !== "Socken";
+                });
+                kategorien["Kleidung"].push("Unterwäsche & Socken für ca. " + tage + " Tage", "Flip-Flops");
+                kategorien["Hygiene & Gesundheit"].push("Reiseapotheke + Medikamente mit Reserve");
+                kategorien["Technik"].push("Reiseadapter", "Zweites Ladekabel");
+                kategorien["Ausrüstung & Sonstiges"].push("Ohrstöpsel");
+                kategorien["Dokumente & Wertsachen"].push("Dokumentenkopien");
             }
 
             if (art === "Strand") {
-                sachen.push("Sonnencreme", "Badehose", "Handtuch");
+                kategorien["Kleidung"].push("Badehose/Bikini", "Strandkleid/Kaftan", "Sonnenhut", "Leichte, luftige Kleidung");
+                kategorien["Hygiene & Gesundheit"].push("Sonnencreme (hoher LSF)", "After-Sun-Lotion", "Lippenpflege mit LSF");
+                kategorien["Ausrüstung & Sonstiges"].push("Strandtuch", "Strandtasche", "Wasserfeste Handyhülle", "Schwimmbrille");
             }
             if (art === "Stadt") {
-                sachen.push("Bequeme Schuhe", "Tagesrucksack", "Stadtplan-App offline");
+                kategorien["Kleidung"].push("Bequeme Schuhe", "Leichte Jacke", "Wechselkleidung für abends");
+                kategorien["Technik"].push("Stadtplan-App offline", "Kamera");
+                kategorien["Ausrüstung & Sonstiges"].push("Tagesrucksack", "Kleine Umhängetasche");
             }
             if (art === "Freizeitpark") {
-                sachen.push("Bequeme Schuhe", "Regenponcho", "Powerbank");
+                kategorien["Kleidung"].push("Bequeme Schuhe", "Regenponcho", "Cap/Sonnenhut");
+                kategorien["Technik"].push("Wasserdichte Handyhülle");
+                kategorien["Ausrüstung & Sonstiges"].push("Kleiner Rucksack", "Snacks für zwischendurch");
             }
             if (art === "Spa-Urlaub") {
-                sachen.push("Bademantel", "Badeschlappen", "Buch");
+                kategorien["Kleidung"].push("Bademantel", "Badeschlappen", "Bequeme Loungewear");
+                kategorien["Hygiene & Gesundheit"].push("Eigenes Pflegeprodukt-Set", "Haargummis");
+                kategorien["Ausrüstung & Sonstiges"].push("Buch/E-Reader", "Kopfhörer für Entspannungsmusik");
             }
             if (art === "Wandern") {
-                sachen.push("Wanderschuhe", "Regenjacke", "Trinkflasche", "Blasenpflaster");
+                kategorien["Kleidung"].push("Wanderschuhe", "Regenjacke", "Funktionskleidung im Zwiebellook", "Wandersocken");
+                kategorien["Hygiene & Gesundheit"].push("Blasenpflaster", "Sonnencreme", "Insektenschutz");
+                kategorien["Ausrüstung & Sonstiges"].push("Trinkblase/Trinkflasche", "Wanderkarte oder GPS-Gerät", "Erste-Hilfe-Set", "Wanderstöcke");
             }
             if (art === "Bootsreise") {
-                sachen.push("Reisetabletten gegen Seekrankheit", "Windjacke", "Rutschfeste Schuhe");
+                kategorien["Kleidung"].push("Windjacke", "Rutschfeste Schuhe");
+                kategorien["Hygiene & Gesundheit"].push("Reisetabletten gegen Seekrankheit");
+                kategorien["Ausrüstung & Sonstiges"].push("Fernglas", "Wasserdichte Tasche", "Sonnenbrille mit Kordel");
             }
             if (art === "Camping") {
-                sachen.push("Zelt", "Schlafsack", "Isomatte", "Stirnlampe");
+                kategorien["Kleidung"].push("Wetterfeste Kleidung", "Warme Mütze für die Nacht");
+                kategorien["Hygiene & Gesundheit"].push("Biologisch abbaubares Duschgel", "Mückenschutz");
+                kategorien["Ausrüstung & Sonstiges"].push("Zelt", "Schlafsack", "Isomatte", "Stirnlampe", "Campingkocher", "Feuerzeug/Streichhölzer", "Taschenmesser");
             }
             if (art === "Skiurlaub") {
-                sachen.push("Skiunterwäsche", "Handschuhe", "Skibrille", "Mütze");
+                kategorien["Kleidung"].push("Skiunterwäsche", "Handschuhe", "Skibrille", "Mütze", "Warme Socken");
+                kategorien["Hygiene & Gesundheit"].push("Sonnencreme (Höhensonne)", "Lippenbalsam mit LSF");
+                kategorien["Technik"].push("Wasserdichte Handyhülle");
+                kategorien["Ausrüstung & Sonstiges"].push("Skipass-Hülle");
             }
             if (art === "Tauchen") {
-                sachen.push("Tauchcomputer", "Maske + Schnorchel", "Logbuch", "Zertifizierungskarte");
+                kategorien["Hygiene & Gesundheit"].push("Anti-Beschlag-Spray für Maske");
+                kategorien["Dokumente & Wertsachen"].push("Zertifizierungskarte");
+                kategorien["Ausrüstung & Sonstiges"].push("Tauchcomputer", "Maske + Schnorchel", "Logbuch", "Neoprenanzug");
             }
             if (art === "Roadtrip") {
-                sachen.push("KFZ-Ladekabel", "Snacks", "Playlist offline", "Warnweste");
+                kategorien["Technik"].push("KFZ-Ladekabel", "Offline-Playlist/Podcasts", "Handyhalterung");
+                kategorien["Dokumente & Wertsachen"].push("Führerschein", "Fahrzeugpapiere");
+                kategorien["Ausrüstung & Sonstiges"].push("Snacks", "Warnweste", "Straßenkarte");
             }
             if (art === "Festival") {
-                sachen.push("Zelt", "Gummistiefel", "Bauchtasche", "Feuchttücher");
+                kategorien["Kleidung"].push("Regenjacke", "Wechselkleidung");
+                kategorien["Technik"].push("Zusätzliche Powerbank");
+                kategorien["Ausrüstung & Sonstiges"].push("Zelt", "Gummistiefel", "Bauchtasche", "Feuchttücher", "Campingstuhl", "Ohrstöpsel");
             }
             if (art === "Safari") {
-                sachen.push("Fernglas", "Kamera mit Zoom", "Neutrale Kleidung", "Mückenschutz");
+                kategorien["Kleidung"].push("Neutrale/khakifarbene Kleidung", "Langärmlige Shirts", "Sonnenhut");
+                kategorien["Hygiene & Gesundheit"].push("Sonnencreme", "Mückenschutz");
+                kategorien["Ausrüstung & Sonstiges"].push("Fernglas", "Kamera mit Zoom");
             }
             if (art === "Kreuzfahrt") {
-                sachen.push("Elegante Abendkleidung", "Reisetabletten", "Badesachen");
+                kategorien["Kleidung"].push("Elegante Abendkleidung", "Bequeme Tagesoutfits", "Badesachen");
+                kategorien["Hygiene & Gesundheit"].push("Reisetabletten");
+                kategorien["Ausrüstung & Sonstiges"].push("Kleiner Rucksack für Landausflüge");
             }
             if (art === "Radtour") {
-                sachen.push("Helm", "Flickzeug", "Radhose", "Fahrradlicht");
+                kategorien["Kleidung"].push("Radhose", "Atmungsaktives Trikot", "Regenjacke");
+                kategorien["Hygiene & Gesundheit"].push("Sonnencreme");
+                kategorien["Ausrüstung & Sonstiges"].push("Helm", "Flickzeug", "Fahrradlicht", "Fahrradschloss", "Werkzeugset");
             }
             if (art === "Backpacking") {
-                sachen.push("Backpack-Rucksack", "Packwürfel", "Schnelltrocknendes Handtuch", "Vorhängeschloss");
+                kategorien["Technik"].push("Universaladapter");
+                kategorien["Dokumente & Wertsachen"].push("Kopie von Ausweis/Visum, getrennt verstaut");
+                kategorien["Ausrüstung & Sonstiges"].push("Backpack-Rucksack", "Packwürfel", "Schnelltrocknendes Handtuch", "Vorhängeschloss", "Reisewäscheleine");
             }
             if (art === "Inselhopping") {
-                sachen.push("Dry Bag", "Badesachen", "Sandalen", "Sonnenhut");
+                kategorien["Kleidung"].push("Badesachen", "Leichte Kleidung", "Sandalen");
+                kategorien["Hygiene & Gesundheit"].push("Sonnencreme", "Sonnenhut");
+                kategorien["Ausrüstung & Sonstiges"].push("Dry Bag", "Schnorchel-Set");
+            }
+            if (art === "Klassenfahrt") {
+                kategorien["Kleidung"].push("Bequeme Alltagskleidung", "Zusätzliche Wechselkleidung");
+                kategorien["Dokumente & Wertsachen"].push("Einverständniserklärung der Eltern", "Krankenkassenkarte", "Taschengeld");
+                kategorien["Ausrüstung & Sonstiges"].push("Vesperdose/Lunchbox", "Kartenspiel oder Buch gegen Langeweile", "Namensschild am Gepäck");
+            }
+            if (art === "Geschäftsreise") {
+                kategorien["Kleidung"].push("Business-Kleidung", "Business-Schuhe", "Krawatte/Blazer");
+                kategorien["Technik"].push("Laptop + Ladekabel", "Präsentationsunterlagen/USB-Stick", "Visitenkarten");
+                kategorien["Dokumente & Wertsachen"].push("Firmenkreditkarte", "Mappe für Reisekostenbelege");
+                kategorien["Ausrüstung & Sonstiges"].push("Laptoptasche");
+            }
+            if (art === "Junggesellenabschied") {
+                kategorien["Kleidung"].push("Auffälliges Outfit/Kostüm", "Bequeme Partyschuhe");
+                kategorien["Technik"].push("Musik-Playlist", "Kamera für Fotos");
+                kategorien["Hygiene & Gesundheit"].push("Kopfschmerztabletten", "Elektrolyt-Pulver");
+                kategorien["Ausrüstung & Sonstiges"].push("Spiele/Aufgabenzettel", "Deko/Accessoires");
+            }
+            if (art === "Angelurlaub") {
+                kategorien["Kleidung"].push("Wetterfeste Kleidung", "Gummistiefel");
+                kategorien["Dokumente & Wertsachen"].push("Angelschein/Fischereischein");
+                kategorien["Ausrüstung & Sonstiges"].push("Angelrute", "Köder/Kunstköder", "Kescher", "Campingstuhl");
+            }
+            if (art === "Golfurlaub") {
+                kategorien["Kleidung"].push("Golfkleidung mit Dresscode", "Golfschuhe", "Kappe");
+                kategorien["Hygiene & Gesundheit"].push("Sonnencreme");
+                kategorien["Ausrüstung & Sonstiges"].push("Golfschläger-Set", "Golfbälle", "Tees", "Golfhandschuh");
             }
 
             let listeHTML = "";
-            for (let sache of sachen) {
-                listeHTML = listeHTML + '<li><input type="checkbox" onclick="zaehle()"> ' + sache + "</li>";
-
+            for (let kategorie in kategorien) {
+                if (kategorien[kategorie].length === 0) {
+                    continue;
+                }
+                listeHTML = listeHTML + "<h3>" + kategorie + "</h3><ul>";
+                for (let sache of kategorien[kategorie]) {
+                    listeHTML = listeHTML + '<li><input type="checkbox" onclick="zaehle()"> ' + sache + "</li>";
+                }
+                listeHTML = listeHTML + "</ul>";
             }
 
-            document.getElementById("liste").innerHTML = "Deine Packliste für " + ziel + ", " + tage + " Tage:" + "<ul>" + listeHTML + "</ul>" + '<a href="' + link + '" target="_blank">' + "Einreise- und Impfinfos" + '</a>';
-            
-            document.getElementById("liste").innerHTML += "<br>" + '<a href="' + linkWetter + '" target="_blank">' + "Wetter vor Ort" + '</a>';
+            document.getElementById("liste").innerHTML = "Deine Packliste für " + ziel + ", " + tage + " Tage:" + listeHTML + '<a href="' + link + '" target="_blank">📋 Einreise- und Impfinfos</a>';
 
+            document.getElementById("liste").innerHTML += '<a href="' + linkWetter + '" target="_blank">🔎 Wetter-Suche</a>';
 
+            if (spotsFuerZiel) {
+                document.getElementById("liste").innerHTML += spotsHTML;
+            } else {
+                document.getElementById("liste").innerHTML += '<a href="' + linkSpots + '" target="_blank">🏛️ Sehenswürdigkeiten & Öffnungszeiten</a>';
+            }
+
+            let laenderMatch = laenderInfo[ziel.toLowerCase()];
+            let wetterZiel = laenderMatch ? laenderMatch.hauptstadt : ziel;
+            zeigeWetter(wetterZiel, meineGeneration);
+            zeigeLaenderInfo(ziel, meineGeneration);
         }
+
+        let laenderInfo = {
+            "frankreich": { hauptstadt: "Paris", waehrungName: "Euro", waehrungCode: "EUR", steckdose: "Typ E (wie Deutschland)", groessteStaedte: ["Paris", "Marseille", "Lyon"], zahlung: "Karte weit verbreitet", preisniveau: "mittel bis hoch" },
+            "italien": { hauptstadt: "Rom", waehrungName: "Euro", waehrungCode: "EUR", steckdose: "Typ F/L", groessteStaedte: ["Rom", "Mailand", "Neapel"], zahlung: "Karte und Bargeld gemischt", preisniveau: "mittel" },
+            "spanien": { hauptstadt: "Madrid", waehrungName: "Euro", waehrungCode: "EUR", steckdose: "Typ F", groessteStaedte: ["Madrid", "Barcelona", "Valencia"], zahlung: "Karte und Bargeld gemischt", preisniveau: "mittel" },
+            "deutschland": { hauptstadt: "Berlin", waehrungName: "Euro", waehrungCode: "EUR", steckdose: "Typ F", groessteStaedte: ["Berlin", "Hamburg", "München"], zahlung: "Bargeld noch wichtig, Karte wächst", preisniveau: "mittel bis hoch" },
+            "österreich": { hauptstadt: "Wien", waehrungName: "Euro", waehrungCode: "EUR", steckdose: "Typ F", groessteStaedte: ["Wien", "Graz", "Linz"], zahlung: "Karte und Bargeld gemischt", preisniveau: "mittel bis hoch" },
+            "niederlande": { hauptstadt: "Amsterdam", waehrungName: "Euro", waehrungCode: "EUR", steckdose: "Typ F", groessteStaedte: ["Amsterdam", "Rotterdam", "Den Haag"], zahlung: "Überwiegend Karte", preisniveau: "hoch" },
+            "griechenland": { hauptstadt: "Athen", waehrungName: "Euro", waehrungCode: "EUR", steckdose: "Typ F", groessteStaedte: ["Athen", "Thessaloniki", "Patras"], zahlung: "Karte und Bargeld gemischt (auf Inseln oft Bargeld nötig)", preisniveau: "günstig bis mittel" },
+            "usa": { hauptstadt: "Washington, D.C.", waehrungName: "US-Dollar", waehrungCode: "USD", steckdose: "Typ A/B (Adapter nötig)", groessteStaedte: ["New York", "Los Angeles", "Chicago"], zahlung: "Überwiegend Karte", preisniveau: "hoch" },
+            "grossbritannien": { hauptstadt: "London", waehrungName: "Britisches Pfund", waehrungCode: "GBP", steckdose: "Typ G (Adapter nötig)", groessteStaedte: ["London", "Birmingham", "Manchester"], zahlung: "Überwiegend Karte", preisniveau: "hoch" },
+            "schweiz": { hauptstadt: "Bern", waehrungName: "Schweizer Franken", waehrungCode: "CHF", steckdose: "Typ J (Adapter nötig)", groessteStaedte: ["Zürich", "Genf", "Basel"], zahlung: "Karte und Bargeld gemischt", preisniveau: "sehr hoch" },
+            "türkei": { hauptstadt: "Ankara", waehrungName: "Türkische Lira", waehrungCode: "TRY", steckdose: "Typ F", groessteStaedte: ["Istanbul", "Ankara", "Izmir"], zahlung: "Karte und Bargeld gemischt", preisniveau: "günstig" },
+            "thailand": { hauptstadt: "Bangkok", waehrungName: "Thailändischer Baht", waehrungCode: "THB", steckdose: "Typ A/B/C (Adapter nötig)", groessteStaedte: ["Bangkok", "Chiang Mai", "Pattaya"], zahlung: "Bargeld wichtig (abseits Hotels)", preisniveau: "günstig" },
+            "japan": { hauptstadt: "Tokio", waehrungName: "Japanischer Yen", waehrungCode: "JPY", steckdose: "Typ A/B (Adapter nötig)", groessteStaedte: ["Tokio", "Osaka", "Yokohama"], zahlung: "Bargeld weiterhin sehr wichtig", preisniveau: "mittel bis hoch" },
+            "australien": { hauptstadt: "Canberra", waehrungName: "Australischer Dollar", waehrungCode: "AUD", steckdose: "Typ I (Adapter nötig)", groessteStaedte: ["Sydney", "Melbourne", "Brisbane"], zahlung: "Überwiegend Karte", preisniveau: "hoch" },
+            "brasilien": { hauptstadt: "Brasília", waehrungName: "Brasilianischer Real", waehrungCode: "BRL", steckdose: "Typ N (teils auch C)", groessteStaedte: ["São Paulo", "Rio de Janeiro", "Brasília"], zahlung: "Karte und Bargeld gemischt", preisniveau: "günstig bis mittel" },
+            "kanada": { hauptstadt: "Ottawa", waehrungName: "Kanadischer Dollar", waehrungCode: "CAD", steckdose: "Typ A/B (wie USA)", groessteStaedte: ["Toronto", "Montreal", "Vancouver"], zahlung: "Überwiegend Karte", preisniveau: "hoch" },
+            "china": { hauptstadt: "Peking", waehrungName: "Chinesischer Renminbi Yuan", waehrungCode: "CNY", steckdose: "Typ A/C/I", groessteStaedte: ["Shanghai", "Peking", "Guangzhou"], zahlung: "Überwiegend mobile Bezahlung/Karte, kaum Bargeld", preisniveau: "mittel" },
+            "tschechien": { hauptstadt: "Prag", waehrungName: "Tschechische Krone", waehrungCode: "CZK", steckdose: "Typ E", groessteStaedte: ["Prag", "Brünn", "Ostrava"], zahlung: "Karte und Bargeld gemischt", preisniveau: "günstig bis mittel" },
+            "dänemark": { hauptstadt: "Kopenhagen", waehrungName: "Dänische Krone", waehrungCode: "DKK", steckdose: "Typ C/K", groessteStaedte: ["Kopenhagen", "Aarhus", "Odense"], zahlung: "Überwiegend Karte", preisniveau: "hoch" },
+            "hongkong": { hauptstadt: "Hongkong", waehrungName: "Hongkong-Dollar", waehrungCode: "HKD", steckdose: "Typ G (wie UK)", groessteStaedte: ["Hongkong"], zahlung: "Karte und Bargeld gemischt", preisniveau: "hoch" },
+            "ungarn": { hauptstadt: "Budapest", waehrungName: "Ungarischer Forint", waehrungCode: "HUF", steckdose: "Typ C/F", groessteStaedte: ["Budapest", "Debrecen", "Szeged"], zahlung: "Karte und Bargeld gemischt", preisniveau: "günstig" },
+            "indonesien": { hauptstadt: "Jakarta", waehrungName: "Indonesische Rupiah", waehrungCode: "IDR", steckdose: "Typ C/F", groessteStaedte: ["Jakarta", "Surabaya", "Bandung"], zahlung: "Bargeld wichtig", preisniveau: "günstig" },
+            "israel": { hauptstadt: "Jerusalem", waehrungName: "Israelischer Schekel", waehrungCode: "ILS", steckdose: "Typ C/H (Adapter nötig)", groessteStaedte: ["Jerusalem", "Tel Aviv", "Haifa"], zahlung: "Karte und Bargeld gemischt", preisniveau: "hoch" },
+            "indien": { hauptstadt: "Neu-Delhi", waehrungName: "Indische Rupie", waehrungCode: "INR", steckdose: "Typ C/D/M (Adapter nötig)", groessteStaedte: ["Mumbai", "Delhi", "Bangalore"], zahlung: "Bargeld weiterhin wichtig, Karte wächst", preisniveau: "günstig" },
+            "island": { hauptstadt: "Reykjavík", waehrungName: "Isländische Krone", waehrungCode: "ISK", steckdose: "Typ C/F", groessteStaedte: ["Reykjavík", "Kópavogur", "Akureyri"], zahlung: "Überwiegend Karte (Bargeld kaum nötig)", preisniveau: "sehr hoch" },
+            "südkorea": { hauptstadt: "Seoul", waehrungName: "Südkoreanischer Won", waehrungCode: "KRW", steckdose: "Typ C/F", groessteStaedte: ["Seoul", "Busan", "Incheon"], zahlung: "Überwiegend Karte", preisniveau: "mittel" },
+            "mexiko": { hauptstadt: "Mexiko-Stadt", waehrungName: "Mexikanischer Peso", waehrungCode: "MXN", steckdose: "Typ A/B (wie USA)", groessteStaedte: ["Mexiko-Stadt", "Guadalajara", "Monterrey"], zahlung: "Karte und Bargeld gemischt", preisniveau: "günstig bis mittel" },
+            "malaysia": { hauptstadt: "Kuala Lumpur", waehrungName: "Malaysischer Ringgit", waehrungCode: "MYR", steckdose: "Typ G (Adapter nötig)", groessteStaedte: ["Kuala Lumpur", "George Town", "Johor Bahru"], zahlung: "Karte und Bargeld gemischt", preisniveau: "günstig" },
+            "norwegen": { hauptstadt: "Oslo", wa2222ehrungName: "Norwegische Krone", waehrungCode: "NOK", steckdose: "Typ C/F", groessteStaedte: ["Oslo", "Bergen", "Trondheim"], zahlung: "Überwiegend Karte (Bargeld kaum nötig)", preisniveau: "sehr hoch" },
+            "neuseeland": { hauptstadt: "Wellington", waehrungName: "Neuseeland-Dollar", waehrungCode: "NZD", steckdose: "Typ I (Adapter nötig)", groessteStaedte: ["Auckland", "Wellington", "Christchurch"], zahlung: "Überwiegend Karte", preisniveau: "hoch" },
+            "philippinen": { hauptstadt: "Manila", waehrungName: "Philippinischer Peso", waehrungCode: "PHP", steckdose: "Typ A/B/C (Adapter nötig)", groessteStaedte: ["Manila", "Quezon City", "Davao City"], zahlung: "Bargeld wichtig", preisniveau: "günstig" },
+            "polen": { hauptstadt: "Warschau", waehrungName: "Polnischer Złoty", waehrungCode: "PLN", steckdose: "Typ C/E", groessteStaedte: ["Warschau", "Krakau", "Łódź"], zahlung: "Karte und Bargeld gemischt", preisniveau: "günstig bis mittel" },
+            "rumänien": { hauptstadt: "Bukarest", waehrungName: "Rumänischer Leu", waehrungCode: "RON", steckdose: "Typ C/F", groessteStaedte: ["Bukarest", "Cluj-Napoca", "Timișoara"], zahlung: "Karte und Bargeld gemischt", preisniveau: "günstig" },
+            "schweden": { hauptstadt: "Stockholm", waehrungName: "Schwedische Krone", waehrungCode: "SEK", steckdose: "Typ C/F", groessteStaedte: ["Stockholm", "Göteborg", "Malmö"], zahlung: "Überwiegend Karte (Bargeld kaum nötig)", preisniveau: "hoch" },
+            "singapur": { hauptstadt: "Singapur", waehrungName: "Singapur-Dollar", waehrungCode: "SGD", steckdose: "Typ G (Adapter nötig)", groessteStaedte: ["Singapur (Stadtstaat)"], zahlung: "Überwiegend Karte", preisniveau: "hoch" },
+            "südafrika": { hauptstadt: "Pretoria", waehrungName: "Südafrikanischer Rand", waehrungCode: "ZAR", steckdose: "Typ M (teils auch N, Adapter nötig)", groessteStaedte: ["Johannesburg", "Kapstadt", "Durban"], zahlung: "Karte und Bargeld gemischt", preisniveau: "günstig bis mittel" }
+        };
+
+        laenderInfo["uk"] = laenderInfo["grossbritannien"];
+        laenderInfo["england"] = laenderInfo["grossbritannien"];
+        laenderInfo["vereinigtes königreich"] = laenderInfo["grossbritannien"];
+        laenderInfo["vereinigte staaten"] = laenderInfo["usa"];
+
+        async function zeigeLaenderInfo(ziel, meineGeneration) {
+            let laenderDiv = document.getElementById("laenderinfo");
+            let info = laenderInfo[ziel.toLowerCase()];
+
+            if (!info) {
+                laenderDiv.innerHTML = "";
+                return;
+            }
+
+            let staedteHTML = "";
+            for (let stadt of info.groessteStaedte) {
+                let stadtLink = "https://www.google.com/search?q=Sehenswürdigkeiten+Öffnungszeiten+" + stadt;
+                staedteHTML = staedteHTML + '<a href="' + stadtLink + '" target="_blank">' + stadt + "</a>, ";
+            }
+            staedteHTML = staedteHTML.slice(0, -2);
+
+            let basisHTML = '<div class="stat-grid">'
+                + '<div class="stat-chip"><strong>🌐 Hauptstadt</strong>' + info.hauptstadt + '</div>'
+                + '<div class="stat-chip"><strong>💶 Währung</strong>' + info.waehrungName + ' (' + info.waehrungCode + ')</div>'
+                + '<div class="stat-chip"><strong>🔌 Steckdose</strong>' + info.steckdose + '</div>'
+                + '<div class="stat-chip"><strong>💳 Bezahlen</strong>' + info.zahlung + '</div>'
+                + '<div class="stat-chip"><strong>💰 Preisniveau (Hotel/Essen)</strong>' + info.preisniveau + '</div>'
+                + '<div class="stat-chip"><strong>🏙️ Größte Städte</strong>' + staedteHTML + '</div>';
+
+            if (info.waehrungCode === "EUR") {
+                laenderDiv.innerHTML = basisHTML + '<div class="stat-chip"><strong>💱 Wechselkurs</strong>Gleiche Währung wie in Deutschland</div></div>';
+                return;
+            }
+
+            laenderDiv.innerHTML = basisHTML + '<div class="stat-chip"><strong>💱 Wechselkurs</strong>wird geladen...</div></div>';
+
+            try {
+                let kursResponse = await fetch("https://api.frankfurter.dev/v1/latest?from=EUR&to=" + info.waehrungCode);
+                let kursData = await kursResponse.json();
+                let kurs = Math.round(kursData.rates[info.waehrungCode] * 100) / 100;
+                if (meineGeneration !== generation) {
+                    return;
+                }
+                laenderDiv.innerHTML = basisHTML + '<div class="stat-chip"><strong>💱 Wechselkurs</strong>1 EUR ≈ ' + kurs + ' ' + info.waehrungCode + '</div></div>';
+            } catch (fehler) {
+                if (meineGeneration !== generation) {
+                    return;
+                }
+                laenderDiv.innerHTML = basisHTML + '<div class="stat-chip"><strong>💱 Wechselkurs</strong>aktuell nicht verfügbar</div></div>';
+            }
+        }
+
+        async function zeigeWetter(ziel, meineGeneration) {
+            let wetterDiv = document.getElementById("wetter");
+            wetterDiv.innerHTML = "Wetter wird geladen...";
+            try {
+                let geoResponse = await fetch("https://geocoding-api.open-meteo.com/v1/search?name=" + encodeURIComponent(ziel) + "&count=1&language=de&format=json");
+                let geoData = await geoResponse.json();
+
+                if (meineGeneration !== generation) {
+                    return;
+                }
+
+                if (!geoData.results || geoData.results.length === 0) {
+                    wetterDiv.innerHTML = "Kein Wetter gefunden für " + ziel + ".";
+                    return;
+                }
+
+                let lat = geoData.results[0].latitude;
+                let lon = geoData.results[0].longitude;
+
+                let wetterResponse = await fetch("https://api.open-meteo.com/v1/forecast?latitude=" + lat + "&longitude=" + lon + "&current_weather=true");
+                let wetterData = await wetterResponse.json();
+                let temp = wetterData.current_weather.temperature;
+
+                if (meineGeneration !== generation) {
+                    return;
+                }
+
+                wetterDiv.innerHTML = "🌤️ Aktuelles Wetter in " + ziel + ": " + Math.round(temp * 10) / 10 + "°C";
+
+                let klimaSachen = [];
+                if (temp < 5) {
+                    klimaSachen = ["Warme Winterjacke", "Handschuhe", "Mütze", "Schal", "Thermounterwäsche"];
+                } else if (temp < 15) {
+                    klimaSachen = ["Warme Jacke", "Pullover"];
+                } else if (temp > 28) {
+                    klimaSachen = ["Extra Sonnencreme", "Kühlendes Gesichtsspray", "Zusätzliche Trinkflasche"];
+                }
+
+                if (klimaSachen.length > 0) {
+                    let klimaHTML = "<h3>🌡️ Passend zu " + Math.round(temp) + "°C in " + ziel + "</h3><ul>";
+                    for (let sache of klimaSachen) {
+                        klimaHTML = klimaHTML + '<li><input type="checkbox" onclick="zaehle()"> ' + sache + "</li>";
+                    }
+                    klimaHTML = klimaHTML + "</ul>";
+                    document.getElementById("liste").insertAdjacentHTML("beforeend", klimaHTML);
+                }
+            } catch (fehler) {
+                wetterDiv.innerHTML = "Wetter konnte nicht geladen werden.";
+            }
+        }
+
         function zaehle() {
     let boxen = document.querySelectorAll("#liste input");
     let gepackt = 0;

@@ -1,6 +1,9 @@
 {
   "permissions": {
     "defaultMode": "default",
-    "disableAutoMode": "disable"
+    "disableAutoMode": "disable",
+    "allow": [
+      "Bash(python3 -c ' *)"
+    ]
   }
 }
